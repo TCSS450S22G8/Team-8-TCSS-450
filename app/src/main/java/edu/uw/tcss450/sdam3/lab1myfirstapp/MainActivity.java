@@ -8,7 +8,7 @@ import android.util.Log;
 public class MainActivity extends AppCompatActivity {
 
     //SEAN LOGAN ADDING COMMENT FOR COMMIT/PUSH TEST ON "SeanLoganBranch"
-
+    // testing by JenHo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

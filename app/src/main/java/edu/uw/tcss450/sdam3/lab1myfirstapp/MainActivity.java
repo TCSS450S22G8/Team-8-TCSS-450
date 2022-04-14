@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 public class MainActivity extends AppCompatActivity {
+    //Adding Comment to test push/pull by lmc56.
+
 
     //SEAN LOGAN ADDING COMMENT FOR COMMIT/PUSH TEST ON "SeanLoganBranch"
 

@@ -9,7 +9,7 @@ public class MainActivity extends AppCompatActivity {
     //Adding Comment to test push/pull by lmc56.
 
     //Second Sean Logan Test
-
+    //Third Sean Logan Test
 
     //SEAN LOGAN ADDING COMMENT FOR COMMIT/PUSH TEST ON "SeanLoganBranch"
     // testing by JenHo

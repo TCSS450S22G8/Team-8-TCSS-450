@@ -7,6 +7,12 @@
         <entry key="..\:/School/TCSS 450/project/app/src/main/res/layout/activity_main.xml" value="0.1524822695035461" />
         <entry key="..\:/School/TCSS 450/project/app/src/main/res/layout/fragment_home.xml" value="0.14564336372847012" />
         <entry key="..\:/School/TCSS 450/project/app/src/main/res/menu/bottom_nav_menu.xml" value="0.39537037037037037" />
+        <entry key="app/src/main/res/layout/activity_auth.xml" value="0.17958459979736577" />
+        <entry key="app/src/main/res/layout/activity_authentication.xml" value="0.17958459979736577" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.129981884057971" />
+        <entry key="app/src/main/res/layout/fragment_login.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/fragment_signin.xml" value="0.27717391304347827" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.31333333333333335" />
       </map>
     </option>
   </component>

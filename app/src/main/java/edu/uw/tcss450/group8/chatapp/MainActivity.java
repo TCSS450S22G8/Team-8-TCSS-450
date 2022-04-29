@@ -2,7 +2,10 @@ package edu.uw.tcss450.group8.chatapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 
 import android.os.Bundle;
@@ -26,5 +29,18 @@ public class MainActivity extends AppCompatActivity {
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_home)
                 .build();
+        //uncomment when all frags done. this also prevents labels from not showing
+        //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        //NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
+        //NavigationUI.setupWithNavController(navView, navController);
+
+    }
+
+    //back button for home
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
     }
 }

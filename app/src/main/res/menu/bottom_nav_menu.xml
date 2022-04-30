@@ -2,19 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/homeFragment"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_chat"
-        android:icon="@drawable/ic_chat_black_24dp"
-        android:title="@string/title_chat" />
-
-    <item
-        android:id="@+id/navigation_connections"
+        android:id="@+id/connectionsFragment"
         android:icon="@drawable/ic_contact_page_black_24p"
         android:title="@string/title_connections" />
+
+    <item
+        android:id="@+id/chatFragment"
+        android:icon="@drawable/ic_chat_black_24dp"
+        android:title="@string/title_chat" />
 
     <item
         android:id="@+id/navigation_weather"

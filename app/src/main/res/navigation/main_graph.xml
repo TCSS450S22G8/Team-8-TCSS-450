@@ -8,15 +8,22 @@
     <fragment
         android:id="@+id/settingFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.settings.SettingFragment"
-        android:label="fragment_setting"
+        android:label="@string/title_settings"
         tools:layout="@layout/fragment_setting" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.home.HomeFragment"
-        android:label="fragment_home"
+        android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
             android:id="@+id/action_homeFragment_to_settingFragment"
             app:destination="@id/settingFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/weatherFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.weather.WeatherFragment"
+        android:label="@string/title_weather"
+        tools:layout="@layout/fragment_weather" />
+
+
 </navigation>

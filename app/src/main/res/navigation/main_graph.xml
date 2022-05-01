@@ -9,7 +9,11 @@
         android:id="@+id/settingFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.settings.SettingFragment"
         android:label="@string/title_settings"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_authenticationActivity"
+            app:destination="@id/authenticationActivity" />
+    </fragment>
     <fragment
         android:id="@+id/homeFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.home.HomeFragment"
@@ -24,6 +28,11 @@
         android:name="edu.uw.tcss450.group8.chatapp.ui.weather.WeatherFragment"
         android:label="@string/title_weather"
         tools:layout="@layout/fragment_weather" />
+    <activity
+        android:id="@+id/authenticationActivity"
+        android:name="edu.uw.tcss450.group8.chatapp.AuthenticationActivity"
+        android:label="activity_auth"
+        tools:layout="@layout/activity_auth" />
 
 
 </navigation>

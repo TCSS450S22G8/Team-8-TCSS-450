@@ -3,6 +3,7 @@
 
     <string name="hint_email">Enter your email address</string>
     <string name="action_signin">Sign In</string>
+    <string name="action_signout">Sign Out</string>
     <string name="title_home">Home</string>
     <string name="title_chat">Chat</string>
     <string name="title_connections">Connections</string>

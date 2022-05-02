@@ -21,4 +21,6 @@
     <string name="image_description_logo">The Phish Logo</string>
     <string name="action_register">Register</string>
     <string name="hint_nickname">Nickname</string>
+    <string name="hint_verifyCode">Enter your verification code</string>
+    <string name="action_verify">Verify</string>
 </resources>

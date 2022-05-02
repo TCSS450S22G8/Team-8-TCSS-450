@@ -30,5 +30,17 @@
         android:id="@+id/registerFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.auth.register.RegisterFragment"
         android:label="fragment_register"
-        tools:layout="@layout/fragment_register" />
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_verifyFragment"
+            app:destination="@id/verifyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/verifyFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.auth.verify.VerifyFragment"
+        android:label="VerifyFragment" >
+        <action
+            android:id="@+id/action_verifyFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
 </navigation>

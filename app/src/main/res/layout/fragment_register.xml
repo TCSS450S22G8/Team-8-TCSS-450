@@ -8,7 +8,7 @@
     tools:context=".ui.auth.register.RegisterFragment">
 
     <EditText
-        android:id="@+id/edit_nickname"
+        android:id="@+id/edit_Nickname"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

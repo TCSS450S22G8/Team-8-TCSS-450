@@ -19,6 +19,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentRegisterBinding;
+import edu.uw.tcss450.group8.chatapp.ui.auth.login.LoginFragmentDirections;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.*;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkClientPredicate;
@@ -78,6 +79,10 @@ public class RegisterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.buttonRegister.setOnClickListener(this::attemptRegister);
+        binding.buttonRegister.setOnClickListener(button ->
+                Navigation.findNavController(getView()).navigate(
+                        RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment()
+                ));
         /*
         mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
                 this::observeResponse

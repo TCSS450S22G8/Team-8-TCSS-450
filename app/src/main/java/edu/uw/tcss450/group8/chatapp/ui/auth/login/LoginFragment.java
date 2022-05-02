@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentLoginBinding;
+import edu.uw.tcss450.group8.chatapp.ui.auth.register.RegisterFragment;
 
 
 public class LoginFragment extends Fragment {
@@ -33,6 +34,11 @@ public class LoginFragment extends Fragment {
         //Local access to the ViewBinding object. No need to create as Instance Var as it is only
         //used here.
         FragmentLoginBinding binding = FragmentLoginBinding.bind(getView());
+
+        binding.buttonRegisterLogin.setOnClickListener(button ->
+                Navigation.findNavController(getView()).navigate(
+                        LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
+                ));
 
         //On button click, navigate to MainActivity
         binding.buttonSignin.setOnClickListener(button -> {

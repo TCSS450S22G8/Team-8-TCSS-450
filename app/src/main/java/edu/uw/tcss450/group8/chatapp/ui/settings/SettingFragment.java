@@ -41,13 +41,15 @@ public class SettingFragment extends Fragment {
         FragmentSettingBinding binding = FragmentSettingBinding.bind(getView());
         //on button click,navigate to settings
         // TODO once login system is done, remove signed in user info.
-        binding.buttonSignout.setOnClickListener(button ->
-                Navigation.findNavController(getView()).navigate(
-                        SettingFragmentDirections
-                                .actionSettingFragmentToAuthenticationActivity()));
-        //This tells the containing Activity that we are done with it.
-        //It will not be added to backstack.
-        getActivity().finish();
+        binding.buttonSignout.setOnClickListener(button -> {
+            Navigation.findNavController(getView()).navigate(
+                    SettingFragmentDirections
+                            .actionSettingFragmentToAuthenticationActivity());
+            //This tells the containing Activity that we are done with it.
+            //It will not be added to backstack.
+            getActivity().finish();
+        });
+
     }
 
     @Override

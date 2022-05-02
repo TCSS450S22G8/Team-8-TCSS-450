@@ -3,11 +3,36 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/mainActivity">
+    app:startDestination="@id/homeFragment">
 
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.settings.SettingFragment"
+        android:label="@string/title_settings"
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_authenticationActivity"
+            app:destination="@id/authenticationActivity" />
+    </fragment>
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/weatherFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.weather.WeatherFragment"
+        android:label="@string/title_weather"
+        tools:layout="@layout/fragment_weather" />
     <activity
-        android:id="@+id/mainActivity"
-        android:name="edu.uw.tcss450.group8.chatapp.MainActivity"
-        android:label="activity_main"
-        tools:layout="@layout/activity_main" />
+        android:id="@+id/authenticationActivity"
+        android:name="edu.uw.tcss450.group8.chatapp.AuthenticationActivity"
+        android:label="activity_auth"
+        tools:layout="@layout/activity_auth" />
+
+
 </navigation>

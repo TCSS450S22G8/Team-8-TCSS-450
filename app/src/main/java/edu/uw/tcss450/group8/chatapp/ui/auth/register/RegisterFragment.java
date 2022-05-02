@@ -78,17 +78,17 @@ public class RegisterFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.buttonRegister.setOnClickListener(this::attemptRegister);
-        binding.buttonRegister.setOnClickListener(button ->
-                Navigation.findNavController(getView()).navigate(
-                        RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment()
-                ));
-        /*
+
+        binding.buttonRegister.setOnClickListener(button -> {
+            attemptRegister(button);
+            Navigation.findNavController(getView()).navigate(
+                RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
+        });
         mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
                 this::observeResponse
         );
 
-         */
+
     }
 
     private void attemptRegister(final View button) {
@@ -143,32 +143,34 @@ public class RegisterFragment extends Fragment {
 
 
     private void verifyAuthWithServer() {
-        /*
         mRegisterModel.connect(
+                binding.editNickname.getText().toString(),
                 binding.editFirst.getText().toString(),
                 binding.editLast.getText().toString(),
                 binding.editEmail.getText().toString(),
                 binding.editPassword1.getText().toString());
+
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
-        */
+
 
     }
 
 
-    /*
+
     private void navigateToLogin() {
-        RegisterFragmentDirections.ActionRegisterFragmentToLoginFragment directions =
-                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
+        // ToDO: Register to Verification to autofill login
+//        RegisterFragmentDirections.ActionRegisterFragmentToLoginFragment directions =
+//                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
+//
+//        directions.setEmail(binding.editEmail.getText().toString());
+//        directions.setPassword(binding.editPassword1.getText().toString());
 
-        directions.setEmail(binding.editEmail.getText().toString());
-        directions.setPassword(binding.editPassword1.getText().toString());
-
-        Navigation.findNavController(getView()).navigate(directions);
+        Navigation.findNavController(getView()).navigate(RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
 
     }
 
-     */
+
 
     /*
     /**
@@ -178,7 +180,7 @@ public class RegisterFragment extends Fragment {
      * @param response the Response from the server
      */
 
-    /*
+
     private void observeResponse(final JSONObject response) {
         if (response.length() > 0) {
             if (response.has("code")) {
@@ -197,6 +199,6 @@ public class RegisterFragment extends Fragment {
         }
 
     }
-    */
+
 
 }

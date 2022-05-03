@@ -12,11 +12,22 @@ import java.util.List;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentMessageCardBinding;
 
+/**
+ * RecyclerViewAdapter for message
+ *
+ * @author jliaoh
+ * @version 1.0
+ */
 public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecyclerViewAdapter.MessageViewHolder> {
 
     //Store all of the blogs to present
     private final List<Message> mMessage;
 
+    /**
+     * Constructor for MessageRecyclerViewAdapter
+     *
+     * @param items list of message
+     */
     public MessageRecyclerViewAdapter(List<Message> items) {
         this.mMessage = items;
     }
@@ -53,6 +64,10 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
             binding = FragmentMessageCardBinding.bind(view);
         }
 
+        /**
+         * set message
+         * @param message message
+         */
         void setMessage(final Message message) {
             mMessage = message;
             binding.textMessage.setText(message.getMessage());

@@ -19,15 +19,11 @@ public final class MessageGenerator {
         }
     }
 
+    /**
+     * get list of generated message
+     * @return list of message
+     */
     public static List<Message> getMessageList() {
         return Arrays.asList(MESSAGES);
     }
-
-    public static Message[] getMESSAGE() {
-        return Arrays.copyOf(MESSAGES, MESSAGES.length);
-    }
-
-    private MessageGenerator() { }
-
-
 }

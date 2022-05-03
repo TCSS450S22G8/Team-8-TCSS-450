@@ -20,15 +20,30 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * View Model for message list
+ *
+ * @author jliaoh
+ * @version 1.0
+ */
 public class MessageListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Message>> mMessageList;
 
+    /**
+     * Constructor for Message List ViewModel
+     * @param application
+     */
     public MessageListViewModel(@NonNull Application application) {
         super(application);
         mMessageList = new MutableLiveData<>();
         mMessageList.setValue(MessageGenerator.getMessageList());
     }
 
+    /**
+     * Helper method for observe
+     * @param owner owner of lifecycle
+     * @param observer message list
+     */
     public void addBlogListObserver(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<Message>> observer) {
         mMessageList.observe(owner, observer);
     }

@@ -8,21 +8,19 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_root"
-        android:name="edu.uw.tcss450.uiandnavigationlab.ui.blog.BlogFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:orientation="vertical"
         app:layoutManager="LinearLayoutManager"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintBottom_toTopOf="@+id/view_separator"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:context="edu.uw.tcss450.uiandnavigationlab.ui.blog.BlogListFragment"
         tools:listitem="@layout/fragment_message_card" />
     <View
-        android:id="@+id/view"
+        android:id="@+id/view_separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="#e0e0e0"
@@ -42,7 +40,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/button_gchat_send"
+            android:layout_toStartOf="@+id/button_chat_send"
             android:background="@android:color/transparent"
             android:hint="Enter Message"
             android:inputType="text"
@@ -50,7 +48,7 @@
             tools:ignore="Autofill" />
 
         <Button
-            android:id="@+id/button_gchat_send"
+            android:id="@+id/button_chat_send"
             android:layout_width="99dp"
             android:layout_height="48dp"
             android:layout_alignParentEnd="true"

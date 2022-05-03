@@ -6,7 +6,7 @@ import java.io.Serializable;
  * A class to encapsulate a chat message.
  *
  * @author jliaoh
- * @version 4/27/2022
+ * @version 1.0
  */
 public class Message implements Serializable {
     private final String mMessage;
@@ -14,7 +14,7 @@ public class Message implements Serializable {
     private final String mSentDate;
 
     /**
-     * Constructor of Message
+     * Constructor for Message
      * @param message chat message
      * @param sent who sent the message
      * @param sentDate the time message is sent
@@ -25,14 +25,26 @@ public class Message implements Serializable {
         mSentDate = sentDate;
     }
 
+    /**
+     * getter for message
+     * @return message
+     */
     public String getMessage() {
         return mMessage;
     }
 
+    /**
+     * getter for sent
+     * @return sent
+     */
     public String getSent() {
         return mSent;
     }
 
+    /**
+     * getter for date
+     * @return
+     */
     public String getSentDate() {
         return mSentDate;
     }

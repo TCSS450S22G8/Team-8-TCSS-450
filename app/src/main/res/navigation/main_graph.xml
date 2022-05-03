@@ -37,7 +37,6 @@
         android:label="activity_auth"
         tools:layout="@layout/activity_auth" />
     <fragment
-        rinpham217_feature_connection
         android:id="@+id/connectionsFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.ConnectionsFragment"
         android:label="fragment_connections"

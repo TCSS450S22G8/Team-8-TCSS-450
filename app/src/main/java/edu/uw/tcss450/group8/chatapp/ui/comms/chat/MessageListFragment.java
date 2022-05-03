@@ -39,7 +39,7 @@ public class MessageListFragment extends Fragment {
             if (!blogList.isEmpty()) {
 
                 binding.listRoot.setAdapter(
-                        new MessageRecyclerViewAdapter(blogList)
+                        new MessageRecyclerViewAdapter(MessageGenerator.getMessageList())
                 );
 //                binding.layoutWait.setVisibility(View.GONE);
             }

@@ -5,40 +5,31 @@
     android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.auth.login.LoginFragment">
+    tools:context=".ui.auth.register.RegisterFragment">
 
     <Button
-        android:id="@+id/button_registerLogin"
+        android:id="@+id/button_Verify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginEnd="272dp"
-        android:text="@string/action_register"
+        android:layout_marginEnd="28dp"
+        android:text="@string/action_verify"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_VerifyCode" />
+
+    <EditText
+        android:id="@+id/edit_VerifyCode"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:autofillHints=""
+        android:ems="10"
+        android:hint="@string/hint_verifyCode"
+        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_email" />
-
-    <EditText
-        android:id="@+id/edit_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/hint_email"
-        android:inputType="textEmailAddress"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button_signin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/action_signin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_email" />
 </androidx.constraintlayout.widget.ConstraintLayout>

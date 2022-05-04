@@ -1,3 +1,9 @@
+/**
+ * @author sean logan
+ * @author shilnara dam
+ * @version 1.0
+ */
+
 package edu.uw.tcss450.group8.chatapp.ui.auth.login;
 
 import android.app.Application;
@@ -26,29 +32,36 @@ import java.util.Objects;
 import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
 
 /**
- * @author sean logan
- * @author shilnara dam
- * @version 1.0
+ * Class View Model for Login Fragment.
  */
 public class LoginViewModel extends AndroidViewModel {
 
     private MutableLiveData<JSONObject> mResponse;
 
+    /**
+     * Instantiates Login View Model
+     * @param application top level application
+     */
     public LoginViewModel(@NonNull Application application) {
         super(application);
         mResponse = new MutableLiveData<>();
         mResponse.setValue(new JSONObject());
     }
 
+    /**
+     * Adds response to fragment.
+     * @param owner
+     * @param observer
+     */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {
         mResponse.observe(owner, observer);
     }
 
-
-
-
-
+    /**
+     * Handling JSON Request Errors
+     * @param error error that is given
+     */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {
             try {
@@ -73,6 +86,11 @@ public class LoginViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     * Sends login JSON Request to Server
+     * @param email user email
+     * @param password user password
+     */
     public void connect(final String email, final String password) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/auth";
         Request request = new JsonObjectRequest(

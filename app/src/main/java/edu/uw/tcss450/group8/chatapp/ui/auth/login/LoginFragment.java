@@ -1,3 +1,9 @@
+/**
+ * @author Sean Logan
+ * @author Shilnara Dam
+ * @version 1.0
+ */
+
 package edu.uw.tcss450.group8.chatapp.ui.auth.login;
 
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkExcludeWhiteSpace;
@@ -26,7 +32,9 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentLoginBinding;
 import edu.uw.tcss450.group8.chatapp.ui.auth.register.RegisterFragment;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
-
+/**
+ * Class for Login Fragment handles user login to application.
+ */
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding binding;
@@ -39,6 +47,9 @@ public class LoginFragment extends Fragment {
     private PasswordValidator mPassWordValidator = checkPwdLength(1)
             .and(checkExcludeWhiteSpace());
 
+    /**
+     * Required empty constructor for login fragment
+     */
     public LoginFragment() {
         // Required Empty Constructor
     }
@@ -82,10 +93,19 @@ public class LoginFragment extends Fragment {
         binding.editPassword.setText(args.getPassword().equals("default") ? "" : args.getPassword());
     }
 
+    /**
+     * Attempts sign in, validates user email and password
+     * then sends to the server for actual login validation.
+     * @param button button clicked
+     */
     private void attemptSignIn(final View button) {
         validateEmail();
     }
 
+    /**
+     * Checks user input for email to match required parameters.
+     * Calls validate password.
+     */
     private void validateEmail() {
         mEmailValidator.processResult(
                 mEmailValidator.apply(binding.editEmail.getText().toString().trim()),
@@ -93,6 +113,10 @@ public class LoginFragment extends Fragment {
                 result -> binding.editEmail.setError("Please enter a valid Email address."));
     }
 
+    /**
+     * Checks user input for password to match required parameters.
+     * Sends to server for actual login.
+     */
     private void validatePassword() {
         mPassWordValidator.processResult(
                 mPassWordValidator.apply(binding.editPassword.getText().toString()),
@@ -100,6 +124,9 @@ public class LoginFragment extends Fragment {
                 result -> binding.editPassword.setError("Please enter a valid Password."));
     }
 
+    /**
+     * Sends JSON request to server for user login validation.
+     */
     private void verifyAuthWithServer() {
         mSignInModel.connect(
                 binding.editEmail.getText().toString(),

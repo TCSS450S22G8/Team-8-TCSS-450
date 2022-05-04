@@ -24,12 +24,6 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.*;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkClientPredicate;
 
-/*
-import org.json.JSONException;
-import org.json.JSONObject;
-
- */
-
 
 public class RegisterFragment extends Fragment {
 
@@ -90,6 +84,23 @@ public class RegisterFragment extends Fragment {
 
 
     }
+
+//    @Override
+//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+//        super.onViewCreated(view, savedInstanceState);
+//
+//        binding.buttonRegister.setOnClickListener(this::attemptRegister);
+//        binding.buttonRegister.setOnClickListener(button ->
+//                Navigation.findNavController(getView()).navigate(
+//                        RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment()
+//                ));
+//
+//        mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
+//                this::observeResponse
+//        );
+//
+//
+//    }
 
     private void attemptRegister(final View button) {
         validateNickname();

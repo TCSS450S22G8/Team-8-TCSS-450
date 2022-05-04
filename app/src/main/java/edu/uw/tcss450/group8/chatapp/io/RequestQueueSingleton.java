@@ -1,3 +1,7 @@
+/**
+ * @author Charles F. Bryan
+ */
+
 package edu.uw.tcss450.group8.chatapp.io;
 
 import android.content.Context;
@@ -10,6 +14,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
 
+/**
+ * Class for Queueing JSON Requests
+ */
 public class RequestQueueSingleton {
     private static RequestQueueSingleton instance;
     private static Context context;

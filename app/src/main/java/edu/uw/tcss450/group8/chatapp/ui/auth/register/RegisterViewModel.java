@@ -1,3 +1,7 @@
+/**
+ * @author Levi McCoy
+ * @version 1.0
+ */
 package edu.uw.tcss450.group8.chatapp.ui.auth.register;
 
 import android.app.Application;
@@ -21,21 +25,36 @@ import org.json.JSONObject;
 import java.nio.charset.Charset;
 import java.util.Objects;
 
+/**
+ * Class for making the view model for the register Fragment.
+ */
 public class RegisterViewModel extends AndroidViewModel {
 
     private MutableLiveData<JSONObject> mResponse;
 
+    /**
+     * Constructor that instantiates the register View Model
+     * @param application top level application
+     */
     public RegisterViewModel(@NonNull Application application) {
         super(application);
         mResponse = new MutableLiveData<>();
         mResponse.setValue(new JSONObject());
     }
 
+    /**
+     * Adds response observer to the register fragment.
+     * @param owner current lifecycle
+     * @param observer observes live data
+     */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {
         mResponse.observe(owner, observer);
     }
-
+    /**
+     * Handles JSON Request Errors and volley errors
+     * @param error error that is given to handle
+     */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {
             try {
@@ -60,6 +79,14 @@ public class RegisterViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     * Sends JSON Request to the server for the registration process.
+     * @param username users nickname
+     * @param first users first name
+     * @param last users last name
+     * @param email users email
+     * @param password users password
+     */
     public void connect(final String username,
                         final String first,
                         final String last,

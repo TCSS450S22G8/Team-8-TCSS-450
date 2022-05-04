@@ -1,3 +1,7 @@
+/**
+ * @author Levi McCoy
+ * @version 1.0
+ */
 package edu.uw.tcss450.group8.chatapp.ui.auth.verify;
 
 import android.os.Bundle;
@@ -16,12 +20,16 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentRegisterBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentVerifyBinding;
 import edu.uw.tcss450.group8.chatapp.ui.auth.register.RegisterFragmentDirections;
 
-
+/**
+ * Class for the Verify Fragment that handles user email verification to the application.
+ */
 public class VerifyFragment extends Fragment {
 
     private FragmentVerifyBinding binding;
 
-
+    /**
+     * Required empty constructor for the verify fragment
+     */
     public VerifyFragment() {
         // Required empty public constructor
     }

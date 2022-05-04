@@ -8,4 +8,5 @@
     <color name="secondary_light">#ffa4a2</color>
     <color name="secondary_dark">#af4448</color>
     <color name="secondary_text">#000000</color>
+    <color name="color_primary_alpha">#ffffe5</color>
 </resources>

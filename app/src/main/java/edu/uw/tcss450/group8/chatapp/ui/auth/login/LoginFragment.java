@@ -37,7 +37,7 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
  */
 public class LoginFragment extends Fragment {
 
-    private FragmentLoginBinding binding;
+    private FragmentLoginBinding mBinding;
     private LoginViewModel mSignInModel;
 
     private PasswordValidator mEmailValidator = checkPwdLength(2)
@@ -74,23 +74,23 @@ public class LoginFragment extends Fragment {
 
         //Local access to the ViewBinding object. No need to create as Instance Var as it is only
         //used here.
-        binding = FragmentLoginBinding.bind(getView());
+        mBinding = FragmentLoginBinding.bind(getView());
 
-        binding.buttonRegisterLogin.setOnClickListener(button ->
+        mBinding.buttonRegisterLogin.setOnClickListener(button ->
                 Navigation.findNavController(getView()).navigate(
                         LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
                 ));
 
         //On button click, navigate to MainActivity
-        binding.buttonSignin.setOnClickListener(this::attemptSignIn);
+        mBinding.buttonSignin.setOnClickListener(this::attemptSignIn);
 
         mSignInModel.addResponseObserver(
                 getViewLifecycleOwner(),
                 this::observeResponse);
 
         LoginFragmentArgs args = LoginFragmentArgs.fromBundle(getArguments());
-        binding.editEmail.setText(args.getEmail().equals("default") ? "" : args.getEmail());
-        binding.editPassword.setText(args.getPassword().equals("default") ? "" : args.getPassword());
+        mBinding.editEmail.setText(args.getEmail().equals("default") ? "" : args.getEmail());
+        mBinding.editPassword.setText(args.getPassword().equals("default") ? "" : args.getPassword());
     }
 
     /**
@@ -99,6 +99,7 @@ public class LoginFragment extends Fragment {
      * @param button button clicked
      */
     private void attemptSignIn(final View button) {
+        mBinding.layoutWait.setVisibility(View.VISIBLE);
         validateEmail();
     }
 
@@ -108,9 +109,12 @@ public class LoginFragment extends Fragment {
      */
     private void validateEmail() {
         mEmailValidator.processResult(
-                mEmailValidator.apply(binding.editEmail.getText().toString().trim()),
+                mEmailValidator.apply(mBinding.editEmail.getText().toString().trim()),
                 this::validatePassword,
-                result -> binding.editEmail.setError("Please enter a valid Email address."));
+                result -> {
+                    mBinding.editEmail.setError("Please enter a valid Email address.");
+                    mBinding.layoutWait.setVisibility(View.GONE);
+                });
     }
 
     /**
@@ -119,9 +123,13 @@ public class LoginFragment extends Fragment {
      */
     private void validatePassword() {
         mPassWordValidator.processResult(
-                mPassWordValidator.apply(binding.editPassword.getText().toString()),
+                mPassWordValidator.apply(mBinding.editPassword.getText().toString()),
                 this::verifyAuthWithServer,
-                result -> binding.editPassword.setError("Please enter a valid Password."));
+                result -> {
+                    mBinding.editPassword.setError("Please enter a valid Password.");
+                    mBinding.layoutWait.setVisibility(View.GONE);
+                });
+
     }
 
     /**
@@ -129,11 +137,10 @@ public class LoginFragment extends Fragment {
      */
     private void verifyAuthWithServer() {
         mSignInModel.connect(
-                binding.editEmail.getText().toString(),
-                binding.editPassword.getText().toString());
+                mBinding.editEmail.getText().toString(),
+                mBinding.editPassword.getText().toString());
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
-
     }
 
     /**
@@ -158,24 +165,28 @@ public class LoginFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    binding.editEmail.setError(
+                    mBinding.editEmail.setError(
                             "Error Authenticating: " +
                                     response.getJSONObject("data").getString("message"));
+                    mBinding.layoutWait.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
+                    mBinding.layoutWait.setVisibility(View.GONE);
                 }
             } else {
                 try {
                     navigateToSuccess(
-                            binding.editEmail.getText().toString(),
+                            mBinding.editEmail.getText().toString(),
                             response.getString("token")
                     );
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
+                    mBinding.layoutWait.setVisibility(View.GONE);
                 }
             }
         } else {
             Log.d("JSON Response", "No Response");
+            mBinding.layoutWait.setVisibility(View.GONE);
         }
 
     }

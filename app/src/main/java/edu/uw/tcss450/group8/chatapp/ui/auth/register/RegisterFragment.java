@@ -19,7 +19,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentRegisterBinding;
-import edu.uw.tcss450.group8.chatapp.ui.auth.login.LoginFragmentDirections;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.*;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkClientPredicate;
@@ -27,7 +26,7 @@ import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkClientP
 
 public class RegisterFragment extends Fragment {
 
-    private FragmentRegisterBinding binding;
+    private FragmentRegisterBinding mBinding;
 
     private RegisterViewModel mRegisterModel;
 
@@ -39,7 +38,7 @@ public class RegisterFragment extends Fragment {
             .and(checkPwdSpecialChar("@"));
 
     private PasswordValidator mPassWordValidator =
-            checkClientPredicate(pwd -> pwd.equals(binding.editPassword2.getText().toString()))
+            checkClientPredicate(pwd -> pwd.equals(mBinding.editPassword2.getText().toString()))
                     .and(checkPwdLength(7))
                     .and(checkPwdSpecialChar())
                     .and(checkExcludeWhiteSpace())
@@ -63,8 +62,8 @@ public class RegisterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentRegisterBinding.inflate(inflater);
-        return binding.getRoot();
+        mBinding = FragmentRegisterBinding.inflate(inflater);
+        return mBinding.getRoot();
     }
 
 
@@ -73,7 +72,7 @@ public class RegisterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        binding.buttonRegister.setOnClickListener(button -> {
+        mBinding.buttonRegister.setOnClickListener(button -> {
             attemptRegister(button);
             //Navigation.findNavController(getView()).navigate(
                 //RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
@@ -85,81 +84,84 @@ public class RegisterFragment extends Fragment {
 
     }
 
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//
-//        binding.buttonRegister.setOnClickListener(this::attemptRegister);
-//        binding.buttonRegister.setOnClickListener(button ->
-//                Navigation.findNavController(getView()).navigate(
-//                        RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment()
-//                ));
-//
-//        mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
-//                this::observeResponse
-//        );
-//
-//
-//    }
 
     private void attemptRegister(final View button) {
+        mBinding.layoutWait.setVisibility(View.VISIBLE);
         validateNickname();
     }
 
     private void validateNickname() {
         mNameValidator.processResult(
-                mNameValidator.apply(binding.editNickname.getText().toString().trim()),
+                mNameValidator.apply(mBinding.editNickname.getText().toString().trim()),
                 this::validateFirst,
-                result -> binding.editNickname.setError("Please enter a Nickname."));
+                result -> {
+                    mBinding.editNickname.setError("Please enter a Nickname.");
+                    mBinding.layoutWait.setVisibility(View.GONE);
+                });
     }
 
     private void validateFirst() {
         mNameValidator.processResult(
-                mNameValidator.apply(binding.editFirst.getText().toString().trim()),
+                mNameValidator.apply(mBinding.editFirst.getText().toString().trim()),
                 this::validateLast,
-                result -> binding.editFirst.setError("Please enter a first name."));
+                result -> {
+                    mBinding.editFirst.setError("Please enter a first name.");
+                    mBinding.layoutWait.setVisibility(View.GONE);
+                });
     }
 
     private void validateLast() {
         mNameValidator.processResult(
-                mNameValidator.apply(binding.editLast.getText().toString().trim()),
+                mNameValidator.apply(mBinding.editLast.getText().toString().trim()),
                 this::validateEmail,
-                result -> binding.editLast.setError("Please enter a last name."));
+                result -> {
+                    mBinding.editLast.setError("Please enter a last name.");
+                    mBinding.layoutWait.setVisibility(View.GONE);
+                });
     }
 
     private void validateEmail() {
         mEmailValidator.processResult(
-                mEmailValidator.apply(binding.editEmail.getText().toString().trim()),
+                mEmailValidator.apply(mBinding.editEmail.getText().toString().trim()),
                 this::validatePasswordsMatch,
-                result -> binding.editEmail.setError("Please enter a valid Email address."));
+                result -> {
+                    mBinding.editEmail.setError("Please enter a valid Email address.");
+                    mBinding.layoutWait.setVisibility(View.GONE);
+                });
     }
 
     private void validatePasswordsMatch() {
         PasswordValidator matchValidator =
                 checkClientPredicate(
-                        pwd -> pwd.equals(binding.editPassword2.getText().toString().trim()));
+                        pwd -> pwd.equals(mBinding.editPassword2.getText().toString().trim()));
 
         mEmailValidator.processResult(
-                matchValidator.apply(binding.editPassword1.getText().toString().trim()),
+                matchValidator.apply(mBinding.editPassword1.getText().toString().trim()),
                 this::validatePassword,
-                result -> binding.editPassword1.setError("Passwords must match."));
+                result -> {
+                    mBinding.editPassword1.setError("Passwords must match.");
+                    mBinding.layoutWait.setVisibility(View.GONE);
+                });
     }
 
     private void validatePassword() {
         mPassWordValidator.processResult(
-                mPassWordValidator.apply(binding.editPassword1.getText().toString()),
+                mPassWordValidator.apply(mBinding.editPassword1.getText().toString()),
                 this::verifyAuthWithServer,
-                result -> binding.editPassword1.setError("Please enter a valid Password."));
+                result -> {
+                    mBinding.editPassword1.setError("Please enter a valid Password.");
+                    mBinding.layoutWait.setVisibility(View.GONE);
+                });
     }
 
 
     private void verifyAuthWithServer() {
         mRegisterModel.connect(
-                binding.editNickname.getText().toString(),
-                binding.editFirst.getText().toString(),
-                binding.editLast.getText().toString(),
-                binding.editEmail.getText().toString(),
-                binding.editPassword1.getText().toString());
+                mBinding.editNickname.getText().toString(),
+                mBinding.editFirst.getText().toString(),
+                mBinding.editLast.getText().toString(),
+                mBinding.editEmail.getText().toString(),
+                mBinding.editPassword1.getText().toString());
 
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
@@ -196,17 +198,20 @@ public class RegisterFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    binding.editEmail.setError(
+                    mBinding.editEmail.setError(
                             "Error Authenticating: " +
                                     response.getJSONObject("data").getString("message"));
+                    mBinding.layoutWait.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
+                    mBinding.layoutWait.setVisibility(View.GONE);
                 }
             } else {
                 navigateToLogin();
             }
         } else {
             Log.d("JSON Response", "No Response");
+            mBinding.layoutWait.setVisibility(View.GONE);
         }
 
     }

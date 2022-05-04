@@ -19,11 +19,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:listitem="@layout/fragment_message_card" />
+
     <View
         android:id="@+id/view_separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/layout_chat_input" />
 
     <RelativeLayout
@@ -35,17 +35,17 @@
 
 
         <EditText
-            android:layout_marginStart="16dp"
             android:id="@+id/edit_chat_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
             android:layout_toStartOf="@+id/button_chat_send"
             android:background="@android:color/transparent"
             android:hint="@string/hint_enter_message"
             android:inputType="text"
             android:maxLines="6"
-            tools:ignore="Autofill"/>
+            tools:ignore="Autofill" />
 
         <Button
             android:id="@+id/button_chat_send"
@@ -53,8 +53,7 @@
             android:layout_height="48dp"
             android:layout_alignParentEnd="true"
             android:background="?attr/selectableItemBackground"
-            android:text="Send"
-            android:textColor="@color/purple_200" />
+            android:text="Send" />
 
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

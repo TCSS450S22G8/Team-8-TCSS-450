@@ -145,7 +145,7 @@ public class LoginFragment extends Fragment {
         Navigation.findNavController(getView())
                 .navigate(LoginFragmentDirections
                         .actionLoginFragmentToMainActivity(email, jwt));
-        //getActivity().finish();
+        getActivity().finish();
     }
 
     /**

@@ -75,8 +75,8 @@ public class RegisterFragment extends Fragment {
 
         binding.buttonRegister.setOnClickListener(button -> {
             attemptRegister(button);
-            Navigation.findNavController(getView()).navigate(
-                RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
+            //Navigation.findNavController(getView()).navigate(
+                //RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
         });
         mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
                 this::observeResponse

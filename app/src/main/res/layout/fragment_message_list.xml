@@ -23,7 +23,7 @@
         android:id="@+id/view_separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#e0e0e0"
+        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/layout_chat_input" />
 
     <RelativeLayout
@@ -36,16 +36,16 @@
 
         <EditText
             android:layout_marginStart="16dp"
-            android:id="@+id/edit_gchat_message"
+            android:id="@+id/edit_chat_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toStartOf="@+id/button_chat_send"
             android:background="@android:color/transparent"
-            android:hint="Enter Message"
+            android:hint="@string/hint_enter_message"
             android:inputType="text"
             android:maxLines="6"
-            tools:ignore="Autofill" />
+            tools:ignore="Autofill"/>
 
         <Button
             android:id="@+id/button_chat_send"

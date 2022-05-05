@@ -1,3 +1,8 @@
+/**
+ * @author Levi McCoy
+ * @version 1.0
+ */
+
 package edu.uw.tcss450.group8.chatapp.ui.auth.register;
 
 import android.os.Bundle;
@@ -23,7 +28,9 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.*;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkClientPredicate;
 
-
+/**
+ * Class for the Register Fragment that handles user registration to the application.
+ */
 public class RegisterFragment extends Fragment {
 
     private FragmentRegisterBinding mBinding;
@@ -46,7 +53,9 @@ public class RegisterFragment extends Fragment {
                     .and(checkPwdLowerCase().or(checkPwdUpperCase()));
 
 
-
+    /**
+     * Required empty constructor for the register fragment
+     */
     public RegisterFragment() {
         // Required empty public constructor
     }
@@ -84,12 +93,20 @@ public class RegisterFragment extends Fragment {
 
     }
 
-
+    /**
+     * Attempts to register the new user, validates the user entered information,
+     * then sends it to the server for registration validation.
+     * @param button button clicked
+     */
     private void attemptRegister(final View button) {
         mBinding.layoutWait.setVisibility(View.VISIBLE);
         validateNickname();
     }
 
+    /**
+     * Checks if the user input matches the required parameters for nickname.
+     * Then calls validate first.
+     */
     private void validateNickname() {
         mNameValidator.processResult(
                 mNameValidator.apply(mBinding.editNickname.getText().toString().trim()),
@@ -100,6 +117,10 @@ public class RegisterFragment extends Fragment {
                 });
     }
 
+    /**
+     * Checks if the user input matches the required parameters for first name.
+     * Then calls validate last.
+     */
     private void validateFirst() {
         mNameValidator.processResult(
                 mNameValidator.apply(mBinding.editFirst.getText().toString().trim()),
@@ -110,6 +131,10 @@ public class RegisterFragment extends Fragment {
                 });
     }
 
+    /**
+     * Checks if the user input matches the required parameters for last name.
+     * Then calls validate email.
+     */
     private void validateLast() {
         mNameValidator.processResult(
                 mNameValidator.apply(mBinding.editLast.getText().toString().trim()),
@@ -120,6 +145,10 @@ public class RegisterFragment extends Fragment {
                 });
     }
 
+    /**
+     * Checks if the user input matches the required parameters for email.
+     * Then calls validate password match.
+     */
     private void validateEmail() {
         mEmailValidator.processResult(
                 mEmailValidator.apply(mBinding.editEmail.getText().toString().trim()),
@@ -130,6 +159,10 @@ public class RegisterFragment extends Fragment {
                 });
     }
 
+    /**
+     * Checks if the user input matches the required parameters for matching passwords.
+     * Then calls validate password.
+     */
     private void validatePasswordsMatch() {
         PasswordValidator matchValidator =
                 checkClientPredicate(
@@ -144,6 +177,10 @@ public class RegisterFragment extends Fragment {
                 });
     }
 
+    /**
+     * Checks if the user input matches the required parameters for passwords.
+     * Then calls verify auth with server.
+     */
     private void validatePassword() {
         mPassWordValidator.processResult(
                 mPassWordValidator.apply(mBinding.editPassword1.getText().toString()),
@@ -154,7 +191,10 @@ public class RegisterFragment extends Fragment {
                 });
     }
 
-
+    /**
+     * Sends Asynchronous JSON request to the server for user registration
+     * information validation.
+     */
     private void verifyAuthWithServer() {
         mRegisterModel.connect(
                 mBinding.editNickname.getText().toString(),
@@ -170,7 +210,9 @@ public class RegisterFragment extends Fragment {
     }
 
 
-
+    /**
+     * Navigates to the verify fragment to continue registration by verifying email.
+     */
     private void navigateToLogin() {
         // ToDO: Register to Verification to autofill login
 //        RegisterFragmentDirections.ActionRegisterFragmentToLoginFragment directions =
@@ -185,15 +227,13 @@ public class RegisterFragment extends Fragment {
 
 
 
-    /*
+
     /**
      * An observer on the HTTP Response from the web server. This observer should be
      * attached to SignInViewModel.
      *
      * @param response the Response from the server
      */
-
-
     private void observeResponse(final JSONObject response) {
         if (response.length() > 0) {
             if (response.has("code")) {

@@ -1,8 +1,3 @@
-/**
- * @author Levi McCoy
- * @version 1.0
- */
-
 package edu.uw.tcss450.group8.chatapp.ui.auth.register;
 
 import android.os.Bundle;
@@ -30,6 +25,9 @@ import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkClientP
 
 /**
  * Class for the Register Fragment that handles user registration to the application.
+ *
+ * @author Levi McCoy
+ * @version 1.0
  */
 public class RegisterFragment extends Fragment {
 

@@ -1,7 +1,3 @@
-/**
- * @author Levi McCoy
- * @version 1.0
- */
 package edu.uw.tcss450.group8.chatapp.ui.auth.verify;
 
 import android.os.Bundle;
@@ -22,6 +18,8 @@ import edu.uw.tcss450.group8.chatapp.ui.auth.register.RegisterFragmentDirections
 
 /**
  * Class for the Verify Fragment that handles user email verification to the application.
+ * @author Levi McCoy
+ * @version 1.0
  */
 public class VerifyFragment extends Fragment {
 

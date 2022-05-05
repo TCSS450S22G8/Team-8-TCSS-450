@@ -1,9 +1,3 @@
-/**
- * @author sean logan
- * @author shilnara dam
- * @version 1.0
- */
-
 package edu.uw.tcss450.group8.chatapp.ui.auth.login;
 
 import android.app.Application;
@@ -33,6 +27,10 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
 
 /**
  * Class View Model for Login Fragment.
+ *
+ * @author sean logan
+ * @author shilnara dam
+ * @version 1.0
  */
 public class LoginViewModel extends AndroidViewModel {
 
@@ -50,8 +48,8 @@ public class LoginViewModel extends AndroidViewModel {
 
     /**
      * Adds response to fragment.
-     * @param owner
-     * @param observer
+     * @param owner owner
+     * @param observer observer
      */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {

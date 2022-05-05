@@ -14,7 +14,10 @@ import org.jetbrains.annotations.Nullable;
 import edu.uw.tcss450.group8.chatapp.R;
 
 /**
- * create an instance of this fragment.
+ * Class for Weather Fragment to display weather
+ *
+ *  @author Shilnara Dam
+ *  @version 1.0
  */
 public class WeatherFragment extends Fragment {
 

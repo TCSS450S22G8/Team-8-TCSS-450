@@ -15,8 +15,9 @@ public class Message implements Serializable {
 
     /**
      * Constructor for Message
-     * @param message chat message
-     * @param sent who sent the message
+     *
+     * @param message  chat message
+     * @param sent     who sent the message
      * @param sentDate the time message is sent
      */
     public Message(String message, String sent, String sentDate) {
@@ -27,6 +28,7 @@ public class Message implements Serializable {
 
     /**
      * getter for message
+     *
      * @return message
      */
     public String getMessage() {
@@ -35,6 +37,7 @@ public class Message implements Serializable {
 
     /**
      * getter for sent
+     *
      * @return sent
      */
     public String getSent() {
@@ -43,6 +46,7 @@ public class Message implements Serializable {
 
     /**
      * getter for date
+     *
      * @return
      */
     public String getSentDate() {

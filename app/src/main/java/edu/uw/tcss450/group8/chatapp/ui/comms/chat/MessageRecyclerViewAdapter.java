@@ -51,7 +51,7 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
     }
 
     /**
-     * Objects from this class represent an Individual row View from the List * of rows in the Blog Recycler View.
+     * Objects from this class represent an Individual row View from the List * of rows in the Message Recycler View.
      */
     public class MessageViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
@@ -66,6 +66,7 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
 
         /**
          * set message
+         *
          * @param message message
          */
         void setMessage(final Message message) {

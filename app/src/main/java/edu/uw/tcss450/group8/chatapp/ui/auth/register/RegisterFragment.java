@@ -3,7 +3,6 @@ package edu.uw.tcss450.group8.chatapp.ui.auth.register;
 import android.os.Bundle;
 
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -20,12 +19,15 @@ import org.json.JSONObject;
 
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentRegisterBinding;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
+
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.*;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkClientPredicate;
 
 /**
  * Class for the Register Fragment that handles user registration to the application.
+ * Adapted from original code by Charles Bryan.
  *
+ * @author Charles Bryan
  * @author Levi McCoy
  * @version 1.0
  */
@@ -43,7 +45,7 @@ public class RegisterFragment extends Fragment {
             .and(checkPwdSpecialChar("@"));
 
     private PasswordValidator mPassWordValidator =
-            checkClientPredicate(pwd -> pwd.equals(mBinding.editPassword2.getText().toString()))
+            checkClientPredicate(pwd -> pwd.equals(mBinding.editRegisterPassword2.getText().toString()))
                     .and(checkPwdLength(7))
                     .and(checkPwdSpecialChar())
                     .and(checkExcludeWhiteSpace())
@@ -79,10 +81,10 @@ public class RegisterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
 
-        mBinding.buttonRegister.setOnClickListener(button -> {
+        mBinding.buttonRegisterRegister.setOnClickListener(button -> {
             attemptRegister(button);
             //Navigation.findNavController(getView()).navigate(
-                //RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
+            //RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
         });
         mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
                 this::observeResponse
@@ -94,6 +96,7 @@ public class RegisterFragment extends Fragment {
     /**
      * Attempts to register the new user, validates the user entered information,
      * then sends it to the server for registration validation.
+     *
      * @param button button clicked
      */
     private void attemptRegister(final View button) {
@@ -107,10 +110,10 @@ public class RegisterFragment extends Fragment {
      */
     private void validateNickname() {
         mNameValidator.processResult(
-                mNameValidator.apply(mBinding.editNickname.getText().toString().trim()),
+                mNameValidator.apply(mBinding.editRegisterNickname.getText().toString().trim()),
                 this::validateFirst,
                 result -> {
-                    mBinding.editNickname.setError("Please enter a Nickname.");
+                    mBinding.editRegisterNickname.setError("Please enter a Nickname.");
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -121,10 +124,10 @@ public class RegisterFragment extends Fragment {
      */
     private void validateFirst() {
         mNameValidator.processResult(
-                mNameValidator.apply(mBinding.editFirst.getText().toString().trim()),
+                mNameValidator.apply(mBinding.editRegisterFirst.getText().toString().trim()),
                 this::validateLast,
                 result -> {
-                    mBinding.editFirst.setError("Please enter a first name.");
+                    mBinding.editRegisterFirst.setError("Please enter a first name.");
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -135,10 +138,10 @@ public class RegisterFragment extends Fragment {
      */
     private void validateLast() {
         mNameValidator.processResult(
-                mNameValidator.apply(mBinding.editLast.getText().toString().trim()),
+                mNameValidator.apply(mBinding.editRegisterLast.getText().toString().trim()),
                 this::validateEmail,
                 result -> {
-                    mBinding.editLast.setError("Please enter a last name.");
+                    mBinding.editRegisterLast.setError("Please enter a last name.");
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -149,10 +152,10 @@ public class RegisterFragment extends Fragment {
      */
     private void validateEmail() {
         mEmailValidator.processResult(
-                mEmailValidator.apply(mBinding.editEmail.getText().toString().trim()),
+                mEmailValidator.apply(mBinding.editRegisterEmail.getText().toString().trim()),
                 this::validatePasswordsMatch,
                 result -> {
-                    mBinding.editEmail.setError("Please enter a valid Email address.");
+                    mBinding.editRegisterEmail.setError("Please enter a valid Email address.");
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -164,13 +167,13 @@ public class RegisterFragment extends Fragment {
     private void validatePasswordsMatch() {
         PasswordValidator matchValidator =
                 checkClientPredicate(
-                        pwd -> pwd.equals(mBinding.editPassword2.getText().toString().trim()));
+                        pwd -> pwd.equals(mBinding.editRegisterPassword2.getText().toString().trim()));
 
         mEmailValidator.processResult(
-                matchValidator.apply(mBinding.editPassword1.getText().toString().trim()),
+                matchValidator.apply(mBinding.editRegisterPassword1.getText().toString().trim()),
                 this::validatePassword,
                 result -> {
-                    mBinding.editPassword1.setError("Passwords must match.");
+                    mBinding.editRegisterPassword1.setError("Passwords must match.");
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -181,10 +184,10 @@ public class RegisterFragment extends Fragment {
      */
     private void validatePassword() {
         mPassWordValidator.processResult(
-                mPassWordValidator.apply(mBinding.editPassword1.getText().toString()),
+                mPassWordValidator.apply(mBinding.editRegisterPassword1.getText().toString()),
                 this::verifyAuthWithServer,
                 result -> {
-                    mBinding.editPassword1.setError("Please enter a valid Password.");
+                    mBinding.editRegisterPassword1.setError("Please enter a valid Password.");
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -195,11 +198,11 @@ public class RegisterFragment extends Fragment {
      */
     private void verifyAuthWithServer() {
         mRegisterModel.connect(
-                mBinding.editNickname.getText().toString(),
-                mBinding.editFirst.getText().toString(),
-                mBinding.editLast.getText().toString(),
-                mBinding.editEmail.getText().toString(),
-                mBinding.editPassword1.getText().toString());
+                mBinding.editRegisterNickname.getText().toString(),
+                mBinding.editRegisterFirst.getText().toString(),
+                mBinding.editRegisterLast.getText().toString(),
+                mBinding.editRegisterEmail.getText().toString(),
+                mBinding.editRegisterPassword1.getText().toString());
 
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
@@ -224,8 +227,6 @@ public class RegisterFragment extends Fragment {
     }
 
 
-
-
     /**
      * An observer on the HTTP Response from the web server. This observer should be
      * attached to SignInViewModel.
@@ -236,7 +237,7 @@ public class RegisterFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    mBinding.editEmail.setError(
+                    mBinding.editRegisterEmail.setError(
                             "Error Authenticating: " +
                                     response.getJSONObject("data").getString("message"));
                     mBinding.layoutWait.setVisibility(View.GONE);

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/nav_home_fragment">
 
     <fragment
         android:id="@+id/settingFragment"
@@ -15,7 +15,7 @@
             app:destination="@id/authenticationActivity" />
     </fragment>
     <fragment
-        android:id="@+id/homeFragment"
+        android:id="@+id/nav_home_fragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
@@ -24,26 +24,25 @@
             app:destination="@id/settingFragment" />
         <action
             android:id="@+id/action_homeFragment_to_messageFragment3"
-            app:destination="@id/chatFragment" />
+            app:destination="@id/nav_chat_fragment" />
     </fragment>
     <fragment
-        android:id="@+id/weatherFragment"
+        android:id="@+id/nav_weather_fragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.weather.WeatherFragment"
         android:label="@string/title_weather"
         tools:layout="@layout/fragment_weather" />
     <activity
         android:id="@+id/authenticationActivity"
         android:name="edu.uw.tcss450.group8.chatapp.AuthenticationActivity"
-        android:label="activity_auth"
         tools:layout="@layout/activity_auth" />
     <fragment
-        android:id="@+id/connectionsFragment"
+        android:id="@+id/nav_connections_fragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.ConnectionsFragment"
-        android:label="fragment_connections"
+        android:label="@string/title_connections"
         tools:layout="@layout/fragment_connections" />
     <fragment
-        android:id="@+id/chatFragment"
+        android:id="@+id/nav_chat_fragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListFragment"
-        android:label="MessageFragment"
+        android:label="@string/title_chat"
         tools:layout="@layout/fragment_message_list" />
 </navigation>

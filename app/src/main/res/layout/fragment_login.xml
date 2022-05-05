@@ -7,42 +7,31 @@
     android:layout_height="match_parent"
     tools:context=".ui.auth.login.LoginFragment">
 
-    <Button
-        android:id="@+id/button_registerLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="72dp"
-        android:text="@string/action_register"
-        app:layout_constraintEnd_toStartOf="@+id/button_signin"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_email" />
-
     <EditText
-        android:id="@+id/edit_email"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="256dp"
-        android:layout_marginEnd="16dp"
+        android:id="@+id/edit_register_email"
+        android:layout_width="374dp"
+        android:layout_height="43dp"
         android:autofillHints=""
         android:ems="10"
         android:hint="@string/hint_email"
         android:inputType="textEmailAddress"
+        android:imeOptions="flagNoExtractUi"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.567"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.26" />
 
     <Button
-        android:id="@+id/button_signin"
+        android:id="@+id/button_login_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         android:text="@string/action_login"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.941"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_password" />
 
     <EditText
@@ -53,24 +42,38 @@
         android:ems="10"
         android:hint="Enter your password"
         android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="@id/edit_email"
+        android:imeOptions="flagNoExtractUi"
+        app:layout_constraintEnd_toEndOf="@id/edit_register_email"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@id/edit_email"
-        app:layout_constraintTop_toBottomOf="@+id/edit_email" />
+        app:layout_constraintStart_toStartOf="@id/edit_register_email"
+        app:layout_constraintTop_toBottomOf="@+id/edit_register_email" />
+
+    <Button
+        android:id="@+id/button_login_register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/action_register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.052"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_password" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_wait"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_primary_alpha"
+        android:background="@color/cream_light"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <ProgressBar
-            android:id="@+id/progressBar"
+            android:id="@+id/progress_bar"
             style="?android:attr/progressBarStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -78,5 +81,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

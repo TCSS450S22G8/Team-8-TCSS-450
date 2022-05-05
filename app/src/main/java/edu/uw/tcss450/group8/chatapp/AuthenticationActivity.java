@@ -4,6 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+/**
+ * Activity for login and registration.
+ *
+ * @author Sean Logan
+ * @version 1.0
+ */
 public class AuthenticationActivity extends AppCompatActivity {
 
     @Override

@@ -23,12 +23,13 @@ import org.json.JSONObject;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentLoginBinding;
-import edu.uw.tcss450.group8.chatapp.ui.auth.register.RegisterFragment;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
  * Class for Login Fragment handles user login to application.
+ * Adapted from original code by Charles Bryan.
  *
+ * @author Charles Bryan
  * @author Sean Logan
  * @author Shilnara Dam
  * @version 1.0
@@ -74,26 +75,27 @@ public class LoginFragment extends Fragment {
         //used here.
         mBinding = FragmentLoginBinding.bind(getView());
 
-        mBinding.buttonRegisterLogin.setOnClickListener(button ->
+        mBinding.buttonLoginRegister.setOnClickListener(button ->
                 Navigation.findNavController(getView()).navigate(
                         LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
                 ));
 
         //On button click, navigate to MainActivity
-        mBinding.buttonSignin.setOnClickListener(this::attemptSignIn);
+        mBinding.buttonLoginLogin.setOnClickListener(this::attemptSignIn);
 
         mSignInModel.addResponseObserver(
                 getViewLifecycleOwner(),
                 this::observeResponse);
 
         LoginFragmentArgs args = LoginFragmentArgs.fromBundle(getArguments());
-        mBinding.editEmail.setText(args.getEmail().equals("default") ? "" : args.getEmail());
+        mBinding.editRegisterEmail.setText(args.getEmail().equals("default") ? "" : args.getEmail());
         mBinding.editPassword.setText(args.getPassword().equals("default") ? "" : args.getPassword());
     }
 
     /**
      * Attempts sign in, validates user email and password
      * then sends to the server for actual login validation.
+     *
      * @param button button clicked
      */
     private void attemptSignIn(final View button) {
@@ -107,10 +109,10 @@ public class LoginFragment extends Fragment {
      */
     private void validateEmail() {
         mEmailValidator.processResult(
-                mEmailValidator.apply(mBinding.editEmail.getText().toString().trim()),
+                mEmailValidator.apply(mBinding.editRegisterEmail.getText().toString().trim()),
                 this::validatePassword,
                 result -> {
-                    mBinding.editEmail.setError("Please enter a valid Email address.");
+                    mBinding.editRegisterEmail.setError("Please enter a valid Email address.");
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -135,7 +137,7 @@ public class LoginFragment extends Fragment {
      */
     private void verifyAuthWithServer() {
         mSignInModel.connect(
-                mBinding.editEmail.getText().toString(),
+                mBinding.editRegisterEmail.getText().toString(),
                 mBinding.editPassword.getText().toString());
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
@@ -143,8 +145,9 @@ public class LoginFragment extends Fragment {
 
     /**
      * Helper to abstract the navigation to the Activity past Authentication.
+     *
      * @param email users email
-     * @param jwt the JSON Web Token supplied by the server
+     * @param jwt   the JSON Web Token supplied by the server
      */
     private void navigateToSuccess(final String email, final String jwt) {
         Navigation.findNavController(getView())
@@ -163,7 +166,7 @@ public class LoginFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    mBinding.editEmail.setError(
+                    mBinding.editRegisterEmail.setError(
                             "Error Authenticating: " +
                                     response.getJSONObject("data").getString("message"));
                     mBinding.layoutWait.setVisibility(View.GONE);
@@ -174,7 +177,7 @@ public class LoginFragment extends Fragment {
             } else {
                 try {
                     navigateToSuccess(
-                            mBinding.editEmail.getText().toString(),
+                            mBinding.editRegisterEmail.getText().toString(),
                             response.getString("token")
                     );
                 } catch (JSONException e) {
@@ -188,7 +191,6 @@ public class LoginFragment extends Fragment {
         }
 
     }
-
 
 
 }

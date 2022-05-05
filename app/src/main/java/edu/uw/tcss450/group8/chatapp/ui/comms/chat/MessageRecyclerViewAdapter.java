@@ -1,7 +1,4 @@
-/**
- * @author jliaoh
- * @version 1.0
- */
+
 package edu.uw.tcss450.group8.chatapp.ui.comms.chat;
 
 import android.view.LayoutInflater;
@@ -17,9 +14,11 @@ import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentMessageCardBinding;
 
 /**
- * RecyclerViewAdapter for message
+ * RecyclerViewAdapter for message.
+ * Adapted from original code by Charles Bryan.
  *
- * @author jliaoh
+ * @author Charles Bryan
+ * @author JenHo Liao
  * @version 1.0
  */
 public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecyclerViewAdapter.MessageViewHolder> {
@@ -55,7 +54,8 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
     }
 
     /**
-     * Objects from this class represent an Individual row View from the List * of rows in the Message Recycler View.
+     * Objects from this class represent an Individual row View from the List * of rows in the
+     * Message Recycler View.
      */
     public class MessageViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
@@ -69,13 +69,13 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
         }
 
         /**
-         * set message
+         * Set message
          *
          * @param message message
          */
         void setMessage(final Message message) {
             mMessage = message;
-            binding.textMessage.setText(message.getMessage());
+            binding.textMessageMessage.setText(message.getMessage());
         }
     }
 }

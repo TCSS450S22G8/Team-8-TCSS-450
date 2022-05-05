@@ -11,7 +11,10 @@ import android.view.ViewGroup;
 import edu.uw.tcss450.group8.chatapp.R;
 
 /**
- * A simple {@link Fragment} subclass.
+ * Fragment to show connections.
+ *
+ * @author Rin Pham
+ * @version 1.0
  */
 public class ConnectionsFragment extends Fragment {
 

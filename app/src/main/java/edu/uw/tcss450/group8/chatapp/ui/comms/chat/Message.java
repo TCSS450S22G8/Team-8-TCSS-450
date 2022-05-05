@@ -1,13 +1,13 @@
-/**
- * @author jliaoh
- * @version 1.0
- */
 package edu.uw.tcss450.group8.chatapp.ui.comms.chat;
 
 import java.io.Serializable;
 
+
 /**
  * A class to encapsulate a chat message.
+ *
+ * @author JenHo Liao
+ * @version 1.0
  */
 public class Message implements Serializable {
     private final String mMessage;
@@ -28,27 +28,27 @@ public class Message implements Serializable {
     }
 
     /**
-     * getter for message
+     * Getter for message
      *
-     * @return message
+     * @return message string(s)
      */
     public String getMessage() {
         return mMessage;
     }
 
     /**
-     * getter for sent
+     * Getter for sent
      *
-     * @return sent
+     * @return sent message
      */
     public String getSent() {
         return mSent;
     }
 
     /**
-     * getter for date
+     * Getter for date
      *
-     * @return
+     * @return returns date of sent message
      */
     public String getSentDate() {
         return mSentDate;

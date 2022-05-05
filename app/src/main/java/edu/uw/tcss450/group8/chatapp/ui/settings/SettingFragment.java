@@ -12,20 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import edu.uw.tcss450.group8.chatapp.R;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentHomeBinding;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentLoginBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentSettingBinding;
-import edu.uw.tcss450.group8.chatapp.ui.auth.login.LoginFragmentDirections;
-import edu.uw.tcss450.group8.chatapp.ui.home.HomeFragmentDirections;
 
 /**
  * Class for setting Fragment to handle user settings
+ * Adapted from original code by Charles Bryan.
  *
+ * @author Charles Bryan
  * @author Shilnara Dam
  * @version 1.0
  */
 public class SettingFragment extends Fragment {
 
+    /**
+     * Required empty public contstructor.
+     */
     public SettingFragment() {
         // Required empty public constructor
     }
@@ -44,7 +45,7 @@ public class SettingFragment extends Fragment {
         FragmentSettingBinding binding = FragmentSettingBinding.bind(getView());
         //on button click,navigate to settings
         // TODO once login system is done, remove signed in user info.
-        binding.buttonSignout.setOnClickListener(button -> {
+        binding.buttonSettingsLogout.setOnClickListener(button -> {
             Navigation.findNavController(getView()).navigate(
                     SettingFragmentDirections
                             .actionSettingFragmentToAuthenticationActivity());

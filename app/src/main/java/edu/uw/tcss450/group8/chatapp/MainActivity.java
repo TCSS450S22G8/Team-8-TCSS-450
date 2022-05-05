@@ -16,7 +16,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 /**
  * Class for Main Activity
  * Top level container for fragments after user signs in.
+ * Adapted from original code by Charles Bryan.
  *
+ * @author Charles Bryan
  * @author Shilnara Dam
  * @version 1.0
  */
@@ -27,7 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        //test comment
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.homeFragment, R.id.connectionsFragment, R.id.chatFragment, R.id.weatherFragment)
+                R.id.nav_home_fragment, R.id.nav_connections_fragment, R.id.nav_chat_fragment, R.id.nav_weather_fragment)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);

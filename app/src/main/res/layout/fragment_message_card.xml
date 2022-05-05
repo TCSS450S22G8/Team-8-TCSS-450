@@ -14,7 +14,8 @@
         app:cardElevation="0dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardBackgroundColor="@color/orange">
 
         <LinearLayout
             android:id="@+id/layout_chat_container"
@@ -23,7 +24,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/text_message"
+                android:id="@+id/text_message_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="8dp"

@@ -1,7 +1,4 @@
-/**
- * @author jliaoh
- * @version 1.0
- */
+
 package edu.uw.tcss450.group8.chatapp.ui.comms.chat;
 
 import java.util.Arrays;
@@ -9,6 +6,11 @@ import java.util.List;
 
 /**
  * This class is used to create Dummy Message. Use it for development.
+ * Adapted from original code by Charles Bryan.
+ *
+ * @author Charles Bryan
+ * @author JenHo Liao
+ * @version 1.0
  */
 public final class MessageGenerator {
 
@@ -26,7 +28,7 @@ public final class MessageGenerator {
     }
 
     /**
-     * get list of generated message
+     * Get list of generated message
      *
      * @return list of message
      */

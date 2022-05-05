@@ -1,3 +1,7 @@
+/**
+ * @author jliaoh
+ * @version 1.0
+ */
 package edu.uw.tcss450.group8.chatapp.ui.comms.chat;
 
 import android.app.Application;
@@ -22,9 +26,6 @@ import java.util.Map;
 
 /**
  * View Model for message list
- *
- * @author jliaoh
- * @version 1.0
  */
 public class MessageListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Message>> mMessageList;

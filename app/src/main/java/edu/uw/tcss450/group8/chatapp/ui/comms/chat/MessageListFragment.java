@@ -1,3 +1,7 @@
+/**
+ * @author jliaoh
+ * @version 1.0
+ */
 package edu.uw.tcss450.group8.chatapp.ui.comms.chat;
 
 import android.os.Bundle;
@@ -16,12 +20,10 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentMessageListBinding;
 
 /**
  * create an instance of Message List fragment.
- *
- * @author jliaoh
- * @version 1.0
  */
 public class MessageListFragment extends Fragment {
     private MessageListViewModel mModel;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,6 +36,7 @@ public class MessageListFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_message_list, container, false);
     }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

@@ -1,3 +1,7 @@
+/**
+ * @author jliaoh
+ * @version 1.0
+ */
 package edu.uw.tcss450.group8.chatapp.ui.comms.chat;
 
 import android.view.LayoutInflater;

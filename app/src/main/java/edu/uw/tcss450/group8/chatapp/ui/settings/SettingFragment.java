@@ -19,7 +19,10 @@ import edu.uw.tcss450.group8.chatapp.ui.auth.login.LoginFragmentDirections;
 import edu.uw.tcss450.group8.chatapp.ui.home.HomeFragmentDirections;
 
 /**
- * create an instance of this fragment.
+ * Class for setting Fragment to handle user settings
+ *
+ * @author Shilnara Dam
+ * @version 1.0
  */
 public class SettingFragment extends Fragment {
 

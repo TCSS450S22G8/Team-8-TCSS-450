@@ -1,9 +1,3 @@
-/**
- * @author Sean Logan
- * @author Shilnara Dam
- * @version 1.0
- */
-
 package edu.uw.tcss450.group8.chatapp.ui.auth.login;
 
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkExcludeWhiteSpace;
@@ -34,6 +28,10 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
  * Class for Login Fragment handles user login to application.
+ *
+ * @author Sean Logan
+ * @author Shilnara Dam
+ * @version 1.0
  */
 public class LoginFragment extends Fragment {
 

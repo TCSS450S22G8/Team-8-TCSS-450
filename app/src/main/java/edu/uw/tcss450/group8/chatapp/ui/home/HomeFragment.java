@@ -16,7 +16,10 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentHomeBinding;
 
 
 /**
- * create an instance of this fragment.
+ * Class for user home page.
+ *
+ * @author Shilnara Dam
+ * @version 1.0
  */
 public class HomeFragment extends Fragment {
 

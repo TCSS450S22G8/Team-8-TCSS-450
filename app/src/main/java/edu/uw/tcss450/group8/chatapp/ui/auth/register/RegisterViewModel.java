@@ -1,7 +1,3 @@
-/**
- * @author Levi McCoy
- * @version 1.0
- */
 package edu.uw.tcss450.group8.chatapp.ui.auth.register;
 
 import android.app.Application;
@@ -27,6 +23,9 @@ import java.util.Objects;
 
 /**
  * Class for making the view model for the register Fragment.
+ *
+ * @author Levi McCoy
+ * @version 1.0
  */
 public class RegisterViewModel extends AndroidViewModel {
 

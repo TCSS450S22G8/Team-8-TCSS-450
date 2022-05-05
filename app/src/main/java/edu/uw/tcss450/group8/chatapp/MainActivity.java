@@ -13,6 +13,13 @@ import android.os.Bundle;
 //import com.auth0.android.jwt.JWT;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+/**
+ * Class for Main Activity
+ * Top level container for fragments after user signs in.
+ *
+ * @author Shilnara Dam
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;

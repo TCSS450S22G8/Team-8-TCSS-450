@@ -1,3 +1,7 @@
+/**
+ * @author Rin Pham
+ * @version 1.0
+ */
 package edu.uw.tcss450.group8.chatapp.ui.comms.connection;
 
 import android.os.Bundle;

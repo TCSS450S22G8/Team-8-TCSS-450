@@ -23,7 +23,9 @@ import java.util.Objects;
 
 /**
  * Class for making the view model for the register Fragment.
+ * Adapted from original code by Charles Bryan.
  *
+ * @author Charles Bryan
  * @author Levi McCoy
  * @version 1.0
  */
@@ -33,6 +35,7 @@ public class RegisterViewModel extends AndroidViewModel {
 
     /**
      * Constructor that instantiates the register View Model
+     *
      * @param application top level application
      */
     public RegisterViewModel(@NonNull Application application) {
@@ -43,15 +46,18 @@ public class RegisterViewModel extends AndroidViewModel {
 
     /**
      * Adds response observer to the register fragment.
-     * @param owner current lifecycle
+     *
+     * @param owner    current lifecycle
      * @param observer observes live data
      */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {
         mResponse.observe(owner, observer);
     }
+
     /**
      * Handles JSON Request Errors and volley errors
+     *
      * @param error error that is given to handle
      */
     private void handleError(final VolleyError error) {
@@ -63,8 +69,7 @@ public class RegisterViewModel extends AndroidViewModel {
             } catch (JSONException e) {
                 Log.e("JSON PARSE", "JSON Parse Error in handleError");
             }
-        }
-        else {
+        } else {
             String data = new String(error.networkResponse.data, Charset.defaultCharset())
                     .replace('\"', '\'');
             try {
@@ -80,10 +85,11 @@ public class RegisterViewModel extends AndroidViewModel {
 
     /**
      * Sends JSON Request to the server for the registration process.
+     *
      * @param username users nickname
-     * @param first users first name
-     * @param last users last name
-     * @param email users email
+     * @param first    users first name
+     * @param last     users last name
+     * @param email    users email
      * @param password users password
      */
     public void connect(final String username,

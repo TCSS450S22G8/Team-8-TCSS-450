@@ -11,13 +11,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import edu.uw.tcss450.group8.chatapp.R;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentRegisterBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentVerifyBinding;
-import edu.uw.tcss450.group8.chatapp.ui.auth.register.RegisterFragmentDirections;
 
 /**
  * Class for the Verify Fragment that handles user email verification to the application.
+ * Adapted from original code by Charles Bryan.
+ *
+ * @author Charles Bryan
  * @author Levi McCoy
  * @version 1.0
  */
@@ -50,7 +50,7 @@ public class VerifyFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.buttonVerify.setOnClickListener(button ->
+        binding.buttonVerifyReturnHome.setOnClickListener(button ->
                 Navigation.findNavController(getView()).navigate(
                         VerifyFragmentDirections.actionVerifyFragmentToLoginFragment()
                 ));

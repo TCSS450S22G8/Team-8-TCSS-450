@@ -17,7 +17,9 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentHomeBinding;
 
 /**
  * Class for user home page.
+ * Adapted from original code by Charles Bryan.
  *
+ * @author Charles Bryan
  * @author Shilnara Dam
  * @version 1.0
  */

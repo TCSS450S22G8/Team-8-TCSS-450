@@ -7,10 +7,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.comms.connection.ConnectionsFragment" >
 
-
-
     <TextView
-        android:id="@+id/text_connections"
+        android:id="@+id/text_connections_connections"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/title_connections"

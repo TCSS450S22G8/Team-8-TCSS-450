@@ -27,7 +27,9 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
 
 /**
  * Class View Model for Login Fragment.
+ * Adapted from original code by Charles Bryan.
  *
+ * @author Charles Bryan
  * @author sean logan
  * @author shilnara dam
  * @version 1.0
@@ -38,6 +40,7 @@ public class LoginViewModel extends AndroidViewModel {
 
     /**
      * Instantiates Login View Model
+     *
      * @param application top level application
      */
     public LoginViewModel(@NonNull Application application) {
@@ -48,7 +51,8 @@ public class LoginViewModel extends AndroidViewModel {
 
     /**
      * Adds response to fragment.
-     * @param owner owner
+     *
+     * @param owner    owner
      * @param observer observer
      */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
@@ -58,6 +62,7 @@ public class LoginViewModel extends AndroidViewModel {
 
     /**
      * Handling JSON Request Errors
+     *
      * @param error error that is given
      */
     private void handleError(final VolleyError error) {
@@ -69,8 +74,7 @@ public class LoginViewModel extends AndroidViewModel {
             } catch (JSONException e) {
                 Log.e("JSON PARSE", "JSON Parse Error in handleError 1st");
             }
-        }
-        else {
+        } else {
             String data = new String(error.networkResponse.data, Charset.defaultCharset())
                     .replace('\"', '\'');
             try {
@@ -86,7 +90,8 @@ public class LoginViewModel extends AndroidViewModel {
 
     /**
      * Sends login JSON Request to Server
-     * @param email user email
+     *
+     * @param email    user email
      * @param password user password
      */
     public void connect(final String email, final String password) {

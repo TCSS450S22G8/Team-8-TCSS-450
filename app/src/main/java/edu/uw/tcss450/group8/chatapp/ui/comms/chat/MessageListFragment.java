@@ -1,7 +1,3 @@
-/**
- * @author jliaoh
- * @version 1.0
- */
 package edu.uw.tcss450.group8.chatapp.ui.comms.chat;
 
 import android.os.Bundle;
@@ -19,7 +15,12 @@ import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentMessageListBinding;
 
 /**
- * create an instance of Message List fragment.
+ * Create an instance of Message List fragment.
+ * Adapted from original code by Charles Bryan.
+ *
+ * @author Charles Bryan
+ * @author JenHo Liao
+ * @version 1.0
  */
 public class MessageListFragment extends Fragment {
     private MessageListViewModel mModel;

@@ -15,7 +15,10 @@ import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentMessageListBinding;
 
 /**
- * create an instance of this fragment.
+ * create an instance of Message List fragment.
+ *
+ * @author jliaoh
+ * @version 1.0
  */
 public class MessageListFragment extends Fragment {
     private MessageListViewModel mModel;

@@ -20,4 +20,12 @@
     <string name="hint_verify_code">An Email has been sent to the provided address with a verification link.</string>
     <string name="action_return_home">Return Home</string>
     <string name="hint_enter_message">Enter Message</string>
+    <string name="hint_enter_pass">Enter your current password</string>
+    <string name="hint_enter_new_pass">Enter your new password</string>
+    <string name="hint_retype_new_pass">Retype your new password</string>
+    <string name="action_change">Change</string>
+    <string name="action_change_pass">Change Password</string>
+    <string name="action_forgot">Forgot Password</string>
+
+
 </resources>

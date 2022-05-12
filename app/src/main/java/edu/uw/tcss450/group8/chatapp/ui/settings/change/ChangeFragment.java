@@ -9,6 +9,7 @@ import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdSpec
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdUpperCase;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +20,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChangeBinding;
+import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
@@ -34,13 +39,9 @@ public class ChangeFragment extends Fragment {
 
     private FragmentChangeBinding mBinding;
 
-    private ChangeViewModel mRegisterModel;
+    private ChangeViewModel mChangeModel;
 
 
-
-    private PasswordValidator mEmailValidator = checkPwdLength(2)
-            .and(checkExcludeWhiteSpace())
-            .and(checkPwdSpecialChar("@"));
 
     private PasswordValidator mPassWordValidator =
             checkClientPredicate(pwd -> pwd.equals(mBinding.editChangePassword2.getText().toString()))
@@ -49,6 +50,15 @@ public class ChangeFragment extends Fragment {
                     .and(checkExcludeWhiteSpace())
                     .and(checkPwdDigit())
                     .and(checkPwdLowerCase().or(checkPwdUpperCase()));
+
+    private PasswordValidator mPassWordValidator2 =
+            checkClientPredicate(pwd -> pwd.equals(mBinding.editChangeCurPass.getText().toString()))
+                    .and(checkPwdLength(7))
+                    .and(checkPwdSpecialChar())
+                    .and(checkExcludeWhiteSpace())
+                    .and(checkPwdDigit())
+                    .and(checkPwdLowerCase().or(checkPwdUpperCase()));
+
 
 
     /**
@@ -61,7 +71,7 @@ public class ChangeFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRegisterModel = new ViewModelProvider(getActivity())
+        mChangeModel = new ViewModelProvider(getActivity())
                 .get(ChangeViewModel.class);
     }
 
@@ -84,12 +94,10 @@ public class ChangeFragment extends Fragment {
             //Navigation.findNavController(getView()).navigate(
             //RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
         });
-        /*
-        mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
+        mChangeModel.addResponseObserver(getViewLifecycleOwner(),
                 this::observeResponse
         );
 
-         */
 
 
     }
@@ -115,7 +123,7 @@ public class ChangeFragment extends Fragment {
                 checkClientPredicate(
                         pwd -> pwd.equals(mBinding.editChangePassword2.getText().toString().trim()));
 
-        mEmailValidator.processResult(
+        mPassWordValidator.processResult(
                 matchValidator.apply(mBinding.editChangePassword1.getText().toString().trim()),
                 this::validatePassword,
                 result -> {
@@ -133,7 +141,7 @@ public class ChangeFragment extends Fragment {
                 mPassWordValidator.apply(mBinding.editChangePassword1.getText().toString()),
                 this::validatePassword2,
                 result -> {
-                    mBinding.editChangePassword1.setError("Please enter a valid Password.");
+                    mBinding.editChangePassword1.setError("Please enter a valid Password 1.");
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -143,11 +151,11 @@ public class ChangeFragment extends Fragment {
      * Then calls verify auth with server.
      */
     private void validatePassword2() {
-        mPassWordValidator.processResult(
-                mPassWordValidator.apply(mBinding.editChangeCurPass.getText().toString()),
+        mPassWordValidator2.processResult(
+                mPassWordValidator2.apply(mBinding.editChangeCurPass.getText().toString()),
                 this::verifyAuthWithServer,
                 result -> {
-                    mBinding.editChangeCurPass.setError("Please enter a valid Password.");
+                    mBinding.editChangeCurPass.setError("Please enter a valid Password 2.");
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -157,10 +165,14 @@ public class ChangeFragment extends Fragment {
      * information validation.
      */
     private void verifyAuthWithServer() {
-        navigateToLogin();
-        //mRegisterModel.connect(
-                //mBinding.editChangeCurPass.getText().toString(),
-                //mBinding.editChangePassword1.getText().toString());
+        UserInfoViewModel model = new ViewModelProvider(getActivity())
+                .get(UserInfoViewModel.class);
+        Log.e("JWTError", model.getJwt().toString());
+        mChangeModel.connect(
+                model.getJwt().toString(),
+                mBinding.editChangeCurPass.getText().toString(),
+                mBinding.editChangePassword1.getText().toString());
+
 
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
@@ -180,7 +192,7 @@ public class ChangeFragment extends Fragment {
 //        directions.setEmail(binding.editEmail.getText().toString());
 //        directions.setPassword(binding.editPassword1.getText().toString());
 
-        Navigation.findNavController(getView()).navigate(ChangeFragmentDirections.actionChangeFragmentToNavHomeFragment());
+        Navigation.findNavController(getView()).navigate(ChangeFragmentDirections.actionChangeFragmentToSettingFragment());
 
     }
 
@@ -191,12 +203,11 @@ public class ChangeFragment extends Fragment {
      *
      * @param response the Response from the server
      */
-    /*
     private void observeResponse(final JSONObject response) {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    mBinding.editChangePassword1.setError(
+                    mBinding.editChangeCurPass.setError(
                             "Error Authenticating: " +
                                     response.getJSONObject("data").getString("message"));
                     mBinding.layoutWait.setVisibility(View.GONE);
@@ -214,7 +225,6 @@ public class ChangeFragment extends Fragment {
 
     }
 
-     */
 
 
 }

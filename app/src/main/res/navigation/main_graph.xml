@@ -53,7 +53,7 @@
         android:name="edu.uw.tcss450.group8.chatapp.ui.settings.change.ChangeFragment"
         android:label="ChangeFragment" >
         <action
-            android:id="@+id/action_changeFragment_to_nav_home_fragment"
-            app:destination="@id/nav_home_fragment" />
+            android:id="@+id/action_changeFragment_to_settingFragment"
+            app:destination="@id/settingFragment" />
     </fragment>
 </navigation>

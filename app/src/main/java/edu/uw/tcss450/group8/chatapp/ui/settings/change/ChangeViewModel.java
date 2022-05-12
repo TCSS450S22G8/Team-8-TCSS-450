@@ -86,16 +86,18 @@ public class ChangeViewModel extends AndroidViewModel {
     /**
      * Sends JSON Request to the server for the registration process.
      *
-     * @param passwordNew    users new password
-     * @param passwordOld    users old password
+     * @param jwt   users jwt
+     * @param newPassword    users new password
+     * @param oldPassword    users old password
      */
-    public void connect(final String passwordOld,
-                        final String passwordNew) {
-        String url = "https://tcss-450-sp22-group-8.herokuapp.com/auth";
+    public void connect(final String jwt, final String oldPassword,
+                        final String newPassword) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/change-password";
         JSONObject body = new JSONObject();
         try {
-            body.put("email", passwordOld);
-            body.put("password", passwordNew);
+            body.put("jwt", jwt);
+            body.put("oldPassword", oldPassword);
+            body.put("newPassword", newPassword);
         } catch (JSONException e) {
             e.printStackTrace();
         }

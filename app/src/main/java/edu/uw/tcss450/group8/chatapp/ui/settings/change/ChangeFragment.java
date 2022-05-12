@@ -167,7 +167,6 @@ public class ChangeFragment extends Fragment {
     private void verifyAuthWithServer() {
         UserInfoViewModel model = new ViewModelProvider(getActivity())
                 .get(UserInfoViewModel.class);
-        Log.e("JWTError", model.getJwt().toString());
         mChangeModel.connect(
                 model.getJwt().toString(),
                 mBinding.editChangeCurPass.getText().toString(),

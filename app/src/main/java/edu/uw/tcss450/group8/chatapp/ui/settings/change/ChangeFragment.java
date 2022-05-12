@@ -183,7 +183,7 @@ public class ChangeFragment extends Fragment {
     /**
      * Navigates to the verify fragment to continue registration by verifying email.
      */
-    private void navigateToLogin() {
+    private void navigateToSettings() {
         // ToDO: Register to Verification to autofill login
 //        RegisterFragmentDirections.ActionRegisterFragmentToLoginFragment directions =
 //                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
@@ -191,7 +191,7 @@ public class ChangeFragment extends Fragment {
 //        directions.setEmail(binding.editEmail.getText().toString());
 //        directions.setPassword(binding.editPassword1.getText().toString());
 
-        Navigation.findNavController(getView()).navigate(ChangeFragmentDirections.actionChangeFragmentToSettingFragment());
+        Navigation.findNavController(getView()).navigate(ChangeFragmentDirections.actionChangeFragmentToNavHomeFragment());
 
     }
 
@@ -215,7 +215,7 @@ public class ChangeFragment extends Fragment {
                     mBinding.layoutWait.setVisibility(View.GONE);
                 }
             } else {
-                navigateToLogin();
+                navigateToSettings();
             }
         } else {
             Log.d("JSON Response", "No Response");

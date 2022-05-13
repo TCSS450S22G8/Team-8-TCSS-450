@@ -30,26 +30,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        MainActivityArgs args = MainActivityArgs.fromBundle(getIntent().getExtras());
-        //Import com.auth0.android.jwt.JWT
-        JWT jwt = new JWT(args.getJwt());
-
-        // Check to see if the web token is still valid or not. To make a JWT expire after a
-        // longer or shorter time period, change the expiration time when the JWT is
-        // created on the web service.
-        // TODO: Signing in JWT is expired sometimes, send a request back to backend to do verification and send new JWT back
-        try {
-            if(!jwt.isExpired(10))
-            {
-                new ViewModelProvider(
-                        this,
-                        new UserInfoViewModel.UserInfoViewModelFactory(jwt))
-                        .get(UserInfoViewModel.class);
-            }
-        } catch(IllegalStateException e)  {
-            //In production code, add in your own error handling/flow for when the JWT is expired
-            throw new IllegalStateException("JWT is expired!");
-        }
 
         setContentView(R.layout.activity_main);
 

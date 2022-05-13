@@ -43,11 +43,6 @@ public class SettingFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         FragmentSettingBinding binding = FragmentSettingBinding.bind(getView());
-        binding.buttonSettingsChange.setOnClickListener(button2 -> {
-            Navigation.findNavController(getView()).navigate(
-                    SettingFragmentDirections
-                            .actionSettingFragmentToChangeFragment());
-        });
         //on button click,navigate to settings
         // TODO once login system is done, remove signed in user info.
         binding.buttonSettingsLogout.setOnClickListener(button -> {

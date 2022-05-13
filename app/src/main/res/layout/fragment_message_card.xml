@@ -15,7 +15,7 @@
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:cardBackgroundColor="@color/orange">
+        app:cardBackgroundColor="?colorPrimary">
 
         <LinearLayout
             android:id="@+id/layout_chat_container"

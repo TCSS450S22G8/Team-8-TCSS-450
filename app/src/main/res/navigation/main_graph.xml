@@ -39,10 +39,10 @@
         android:name="edu.uw.tcss450.group8.chatapp.AuthenticationActivity"
         tools:layout="@layout/activity_auth" />
     <fragment
-        android:id="@+id/nav_connections_fragment"
-        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.ConnectionsFragment"
+        android:id="@+id/nav_contact_fragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactFragment"
         android:label="@string/title_connections"
-        tools:layout="@layout/fragment_connections" />
+        tools:layout="@layout/fragment_contact" />
     <fragment
         android:id="@+id/nav_chat_fragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListFragment"

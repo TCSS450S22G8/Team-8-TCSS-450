@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_settingFragment_to_authenticationActivity"
             app:destination="@id/authenticationActivity" />
-        <action
-            android:id="@+id/action_settingFragment_to_changeFragment"
-            app:destination="@id/changeFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_home_fragment"
@@ -48,12 +45,4 @@
         android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListFragment"
         android:label="@string/title_chat"
         tools:layout="@layout/fragment_message_list" />
-    <fragment
-        android:id="@+id/changeFragment"
-        android:name="edu.uw.tcss450.group8.chatapp.ui.settings.change.ChangeFragment"
-        android:label="@string/title_change">
-        <action
-            android:id="@+id/action_changeFragment_to_nav_home_fragment"
-            app:destination="@id/nav_home_fragment" />
-    </fragment>
 </navigation>

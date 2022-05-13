@@ -2,7 +2,6 @@ package edu.uw.tcss450.group8.chatapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -12,10 +11,8 @@ import androidx.navigation.ui.NavigationUI;
 import android.os.Bundle;
 import android.util.Log;
 
-import com.auth0.android.jwt.JWT;
+//import com.auth0.android.jwt.JWT;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 /**
  * Class for Main Activity
@@ -29,9 +26,6 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-
-
-
 
 
     @Override
@@ -56,8 +50,6 @@ public class MainActivity extends AppCompatActivity {
             //In production code, add in your own error handling/flow for when the JWT is expired
             throw new IllegalStateException("JWT is expired!");
         }
-
-
 
         setContentView(R.layout.activity_main);
 

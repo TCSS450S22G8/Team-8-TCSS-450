@@ -10,6 +10,7 @@ import androidx.navigation.ui.NavigationUI;
 
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.auth0.android.jwt.JWT;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         // longer or shorter time period, change the expiration time when the JWT is
         // created on the web service.
         try {
-            if(!jwt.isExpired(0))
+            if(!jwt.isExpired(10))
             {
                 new ViewModelProvider(
                         this,

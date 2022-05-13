@@ -80,11 +80,6 @@ public class LoginFragment extends Fragment {
                         LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
                 ));
 
-        mBinding.buttonLoginForgot.setOnClickListener(button ->
-                Navigation.findNavController(getView()).navigate(
-                        LoginFragmentDirections.actionLoginFragmentToForgotFragment()
-                ));
-
         //On button click, navigate to MainActivity
         mBinding.buttonLoginLogin.setOnClickListener(this::attemptSignIn);
 

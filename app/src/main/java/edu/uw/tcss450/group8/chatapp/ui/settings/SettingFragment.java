@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.settings;
 
+import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.setThemeColor;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -53,7 +55,17 @@ public class SettingFragment extends Fragment {
             //It will not be added to backstack.
             getActivity().finish();
         });
+        binding.textSettingsOrangeColor.setOnClickListener(button -> SetColor("orange"));
+        binding.textSettingsRedColor.setOnClickListener(button -> SetColor("red"));
+        binding.textSettingsBlueColor.setOnClickListener(button -> SetColor("blue"));
+        binding.textSettingsGreenColor.setOnClickListener(button -> SetColor("green"));
 
+    }
+
+
+    private void SetColor(String color) {
+        setThemeColor(getActivity(), color);
+        getActivity().recreate();
     }
 
     @Override

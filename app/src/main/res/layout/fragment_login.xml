@@ -63,7 +63,7 @@
         android:id="@+id/layout_wait"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/cream_light"
+        android:background="@color/write"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

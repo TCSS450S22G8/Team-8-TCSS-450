@@ -1,5 +1,8 @@
 package edu.uw.tcss450.group8.chatapp;
 
+import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.getThemeColor;
+import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.setCustomizedThemes;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.navigation.NavController;
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setCustomizedThemes(this,getThemeColor(this));
         setContentView(R.layout.activity_main);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);

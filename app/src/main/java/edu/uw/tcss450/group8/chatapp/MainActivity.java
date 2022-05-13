@@ -43,17 +43,16 @@ public class MainActivity extends AppCompatActivity {
         // Check to see if the web token is still valid or not. To make a JWT expire after a
         // longer or shorter time period, change the expiration time when the JWT is
         // created on the web service.
-        if(!jwt.isExpired(0))
-
-        {
-            new ViewModelProvider(
-                    this,
-                    new UserInfoViewModel.UserInfoViewModelFactory(jwt))
-                    .get(UserInfoViewModel.class);
-
-        } else
-
-        {
+        // TODO: Signing in JWT is expired sometimes, send a request back to backend to do verification and send new JWT back
+        try {
+            if(!jwt.isExpired(10))
+            {
+                new ViewModelProvider(
+                        this,
+                        new UserInfoViewModel.UserInfoViewModelFactory(jwt))
+                        .get(UserInfoViewModel.class);
+            }
+        } catch(IllegalStateException e)  {
             //In production code, add in your own error handling/flow for when the JWT is expired
             throw new IllegalStateException("JWT is expired!");
         }

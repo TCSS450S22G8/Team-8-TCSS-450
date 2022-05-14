@@ -16,7 +16,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -34,6 +33,7 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
  * @version 2.0
  */
 public class WeatherViewModel extends AndroidViewModel {
+
     private MutableLiveData<Weather> mCurrentWeather;
     private MutableLiveData<ArrayList<Weather>> mHourlyWeather;
     private MutableLiveData<ArrayList<Weather>> mDailyWeather;
@@ -104,10 +104,10 @@ public class WeatherViewModel extends AndroidViewModel {
      * sends a JSON request for the current weather based on latitude and longitude
      * latitude and longitude is sent through url
      *
-     * @param theLat double latitude of desired location
-     * @param thelon double longitude of desired location
+     * @param theLat String latitude of desired location
+     * @param thelon String longitude of desired location
      */
-    public void getWeatherLatLon(double theLat, double thelon) {
+    public void getWeatherLatLon(String theLat, String thelon) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/weather/lat-lon/" + theLat + "/" + thelon;
         //creating request GET
         Request request = new JsonObjectRequest(
@@ -158,7 +158,6 @@ public class WeatherViewModel extends AndroidViewModel {
         }
         mResponse = theResult;
         setCurrent();
-        Log.d("TAG", mCurrentWeather.getValue().toString());
         //setHourly();
         //setDaily();
     }
@@ -181,6 +180,7 @@ public class WeatherViewModel extends AndroidViewModel {
                             currentWeather.getString("description"),
                             currentWeather.getString("icon")
                     ));
+
         } catch (JSONException e){
             Log.e("JSON PARSE ERROR", "Found in handle Success ForecastCurrentViewModel");
             Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());

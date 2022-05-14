@@ -13,6 +13,8 @@ import androidx.navigation.ui.NavigationUI;
 
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.auth0.android.jwt.JWT;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -31,10 +33,6 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +58,6 @@ public class MainActivity extends AppCompatActivity {
             throw new IllegalStateException("JWT is expired!");
         }
 
-
-
         setCustomizedThemes(this,getThemeColor(this));
         setContentView(R.layout.activity_main);
 
@@ -83,5 +79,26 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+
+    //onCreateOptionsMenu and onOptionsItemSelected are top right, 3 dot settings
+    //toolbar.xml file
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //gets id for item selected, then sends user to corresponding fragment.
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.settingFragment:
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_setting_fragment);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -56,10 +56,10 @@ public class WeatherDailyRecyclerViewAdapter extends RecyclerView.Adapter<Weathe
          * @param theWeather Weather the weather forecast
          */
         void setWeather(final Weather theWeather) {
-            mWeather = theWeather;
-            String[] date = theWeather.getTime().split(" ");
-            mBinding.textTime.setText(date[0]);
-            mBinding.textTemperature.setText((theWeather.getTemp()));
+            //mWeather = theWeather;
+            //String[] date = theWeather.getTime().split(" ");
+            //mBinding.textTime.setText(date[0]);
+            //mBinding.textTemperature.setText((theWeather.getTemp()));
 
             //switch statement to set icons
             // https://stackoverflow.com/questions/45673935/how-to-get-icon-from-openweathermap

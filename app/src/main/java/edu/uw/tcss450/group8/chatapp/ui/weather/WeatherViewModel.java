@@ -16,13 +16,20 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.Charset;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
 
@@ -30,14 +37,16 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
  * View Model class for weather
  *
  * @author shilnara dam
- * @version 2.0
+ * @version 5/15/22
  */
 public class WeatherViewModel extends AndroidViewModel {
 
     private MutableLiveData<Weather> mCurrentWeather;
     private MutableLiveData<ArrayList<Weather>> mHourlyWeather;
     private MutableLiveData<ArrayList<Weather>> mDailyWeather;
+    private MutableLiveData<String> mError;
     private JSONObject mResponse;
+
 
     /**
      * view model class for current weather.
@@ -49,18 +58,42 @@ public class WeatherViewModel extends AndroidViewModel {
         mCurrentWeather = new MutableLiveData<>();
         mHourlyWeather = new MutableLiveData<>();
         mDailyWeather = new MutableLiveData<>();
+        mError = new MutableLiveData<>();
     }
 
     /**
-     * adds an observer to this live data for the variable mWeather.
+     * adds an observer to this live data for the variable mHourlyWeather.
      *
      * @param owner LifecycleOwner lifecycle owner that controls the observer
      * @param observer Observer the observer that receives events
      */
-    public void addListWeatherObserver(@NonNull LifecycleOwner owner,
+    public void addHourlyWeatherObserver(@NonNull LifecycleOwner owner,
                                    @NonNull Observer<? super List<Weather>> observer) {
         mHourlyWeather.observe(owner, observer);
+    }
+
+    /**
+     * adds an observer to this live data for the variable mDailyWeather.
+     *
+     * @param owner LifecycleOwner lifecycle owner that controls the observer
+     * @param observer Observer the observer that receives events
+     */
+    public void addDailyWeatherObserver(@NonNull LifecycleOwner owner,
+                                         @NonNull Observer<? super List<Weather>> observer) {
         mDailyWeather.observe(owner, observer);
+    }
+
+
+    /**
+     * adds an observer to this live data for the variable mError.
+     * Value gets updated if error from api call has some failure.
+     *
+     * @param owner LifecycleOwner lifecycle owner that controls the observer
+     * @param observer Observer the observer that receives events
+     */
+    public void addErrorObserver(@NonNull LifecycleOwner owner,
+                                       @NonNull Observer<? super String> observer) {
+        mError.observe(owner, observer);
     }
 
     /**
@@ -90,7 +123,7 @@ public class WeatherViewModel extends AndroidViewModel {
                 url,
                 null,
                 this::handleResult,
-                this::handleError);
+                this::handleErrorZipcode);
         request.setRetryPolicy(new DefaultRetryPolicy(
                 10_000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -115,7 +148,7 @@ public class WeatherViewModel extends AndroidViewModel {
                 url,
                 null,
                 this::handleResult,
-                this::handleError); {
+                this::handleErrorLatlon); {
 
         };
         request.setRetryPolicy(new DefaultRetryPolicy(
@@ -128,11 +161,11 @@ public class WeatherViewModel extends AndroidViewModel {
     }
 
     /**
-     * handler for request errors
+     * handler for zipcode request errors
      *
      * @param theError VolleyError request error
      */
-    private void handleError(final VolleyError theError) {
+    private void handleErrorZipcode(final VolleyError theError) {
         if (Objects.isNull(theError.networkResponse)) {
             Log.e("NETWORK ERROR", theError.getMessage());
         }
@@ -143,8 +176,29 @@ public class WeatherViewModel extends AndroidViewModel {
                             " " +
                             data);
         }
-
+        mError.setValue("zipcode");
     }
+
+    /**
+     * handler for lat/lon request errors
+     *
+     * @param theError VolleyError request error
+     */
+    private void handleErrorLatlon(final VolleyError theError) {
+        if (Objects.isNull(theError.networkResponse)) {
+            Log.e("NETWORK ERROR", theError.getMessage());
+        }
+        else {
+            String data = new String(theError.networkResponse.data, Charset.defaultCharset());
+            Log.e("CLIENT ERROR",
+                    theError.networkResponse.statusCode +
+                            " " +
+                            data);
+        }
+        mError.setValue("lat/lon");
+    }
+
+
 
     /**
      * handler for successful requests
@@ -154,12 +208,12 @@ public class WeatherViewModel extends AndroidViewModel {
     private void handleResult(final JSONObject theResult) {
         //if result doesnt contain a city, then it doesn't exist
         if (!theResult.has("city")) {
-
+            // should not need this as api checks. kept just in case
         }
         mResponse = theResult;
         setCurrent();
-        //setHourly();
-        //setDaily();
+        setHourly();
+        setDaily();
     }
 
     /**
@@ -170,19 +224,16 @@ public class WeatherViewModel extends AndroidViewModel {
         try {
             JSONObject current = mResponse.getJSONObject("current");
             JSONObject currentWeather = current.getJSONArray("weather").getJSONObject(0);
-            Log.e("bit", currentWeather.getString("icon"));
-
             mCurrentWeather.setValue(
                     new Weather(
                             mResponse.getString("city"),
                             current.getString("dt"),
                             current.getString("temp"),
-                            currentWeather.getString("description"),
+                            setEachWordCap(currentWeather.getString("description")),
                             currentWeather.getString("icon")
                     ));
-
         } catch (JSONException e){
-            Log.e("JSON PARSE ERROR", "Found in handle Success ForecastCurrentViewModel");
+            Log.e("JSON PARSE ERROR", "Found in handle Success Weather Current");
             Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
         }
     }
@@ -192,7 +243,32 @@ public class WeatherViewModel extends AndroidViewModel {
      *
      */
     private void setHourly() {
-
+        ArrayList<Weather> weatherList = new ArrayList<Weather>();
+        try {
+            JSONArray hourly = mResponse.getJSONArray("hourly");
+            for (int i = 0; i < hourly.length(); i++) {
+                JSONObject hour = hourly.getJSONObject(i);
+                JSONObject weather = hour.getJSONArray("weather").getJSONObject(0);
+                //formatting date to hour:00
+                Date date = new Date((Long.parseLong(hour.getString("dt")) + Long.parseLong(mResponse.getString("timezone_offset"))) * 1000);
+                DateFormat formatter = new SimpleDateFormat("hh");
+                formatter.setTimeZone(TimeZone.getTimeZone("UTC-7"));
+                String dateFormatted = formatter.format(date) + ":00";
+                //adding object to list
+                weatherList.add(
+                        new Weather(
+                                mResponse.getString("city"),
+                                dateFormatted,
+                                hour.getString("temp"),
+                                setEachWordCap(weather.getString("description")),
+                                weather.getString("icon")
+                        ));
+            }
+            mHourlyWeather.setValue(weatherList);
+        } catch (JSONException e){
+            Log.e("JSON PARSE ERROR", "Found in handle Success Weather Hourly");
+            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
+        }
     }
 
     /**
@@ -200,7 +276,48 @@ public class WeatherViewModel extends AndroidViewModel {
      *
      */
     private void setDaily() {
+        ArrayList<Weather> weatherList = new ArrayList<Weather>();
+        try {
+            JSONArray daily = mResponse.getJSONArray("daily");
+            for (int i = 0; i < daily.length(); i++) {
+                JSONObject day = daily.getJSONObject(i);
+                JSONObject temp = day.getJSONObject("temp");
+                JSONObject weather = day.getJSONArray("weather").getJSONObject(0);
+                //formatting date to M/D
+                Date date = new Date(Long.parseLong(day.getString("dt")) * 1000);
+                DateFormat formatter = new SimpleDateFormat("MM/dd");
+                //adding object to list
+                weatherList.add(
+                        new Weather(
+                                mResponse.getString("city"),
+                                formatter.format(date).toString(),
+                                temp.getString("day"),
+                                setEachWordCap(weather.getString("description")),
+                                weather.getString("icon")
+                        ));
+            }
+            mDailyWeather.setValue(weatherList);
+        } catch (JSONException e){
+            Log.e("JSON PARSE ERROR", "Found in handle Success Weather Daily");
+            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
+        }
+    }
 
+    /**
+     * returns a string with each word having a starting capital letter
+     *
+     * @param theString String the string to get capitalized
+     * @return a string with each word having a starting capital letter
+     */
+    private String setEachWordCap(String theString) {
+        String words[] = theString.split("\\s");
+        String capitalizeWord = "";
+        for(String w: words){
+            String first = w.substring(0,1);
+            String afterFirst = w.substring(1);
+            capitalizeWord += first.toUpperCase() + afterFirst + " ";
+        }
+        return capitalizeWord.trim();
     }
 
 }

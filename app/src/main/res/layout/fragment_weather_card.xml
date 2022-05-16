@@ -12,7 +12,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_inner"
         android:layout_width="100dp"
-        android:layout_height="125dp"
+        android:layout_height="106dp"
         app:layout_constraintBottom_toTopOf="@+id/text_forecast_header"
         app:layout_constraintTop_toTopOf="@+id/text_forecast_header">
 
@@ -20,19 +20,19 @@
             android:id="@+id/text_temperature"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/text_time"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="4dp"
             android:textAlignment="center"
             android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"

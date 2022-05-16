@@ -16,12 +16,12 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentWeatherCardBinding;
 
 /**
  * Adapter for recycler view
- * will display the daily weather forecast for a location
+ * will display the hourly weather forecast for a location
  *
  * @author shilnara dam
  * @version 5/14/22
  */
-public class WeatherDailyRecyclerViewAdapter extends RecyclerView.Adapter<WeatherDailyRecyclerViewAdapter.WeatherDailyViewHolder> {
+public class WeatherHourlyRecyclerViewAdapter extends RecyclerView.Adapter<WeatherHourlyRecyclerViewAdapter.WeatherHourlyViewHolder> {
 
     private final List<Weather> mWeather;
 
@@ -29,20 +29,20 @@ public class WeatherDailyRecyclerViewAdapter extends RecyclerView.Adapter<Weathe
      * instantiate the recycler view
      * @param theItems List<Weather> weather items
      */
-    public WeatherDailyRecyclerViewAdapter(List<Weather> theItems) {
+    public WeatherHourlyRecyclerViewAdapter(List<Weather> theItems) {
         this.mWeather = theItems;
     }
 
     @NonNull
     @Override
-    public WeatherDailyRecyclerViewAdapter.WeatherDailyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new WeatherDailyViewHolder(LayoutInflater
+    public WeatherHourlyRecyclerViewAdapter.WeatherHourlyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new WeatherHourlyViewHolder(LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.fragment_weather_card, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull WeatherDailyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull WeatherHourlyRecyclerViewAdapter.WeatherHourlyViewHolder holder, int position) {
         holder.setWeather(mWeather.get(position));
     }
 
@@ -54,7 +54,7 @@ public class WeatherDailyRecyclerViewAdapter extends RecyclerView.Adapter<Weathe
     /**
      * inner class for view holder
      */
-    public class WeatherDailyViewHolder extends RecyclerView.ViewHolder {
+    public class WeatherHourlyViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public FragmentWeatherCardBinding mBinding;
         private Weather mWeather;
@@ -64,14 +64,14 @@ public class WeatherDailyRecyclerViewAdapter extends RecyclerView.Adapter<Weathe
          *
          * @param theView current view
          */
-        public WeatherDailyViewHolder(@NonNull View theView) {
+        public WeatherHourlyViewHolder(@NonNull View theView) {
             super(theView);
             mView = theView;
             mBinding = FragmentWeatherCardBinding.bind(theView);
         }
 
         /**
-         * populating daily weather with time, temperature, and icons/image
+         * populating hourly weather with time, temperature, and icons/image
          *
          * @param theWeather Weather the weather forecast
          */
@@ -82,4 +82,7 @@ public class WeatherDailyRecyclerViewAdapter extends RecyclerView.Adapter<Weathe
             mBinding.textTime.setText(mWeather.getTime());
         }
     }
+
+
+
 }

@@ -116,7 +116,7 @@ public class LoginFragment extends Fragment {
      * @param button button clicked
      */
     private void attemptSignIn(final View button) {
-        mBinding.layoutWait.setVisibility(View.VISIBLE);
+//        mBinding.layoutWait.setVisibility(View.VISIBLE);
         validateEmail();
     }
 
@@ -130,7 +130,7 @@ public class LoginFragment extends Fragment {
                 this::validatePassword,
                 result -> {
                     mBinding.editRegisterEmail.setError("Please enter a valid Email address.");
-                    mBinding.layoutWait.setVisibility(View.GONE);
+//                    mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
 
@@ -144,7 +144,7 @@ public class LoginFragment extends Fragment {
                 this::verifyAuthWithServer,
                 result -> {
                     mBinding.editPassword.setError("Please enter a valid Password.");
-                    mBinding.layoutWait.setVisibility(View.GONE);
+//                    mBinding.layoutWait.setVisibility(View.GONE);
                 });
 
     }
@@ -186,10 +186,10 @@ public class LoginFragment extends Fragment {
                     mBinding.editRegisterEmail.setError(
                             "Error Authenticating: " +
                                     response.getJSONObject("data").getString("message"));
-                    mBinding.layoutWait.setVisibility(View.GONE);
+//                    mBinding.layoutWait.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
-                    mBinding.layoutWait.setVisibility(View.GONE);
+//                    mBinding.layoutWait.setVisibility(View.GONE);
                 }
             } else {
                 try {
@@ -199,12 +199,12 @@ public class LoginFragment extends Fragment {
                     );
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
-                    mBinding.layoutWait.setVisibility(View.GONE);
+//                    mBinding.layoutWait.setVisibility(View.GONE);
                 }
             }
         } else {
             Log.d("JSON Response", "No Response");
-            mBinding.layoutWait.setVisibility(View.GONE);
+//            mBinding.layoutWait.setVisibility(View.GONE);
         }
 
     }

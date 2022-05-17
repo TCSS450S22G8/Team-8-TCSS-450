@@ -23,11 +23,10 @@ import org.json.JSONObject;
 import java.nio.charset.Charset;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.TimeZone;
 
@@ -41,10 +40,10 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
  */
 public class WeatherViewModel extends AndroidViewModel {
 
-    private MutableLiveData<Weather> mCurrentWeather;
-    private MutableLiveData<ArrayList<Weather>> mHourlyWeather;
-    private MutableLiveData<ArrayList<Weather>> mDailyWeather;
-    private MutableLiveData<String> mError;
+    private final MutableLiveData<Weather> mCurrentWeather;
+    private final MutableLiveData<ArrayList<Weather>> mHourlyWeather;
+    private final MutableLiveData<ArrayList<Weather>> mDailyWeather;
+    private final MutableLiveData<String> mError;
     private JSONObject mResponse;
 
 
@@ -118,7 +117,7 @@ public class WeatherViewModel extends AndroidViewModel {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/weather/zipcode/" + theZipcode;
         //String url = "http://10.0.2.2:5000/weather/zipcode";
         //create request
-        Request request = new JsonObjectRequest(
+        Request<JSONObject> request = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
                 null,
@@ -138,19 +137,19 @@ public class WeatherViewModel extends AndroidViewModel {
      * latitude and longitude is sent through url
      *
      * @param theLat String latitude of desired location
-     * @param thelon String longitude of desired location
+     * @param theLon String longitude of desired location
      */
-    public void getWeatherLatLon(String theLat, String thelon) {
-        String url = "https://tcss-450-sp22-group-8.herokuapp.com/weather/lat-lon/" + theLat + "/" + thelon;
+    public void getWeatherLatLon(String theLat, String theLon) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/weather/lat-lon/" + theLat + "/" + theLon;
         //creating request GET
-        Request request = new JsonObjectRequest(
+        Request<JSONObject> request = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
                 null,
                 this::handleResult,
-                this::handleErrorLatlon); {
+                this::handleErrorLatLon); {
 
-        };
+        }
         request.setRetryPolicy(new DefaultRetryPolicy(
                 10_000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -184,7 +183,7 @@ public class WeatherViewModel extends AndroidViewModel {
      *
      * @param theError VolleyError request error
      */
-    private void handleErrorLatlon(final VolleyError theError) {
+    private void handleErrorLatLon(final VolleyError theError) {
         if (Objects.isNull(theError.networkResponse)) {
             Log.e("NETWORK ERROR", theError.getMessage());
         }
@@ -206,8 +205,9 @@ public class WeatherViewModel extends AndroidViewModel {
      * @param theResult JSONObject of resulting request
      */
     private void handleResult(final JSONObject theResult) {
-        //if result doesnt contain a city, then it doesn't exist
+        //if result doesn't contain a city, then it doesn't exist
         if (!theResult.has("city")) {
+            Log.e("WEATHER", "Error City Not Found");
             // should not need this as api checks. kept just in case
         }
         mResponse = theResult;
@@ -243,7 +243,7 @@ public class WeatherViewModel extends AndroidViewModel {
      *
      */
     private void setHourly() {
-        ArrayList<Weather> weatherList = new ArrayList<Weather>();
+        ArrayList<Weather> weatherList = new ArrayList<>();
         try {
             JSONArray hourly = mResponse.getJSONArray("hourly");
             for (int i = 0; i < hourly.length(); i++) {
@@ -251,7 +251,7 @@ public class WeatherViewModel extends AndroidViewModel {
                 JSONObject weather = hour.getJSONArray("weather").getJSONObject(0);
                 //formatting date to hour:00
                 Date date = new Date((Long.parseLong(hour.getString("dt")) + Long.parseLong(mResponse.getString("timezone_offset"))) * 1000);
-                DateFormat formatter = new SimpleDateFormat("hh");
+                DateFormat formatter = new SimpleDateFormat("hh", Locale.US);
                 formatter.setTimeZone(TimeZone.getTimeZone("UTC-7"));
                 String dateFormatted = formatter.format(date) + ":00";
                 //adding object to list
@@ -276,7 +276,7 @@ public class WeatherViewModel extends AndroidViewModel {
      *
      */
     private void setDaily() {
-        ArrayList<Weather> weatherList = new ArrayList<Weather>();
+        ArrayList<Weather> weatherList = new ArrayList<>();
         try {
             JSONArray daily = mResponse.getJSONArray("daily");
             for (int i = 0; i < daily.length(); i++) {
@@ -285,12 +285,12 @@ public class WeatherViewModel extends AndroidViewModel {
                 JSONObject weather = day.getJSONArray("weather").getJSONObject(0);
                 //formatting date to M/D
                 Date date = new Date(Long.parseLong(day.getString("dt")) * 1000);
-                DateFormat formatter = new SimpleDateFormat("MM/dd");
+                DateFormat formatter = new SimpleDateFormat("MM/dd", Locale.US);
                 //adding object to list
                 weatherList.add(
                         new Weather(
                                 mResponse.getString("city"),
-                                formatter.format(date).toString(),
+                                formatter.format(date),
                                 temp.getString("day"),
                                 setEachWordCap(weather.getString("description")),
                                 weather.getString("icon")
@@ -310,14 +310,13 @@ public class WeatherViewModel extends AndroidViewModel {
      * @return a string with each word having a starting capital letter
      */
     private String setEachWordCap(String theString) {
-        String words[] = theString.split("\\s");
-        String capitalizeWord = "";
+        String[] words = theString.split("\\s");
+        StringBuilder cap = new StringBuilder();
         for(String w: words){
             String first = w.substring(0,1);
             String afterFirst = w.substring(1);
-            capitalizeWord += first.toUpperCase() + afterFirst + " ";
+            cap.append(first.toUpperCase()).append(afterFirst).append(" ");
         }
-        return capitalizeWord.trim();
+        return cap.toString().trim();
     }
-
 }

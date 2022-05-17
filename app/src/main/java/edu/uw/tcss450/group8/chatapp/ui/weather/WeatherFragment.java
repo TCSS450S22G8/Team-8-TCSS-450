@@ -36,7 +36,7 @@ public class WeatherFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mWeatherModel = new ViewModelProvider(getActivity()).get(WeatherViewModel.class);
+        mWeatherModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
         //hardcoded zipcode
         String zipcode = "98404";
         mWeatherModel.getWeatherZipCode(zipcode);
@@ -54,7 +54,7 @@ public class WeatherFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mBinding = FragmentWeatherBinding.bind(getView());
+        mBinding = FragmentWeatherBinding.bind(requireView());
         mBinding.progressBar.setVisibility(View.VISIBLE);
         //adding weather observers
         mWeatherModel.addCurrentWeatherObserver(
@@ -62,11 +62,12 @@ public class WeatherFragment extends Fragment {
                 this::observeCurrentWeatherResponse);
         mWeatherModel.addErrorObserver(getViewLifecycleOwner(),
                 this::observeErrorResponse);
-        mWeatherModel.addHourlyWeatherObserver(getViewLifecycleOwner(), weatherList -> {
-            mBinding.listWeatherHourly.setAdapter(new WeatherHourlyRecyclerViewAdapter(weatherList));
-        });
-        mWeatherModel.addDailyWeatherObserver(getViewLifecycleOwner(), weatherList -> {
-            mBinding.listWeatherDaily.setAdapter(new WeatherDailyRecyclerViewAdapter(weatherList));
+        mWeatherModel.addHourlyWeatherObserver(getViewLifecycleOwner(),
+                weatherList ->
+                    mBinding.listWeatherHourly.setAdapter(new WeatherHourlyRecyclerViewAdapter(weatherList)));
+        mWeatherModel.addDailyWeatherObserver(getViewLifecycleOwner(),
+                weatherList -> {
+                    mBinding.listWeatherDaily.setAdapter(new WeatherDailyRecyclerViewAdapter(weatherList));
         });
         //button listener for zipcode
         mBinding.buttonWeatherZipcodeEnter.setOnClickListener(button -> {

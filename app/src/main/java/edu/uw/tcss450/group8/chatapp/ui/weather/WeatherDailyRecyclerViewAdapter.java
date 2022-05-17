@@ -54,10 +54,9 @@ public class WeatherDailyRecyclerViewAdapter extends RecyclerView.Adapter<Weathe
     /**
      * inner class for view holder
      */
-    public class WeatherDailyViewHolder extends RecyclerView.ViewHolder {
+    public static class WeatherDailyViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public FragmentWeatherCardBinding mBinding;
-        private Weather mWeather;
 
         /**
          * instantiate the view holder
@@ -76,10 +75,9 @@ public class WeatherDailyRecyclerViewAdapter extends RecyclerView.Adapter<Weathe
          * @param theWeather Weather the weather forecast
          */
         void setWeather(final Weather theWeather) {
-            mWeather = theWeather;
-            Picasso.get().load(mWeather.getIcon()).into(mBinding.imageWeather);
-            mBinding.textTemperature.setText(mWeather.getTemp());
-            mBinding.textTime.setText(mWeather.getTime());
+            Picasso.get().load(theWeather.getIcon()).into(mBinding.imageWeather);
+            mBinding.textTemperature.setText(theWeather.getTemp());
+            mBinding.textTime.setText(theWeather.getTime());
         }
     }
 }

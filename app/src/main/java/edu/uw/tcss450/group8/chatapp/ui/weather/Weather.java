@@ -1,16 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.weather;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.util.Log;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.Serializable;
-import java.net.URL;
-import java.net.URLConnection;
+
 
 /**
  * Class to encapsulate weather forecasts.
@@ -36,7 +27,7 @@ public class Weather implements Serializable {
     public Weather(String theCity, String theTime, String theTemp, String theCondition, String theIcon) {
         mCity = theCity;
         mTime = theTime;
-        mTemp = String.valueOf((int) Double.parseDouble(theTemp)) + "\u00B0";
+        mTemp = (int) Double.parseDouble(theTemp) + "\u00B0";
         mCondition = theCondition;
         mIcon = "https://openweathermap.org/img/wn/" + theIcon + "@2x.png";
     }

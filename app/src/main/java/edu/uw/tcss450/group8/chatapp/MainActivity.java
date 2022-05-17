@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         // TODO: Signing in JWT is expired sometimes, send a request back to backend to do verification and send new JWT back
 
         try {
-            if (!jwt.isExpired(0)) {
+            if (!jwt.isExpired(5)) {
                 new ViewModelProvider(
                         this,
                         new UserInfoViewModel.UserInfoViewModelFactory(jwt))
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
             JwtExpire();
         }
 
-        setCustomizedThemes(this,getThemeColor(this));
+        setCustomizedThemes(this, getThemeColor(this));
 
         setContentView(R.layout.activity_main);
 
@@ -89,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
     //onCreateOptionsMenu and onOptionsItemSelected are top right, 3 dot settings
     //toolbar.xml file
     @Override
@@ -108,6 +107,7 @@ public class MainActivity extends AppCompatActivity {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_setting_fragment);
         }
         return super.onOptionsItemSelected(item);
+    }
 
     /**
      * helper method when jwt expire.

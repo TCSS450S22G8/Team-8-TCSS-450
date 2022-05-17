@@ -15,6 +15,8 @@ import androidx.navigation.ui.NavigationUI;
 
 
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.auth0.android.jwt.JWT;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -34,7 +36,6 @@ import edu.uw.tcss450.group8.chatapp.ui.settings.SettingFragmentDirections;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,8 +64,8 @@ public class MainActivity extends AppCompatActivity {
             JwtExpire();
         }
 
+        setCustomizedThemes(this,getThemeColor(this));
 
-        setCustomizedThemes(this, getThemeColor(this));
         setContentView(R.layout.activity_main);
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -87,6 +88,27 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+
+
+    //onCreateOptionsMenu and onOptionsItemSelected are top right, 3 dot settings
+    //toolbar.xml file
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar, menu);
+        return true;
+    }
+
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //gets id for item selected, then sends user to corresponding fragment.
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.settingFragment:
+                Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_setting_fragment);
+        }
+        return super.onOptionsItemSelected(item);
+
     /**
      * helper method when jwt expire.
      */
@@ -98,5 +120,6 @@ public class MainActivity extends AppCompatActivity {
                 SettingFragmentDirections
                         .actionSettingFragmentToAuthenticationActivity());
         this.finish();
+
     }
 }

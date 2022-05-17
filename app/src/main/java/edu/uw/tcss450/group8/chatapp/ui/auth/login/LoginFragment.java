@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.auth.login;
 
+import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.getEmail;
+import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.getJWT;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkExcludeWhiteSpace;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdLength;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdSpecialChar;
@@ -71,6 +73,16 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        String jwt = getJWT(getActivity());
+        String email = getEmail(getActivity());
+
+        if(!jwt.equals("")||!email.equals("")){
+            Navigation.findNavController(getView())
+                    .navigate(LoginFragmentDirections
+                            .actionLoginFragmentToMainActivity(email, jwt));
+            getActivity().finish();
+        }
+
         //Local access to the ViewBinding object. No need to create as Instance Var as it is only
         //used here.
         mBinding = FragmentLoginBinding.bind(getView());
@@ -104,7 +116,7 @@ public class LoginFragment extends Fragment {
      * @param button button clicked
      */
     private void attemptSignIn(final View button) {
-        mBinding.layoutWait.setVisibility(View.VISIBLE);
+//        mBinding.layoutWait.setVisibility(View.VISIBLE);
         validateEmail();
     }
 
@@ -118,7 +130,7 @@ public class LoginFragment extends Fragment {
                 this::validatePassword,
                 result -> {
                     mBinding.editRegisterEmail.setError("Please enter a valid Email address.");
-                    mBinding.layoutWait.setVisibility(View.GONE);
+//                    mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
 
@@ -132,7 +144,7 @@ public class LoginFragment extends Fragment {
                 this::verifyAuthWithServer,
                 result -> {
                     mBinding.editPassword.setError("Please enter a valid Password.");
-                    mBinding.layoutWait.setVisibility(View.GONE);
+//                    mBinding.layoutWait.setVisibility(View.GONE);
                 });
 
     }
@@ -174,10 +186,10 @@ public class LoginFragment extends Fragment {
                     mBinding.editRegisterEmail.setError(
                             "Error Authenticating: " +
                                     response.getJSONObject("data").getString("message"));
-                    mBinding.layoutWait.setVisibility(View.GONE);
+//                    mBinding.layoutWait.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
-                    mBinding.layoutWait.setVisibility(View.GONE);
+//                    mBinding.layoutWait.setVisibility(View.GONE);
                 }
             } else {
                 try {
@@ -187,12 +199,12 @@ public class LoginFragment extends Fragment {
                     );
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
-                    mBinding.layoutWait.setVisibility(View.GONE);
+//                    mBinding.layoutWait.setVisibility(View.GONE);
                 }
             }
         } else {
             Log.d("JSON Response", "No Response");
-            mBinding.layoutWait.setVisibility(View.GONE);
+//            mBinding.layoutWait.setVisibility(View.GONE);
         }
 
     }

@@ -30,5 +30,12 @@
     <string name="send_message">Send Message</string>
     <string name="unfriend">Unfriend</string>
 
+    <string name="action_search">Search</string>
+    <string name="header_daily">Daily</string>
+    <string name="header_hourly">Hourly</string>
+    <string name="text_description">Description</string>
+    <string name="hint_enter_zipcode">Enter Zipcode</string>
+    <string name="hint_enter_lat">Latitude</string>
+    <string name="hint_enter_lon">Longitude</string>
 
 </resources>

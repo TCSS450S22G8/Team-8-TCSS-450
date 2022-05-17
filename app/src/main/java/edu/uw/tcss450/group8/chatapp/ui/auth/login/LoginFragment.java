@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.auth.login;
 
+import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.getEmail;
+import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.getJWT;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkExcludeWhiteSpace;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdLength;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdSpecialChar;
@@ -70,6 +72,16 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        String jwt = getJWT(getActivity());
+        String email = getEmail(getActivity());
+
+        if(!jwt.equals("")||!email.equals("")){
+            Navigation.findNavController(getView())
+                    .navigate(LoginFragmentDirections
+                            .actionLoginFragmentToMainActivity(email, jwt));
+            getActivity().finish();
+        }
 
         //Local access to the ViewBinding object. No need to create as Instance Var as it is only
         //used here.

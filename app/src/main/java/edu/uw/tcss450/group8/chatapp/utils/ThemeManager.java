@@ -5,7 +5,20 @@ import android.content.SharedPreferences;
 
 import edu.uw.tcss450.group8.chatapp.R;
 
+/**
+ * Utility class to manage theme
+ *
+ * @author JenHo Liao
+ * @version 5/12/22
+ */
 public class ThemeManager {
+
+    /**
+     * set theme for selected context
+     *
+     * @param context the context to themed
+     * @param theme   the theme
+     */
     public static void setCustomizedThemes(Context context, String theme) {
         switch (theme) {
             case "orange":
@@ -24,6 +37,12 @@ public class ThemeManager {
         }
     }
 
+    /**
+     * save theme color to preferences
+     *
+     * @param context    preferences of context
+     * @param themeColor theme color
+     */
     public static void setThemeColor(Context context, String themeColor) {
         SharedPreferences sharedpreferences = context.getSharedPreferences("theme_data", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedpreferences.edit();
@@ -31,8 +50,14 @@ public class ThemeManager {
         editor.apply();
     }
 
+    /**
+     * get theme color from preferences
+     *
+     * @param context preferences of context
+     * @return theme color
+     */
     public static String getThemeColor(Context context) {
         SharedPreferences sharedpreferences = context.getSharedPreferences("theme_data", Context.MODE_PRIVATE);
-        return sharedpreferences.getString("theme", "grey");
+        return sharedpreferences.getString("theme", "orange");
     }
 }

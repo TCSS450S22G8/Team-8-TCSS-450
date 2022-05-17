@@ -7,12 +7,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactBinding;
+import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 /**
  * Create an instance of Contact List fragment.
@@ -24,11 +26,14 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactBinding;
  */
 public class ContactFragment extends Fragment {
     private ContactListViewModel mContact;
+    //private UserInfoViewModel mUser;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContact = new ViewModelProvider(getActivity()).get(ContactListViewModel.class);
+        //mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
     }
 
     @Override
@@ -42,13 +47,12 @@ public class ContactFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FragmentContactBinding binding = FragmentContactBinding.bind(getView());
-        mContact.addBlogListObserver(getViewLifecycleOwner(), blogList -> {
-            if (!blogList.isEmpty()) {
+        mContact.getContacts("4");
+        //Log.e("asd", mUser.getJwt().getClaim("email").asString());
+        mContact.addContactsListObserver(getViewLifecycleOwner(), contacts -> {
                 binding.listRoot.setAdapter(
-                        new ContactRecyclerViewAdapter(ContactGenerator.getContactList())
+                        new ContactRecyclerViewAdapter(contacts)
                 );
-
-            }
         });
     }
 }

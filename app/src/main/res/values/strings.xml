@@ -28,5 +28,12 @@
     <string name="action_change_pass">Change Password</string>
     <string name="action_forgot">Forgot Password</string>
 
+    <string name="action_search">Search</string>
+    <string name="header_daily">Daily</string>
+    <string name="header_hourly">Hourly</string>
+    <string name="text_description">Description</string>
+    <string name="hint_enter_zipcode">Enter Zipcode</string>
+    <string name="hint_enter_lat">Latitude</string>
+    <string name="hint_enter_lon">Longitude</string>
 
 </resources>

@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.settings;
 
+import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.setEmail;
+import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.setJWT;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.setThemeColor;
 
 import android.os.Bundle;
@@ -53,6 +55,8 @@ public class SettingFragment extends Fragment {
         //on button click,navigate to settings
         // TODO once login system is done, remove signed in user info.
         binding.buttonSettingsLogout.setOnClickListener(button -> {
+            setJWT(getActivity(), "");
+            setEmail(getActivity(), "");
             Navigation.findNavController(getView()).navigate(
                     SettingFragmentDirections
                             .actionSettingFragmentToAuthenticationActivity());
@@ -68,6 +72,10 @@ public class SettingFragment extends Fragment {
     }
 
 
+    /**
+     * helper method to set color.
+     * @param color the color of the theme
+     */
     private void SetColor(String color) {
         setThemeColor(getActivity(), color);
         getActivity().recreate();

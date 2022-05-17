@@ -39,16 +39,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //Local access to the ViewBinding object. No need to create as Instance Var as it is only
-        //used here.
-        FragmentHomeBinding binding = FragmentHomeBinding.bind(getView());
-
-        //on button click,navigate to settings
-        binding.buttonSettings.setOnClickListener(button ->
-                Navigation.findNavController(getView()).navigate(
-                        HomeFragmentDirections
-                                .actionHomeFragmentToSettingFragment()));
     }
 
     @Override

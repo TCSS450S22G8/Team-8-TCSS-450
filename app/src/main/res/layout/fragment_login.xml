@@ -69,6 +69,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_password" />
 
+
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="276dp"
@@ -76,6 +77,15 @@
         android:layout_marginTop="4dp"
         android:src="@drawable/slapchatbig"
         app:layout_constraintBottom_toTopOf="@+id/edit_register_email"
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_wait"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.464"
         app:layout_constraintStart_toStartOf="parent"

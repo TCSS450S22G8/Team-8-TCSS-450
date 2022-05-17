@@ -47,7 +47,7 @@ public class ContactFragment extends Fragment {
                 binding.listRoot.setAdapter(
                         new ContactRecyclerViewAdapter(ContactGenerator.getContactList())
                 );
-//                binding.layoutWait.setVisibility(View.GONE);
+
             }
         });
     }

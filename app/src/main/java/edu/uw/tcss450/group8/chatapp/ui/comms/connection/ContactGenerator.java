@@ -22,7 +22,7 @@ public final class ContactGenerator {
     static {
         CONTACTS = new Contact[COUNT];
         for (int i = 0; i < CONTACTS.length; i++) {
-            CONTACTS[i] = new Contact("testUser " + i, "firstTest", "lastTest", "test1@test.com");
+            CONTACTS[i] = new Contact("testUser " + i, "test1@test.com");
         }
     }
 

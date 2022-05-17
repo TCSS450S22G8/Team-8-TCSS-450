@@ -29,7 +29,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     @NonNull
     @Override
     public ContactRecyclerViewAdapter.ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ContactRecyclerViewAdapter.ContactViewHolder(LayoutInflater
+        return new ContactViewHolder(LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.fragment_contact_card, parent, false));
     }
@@ -48,10 +48,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
      * Objects from this class represent an Individual row View from the List * of rows in the
      * Message Recycler View.
      */
-    public class ContactViewHolder extends RecyclerView.ViewHolder {
+    public static class ContactViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public FragmentContactCardBinding mBinding;
-        private Contact mContact;
 
         public ContactViewHolder(View view) {
             super(view);
@@ -65,8 +64,8 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
          * @param
          */
         void setContact(final Contact contact) {
-            mContact = contact;
-            mBinding.textContactUsername.setText(contact.getUserName());
+            String s = contact.getUserName() + "\n" + contact.getEmail();
+            mBinding.textContactUsername.setText(s);
         }
     }
 }

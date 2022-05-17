@@ -9,17 +9,13 @@ import java.io.Serializable;
      */
     public class Contact  implements Serializable {
         private final String mUserName;
-        private final String mFirstName;
-        private final String mLastName;
         private final String mEmail;
 
         /**
          * Constructor for Contact
          */
-        public Contact(String userName, String firstName, String lastName, String email) {
+        public Contact(String userName, String email) {
             mUserName = userName;
-            mFirstName = firstName;
-            mLastName = lastName;
             mEmail = email;
         }
 
@@ -31,21 +27,6 @@ import java.io.Serializable;
             return mUserName;
         }
 
-        /**
-         * Getter method for First name
-         * @return first name
-         */
-        public String getFirstName() {
-            return mFirstName;
-        }
-
-        /**
-         * Getter method for Last name
-         * @return last name
-         */
-        public String getLastName() {
-            return mLastName;
-        }
 
         /**
          * Getter method for Email

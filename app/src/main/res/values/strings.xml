@@ -27,6 +27,8 @@
     <string name="action_change">Change</string>
     <string name="action_change_pass">Change Password</string>
     <string name="action_forgot">Forgot Password</string>
+    <string name="send_message">Send Message</string>
+    <string name="unfriend">Unfriend</string>
 
 
 </resources>

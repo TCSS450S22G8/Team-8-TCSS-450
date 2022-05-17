@@ -17,6 +17,7 @@
     <color name="green_dark">#087f23</color>
 
     <color name="black">#000000</color>
-    <color name="write">#ffffff</color>
+    <color name="white">#ffffff</color>
+    <color name="gray">#f8f8f2</color>
 
 </resources>

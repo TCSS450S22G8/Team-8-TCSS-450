@@ -19,8 +19,8 @@
 
     <style name="Theme.Red" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/red</item>
-        <item name="colorPrimaryVariant">@color/red_light</item>
+        <item name="colorPrimary">@color/red_light</item>
+        <item name="colorPrimaryVariant">@color/red</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/red</item>
@@ -30,14 +30,14 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
-        <item name="actionBarTheme">@style/AppBaseTheme.Toolbar.white</item>
+        <item name="actionBarTheme">@style/AppBaseTheme.Toolbar</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
     <style name="Theme.Blue" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/blue</item>
-        <item name="colorPrimaryVariant">@color/blue_light</item>
+        <item name="colorPrimary">@color/blue_light</item>
+        <item name="colorPrimaryVariant">@color/blue</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/blue</item>
@@ -47,7 +47,7 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimary</item>
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
-        <item name="actionBarTheme">@style/AppBaseTheme.Toolbar.white</item>
+        <item name="actionBarTheme">@style/AppBaseTheme.Toolbar</item>
         <item name="android:textColor">@color/black</item>
     </style>
 
@@ -67,17 +67,9 @@
         <item name="actionBarTheme">@style/AppBaseTheme.Toolbar.black</item>
     </style>
 
-
-
-
-
     <style name="AppBaseTheme.Toolbar.black" parent="Widget.AppCompat.ActionBar.Solid">
         <item name="android:textColorPrimary">@color/black</item>
         <item name="colorControlNormal">@color/black</item>
-    </style>
-    <style name="AppBaseTheme.Toolbar.white" parent="Widget.AppCompat.ActionBar.Solid">
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="colorControlNormal">@color/white</item>
     </style>
 
 </resources>

@@ -14,7 +14,15 @@ import java.util.List;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
 
-
+/**
+ * RecyclerViewAdapter for contact.
+ * Adapted from original code by Charles Bryan.
+ *
+ * @author Charles Bryan
+ * @author Rin Pham
+ * @author Shilnara Dam
+ * @version 5/17/22
+ */
 public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder> {
     private final List<Contact> mContact;
     private final ContactFragment mParent;
@@ -64,6 +72,10 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         public TextView email;
         public TextView username;
 
+        /**
+         * This method sets contact view holder.
+         * @param view
+         */
         public ContactViewHolder(View view) {
             super(view);
             mView = view;
@@ -94,12 +106,10 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             });
         }
 
-
-
         /**
-         * Set contact
+         *This method sets a contact value.
          *
-         * @param contact Contact the contact object
+         * @param contact Contact the contact object.
          */
         void setContact(final Contact contact) {
             mBinding.textContactUsername.setText(contact.getUserName());

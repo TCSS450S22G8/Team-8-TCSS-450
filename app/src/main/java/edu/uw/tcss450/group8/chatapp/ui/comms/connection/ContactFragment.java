@@ -42,7 +42,6 @@ public class ContactFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_contact, container, false);
     }
 
@@ -62,10 +61,19 @@ public class ContactFragment extends Fragment{
 
     }
 
+    /**
+     * This method will unfriend(delete) a contact in the contact list.
+     * @param email the email of the contact that will be deleted
+     */
     public void unFriend(String email) {
+
         mContact.unfriend(mUser.getJwt(), email);
     }
 
+    /**
+     * This method will send a message to a contact in the contact list.
+     * @param email the email of the contact that will be sent a message
+     */
     public void sendMessage(String email) {
         Bundle bundle = new Bundle();
         bundle.putString("email", email);

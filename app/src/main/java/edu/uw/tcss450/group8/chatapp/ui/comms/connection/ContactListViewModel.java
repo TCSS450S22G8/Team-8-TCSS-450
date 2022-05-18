@@ -64,6 +64,10 @@ public class ContactListViewModel extends AndroidViewModel {
         mContact.observe(owner, observer);
     }
 
+    /**
+     * This method gets contact list from server.
+     * @param jwt jwt of the user
+     */
     public void getContacts(JWT jwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve";
         Request request = new JsonArrayRequest(
@@ -83,7 +87,10 @@ public class ContactListViewModel extends AndroidViewModel {
         RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
                 .addToRequestQueue(request);
     }
-
+    /**
+     * This method gets contact list from server.
+     * @param jwt jwt of the user
+     */
     public void getContacts(String jwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve/" + jwt;
         Request request = new JsonArrayRequest(
@@ -97,6 +104,11 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    /**
+     * This methods unfriends a contact from the contact list.
+     * @param jwt jwt of user.
+     * @param email email of the contact that need to unfriend.
+     */
     public void unfriend(JWT jwt, String email) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/delete";
          JSONObject body = new JSONObject();
@@ -123,6 +135,10 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    /**
+     * This method handles if unfriend operation has errors.
+     * @param volleyError
+     */
     private void handleUnfriendError(VolleyError volleyError) {
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
@@ -134,6 +150,10 @@ public class ContactListViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     * This method handles if unfriend acts successful.
+     * @param response a JSON object.
+     */
     private void handleUnfriendSuccess(final JSONObject response) {
 
     }
@@ -149,7 +169,10 @@ public class ContactListViewModel extends AndroidViewModel {
                     volleyError.networkResponse.statusCode + " " + data);
         }
     }
-
+    /**
+     * This method handles if get contact acts successful.
+     * @param obj a JSON array.
+     */
     private void handleGetContactSuccess(final JSONArray obj) {
         ArrayList<Contact> list = new ArrayList<>();
         try {

@@ -64,7 +64,7 @@ public class UserInfoViewModel extends ViewModel{
             return mJwt.getClaim("email").asString();
         } else {
             throw new IllegalStateException("JWT is expired!");
-        }
+        }//
     }
 
     public JWT getJwt() {

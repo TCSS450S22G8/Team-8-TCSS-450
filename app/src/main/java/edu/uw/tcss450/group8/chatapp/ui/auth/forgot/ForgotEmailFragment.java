@@ -124,43 +124,6 @@ public class ForgotEmailFragment extends Fragment {
                 });
     }
 
-    /**
-     * Checks if the user input matches the required parameters for matching passwords.
-     * Then calls validate password.
-     */
-    /*
-    private void validatePasswordsMatch() {
-        PasswordValidator matchValidator =
-                checkClientPredicate(
-                        pwd -> pwd.equals(mBinding.editForgotPassword2.getText().toString().trim()));
-
-        mEmailValidator.processResult(
-                matchValidator.apply(mBinding.editForgotPassword1.getText().toString().trim()),
-                this::validatePassword,
-                result -> {
-                    mBinding.editForgotPassword2.setError("Passwords must match.");
-                    mBinding.layoutWait.setVisibility(View.GONE);
-                });
-    }
-
-     */
-
-    /**
-     * Checks if the user input matches the required parameters for passwords.
-     * Then calls verify auth with server.
-     */
-    /*
-    private void validatePassword() {
-        mPassWordValidator.processResult(
-                mPassWordValidator.apply(mBinding.editForgotPassword1.getText().toString()),
-                this::verifyAuthWithServer,
-                result -> {
-                    mBinding.editForgotPassword1.setError("Please enter a valid Password.");
-                    mBinding.layoutWait.setVisibility(View.GONE);
-                });
-    }
-
-     */
 
 
     /**

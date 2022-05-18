@@ -107,22 +107,7 @@ public class ForgotFragment extends Fragment {
     }
 
 
-    /**
-     * Checks user input for email to match required parameters.
-     * Calls validate password match.
-     */
-    /*
-    private void validateEmail() {
-        mEmailValidator.processResult(
-                mEmailValidator.apply(mBinding.editForgotEmail.getText().toString().trim()),
-                this::validatePasswordsMatch,
-                result -> {
-                    mBinding.editForgotEmail.setError("Please enter a valid Email address.");
-                    mBinding.layoutWait.setVisibility(View.GONE);
-                });
-    }
 
-     */
 
     /**
      * Checks if the user input matches the required parameters for matching passwords.

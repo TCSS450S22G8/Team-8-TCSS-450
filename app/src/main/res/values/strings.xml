@@ -15,6 +15,7 @@
     <string name="hint_last">Last Name</string>
     <string name="hint_password">Password</string>
     <string name="hint_password_again">Retype Password</string>
+    <string name="action_submit">Submit</string>
 
     <string name="action_register">Register</string>
     <string name="hint_nickname">Nickname</string>
@@ -27,6 +28,10 @@
     <string name="action_change">Change</string>
     <string name="action_change_pass">Change Password</string>
     <string name="action_forgot">Forgot Password</string>
+
+    <string name="hint_forgot_verify">We have sent a link to the email provided, please clink the link to progress.</string>
+    <string name="action_forgot_resend">Resend Email</string>
+    <string name="action_forgot_clicked">I have clicked the link</string>
 
 
 </resources>

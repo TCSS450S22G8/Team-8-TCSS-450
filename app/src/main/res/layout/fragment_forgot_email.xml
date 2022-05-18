@@ -19,42 +19,34 @@
             app:layout_constraintGuide_percent="0.47" />
 
         <EditText
-            android:id="@+id/edit_forgot_password_1"
-            android:layout_width="395dp"
+            android:id="@+id/edit_forgot_email"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="16dp"
             android:autofillHints=""
             android:ems="10"
-            android:hint="@string/hint_enter_new_pass"
+            android:hint="@string/hint_email"
             android:imeOptions="flagNoExtractUi"
-            android:inputType="textPassword"
+            android:inputType="textEmailAddress"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/edit_forgot_password_2"
-            android:layout_width="395dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:autofillHints=""
-            android:ems="10"
-            android:hint="@string/hint_retype_new_pass"
-            android:imeOptions="flagNoExtractUi"
-            android:inputType="textPassword"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_forgot_password_1" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.084" />
 
         <Button
             android:id="@+id/button_change"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="16dp"
-            android:text="@string/action_change"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:text="@string/action_submit"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_forgot_password_2" />
+            app:layout_constraintTop_toBottomOf="@+id/edit_forgot_email" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/layout_wait"
@@ -64,10 +56,8 @@
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.611">
+            app:layout_constraintTop_toTopOf="parent">
 
             <ProgressBar
                 android:id="@+id/progress_bar"

@@ -20,7 +20,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotBinding;
-
+import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotEmailBinding;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
@@ -31,9 +31,9 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
  * @author Levi McCoy
  * @version 1.0
  */
-public class ForgotFragment extends Fragment {
+public class ForgotEmailFragment extends Fragment {
 
-    private FragmentForgotBinding mBinding;
+    private FragmentForgotEmailBinding mBinding;
 
     private ForgotViewModel mRegisterModel;
 
@@ -43,6 +43,7 @@ public class ForgotFragment extends Fragment {
             .and(checkExcludeWhiteSpace())
             .and(checkPwdSpecialChar("@"));
 
+    /*
     private PasswordValidator mPassWordValidator =
             checkClientPredicate(pwd -> pwd.equals(mBinding.editForgotPassword2.getText().toString()))
                     .and(checkPwdLength(7))
@@ -51,11 +52,13 @@ public class ForgotFragment extends Fragment {
                     .and(checkPwdDigit())
                     .and(checkPwdLowerCase().or(checkPwdUpperCase()));
 
+     */
+
 
     /**
      * Required empty constructor for the register fragment
      */
-    public ForgotFragment() {
+    public ForgotEmailFragment() {
         // Required empty public constructor
     }
 
@@ -70,7 +73,7 @@ public class ForgotFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        mBinding = FragmentForgotBinding.inflate(inflater);
+        mBinding = FragmentForgotEmailBinding.inflate(inflater);
         return mBinding.getRoot();
     }
 
@@ -81,7 +84,7 @@ public class ForgotFragment extends Fragment {
 
 
         mBinding.buttonChange.setOnClickListener(button -> {
-            attemptChange(button);
+            attemptSubmit(button);
             //Navigation.findNavController(getView()).navigate(
             //RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
         });
@@ -101,9 +104,9 @@ public class ForgotFragment extends Fragment {
      *
      * @param button button clicked
      */
-    private void attemptChange(final View button) {
+    private void attemptSubmit(final View button) {
         mBinding.layoutWait.setVisibility(View.VISIBLE);
-        validatePasswordsMatch();
+        validateEmail();
     }
 
 
@@ -111,23 +114,21 @@ public class ForgotFragment extends Fragment {
      * Checks user input for email to match required parameters.
      * Calls validate password match.
      */
-    /*
     private void validateEmail() {
         mEmailValidator.processResult(
                 mEmailValidator.apply(mBinding.editForgotEmail.getText().toString().trim()),
-                this::validatePasswordsMatch,
+                this::verifyAuthWithServer,
                 result -> {
                     mBinding.editForgotEmail.setError("Please enter a valid Email address.");
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
 
-     */
-
     /**
      * Checks if the user input matches the required parameters for matching passwords.
      * Then calls validate password.
      */
+    /*
     private void validatePasswordsMatch() {
         PasswordValidator matchValidator =
                 checkClientPredicate(
@@ -142,10 +143,13 @@ public class ForgotFragment extends Fragment {
                 });
     }
 
+     */
+
     /**
      * Checks if the user input matches the required parameters for passwords.
      * Then calls verify auth with server.
      */
+    /*
     private void validatePassword() {
         mPassWordValidator.processResult(
                 mPassWordValidator.apply(mBinding.editForgotPassword1.getText().toString()),
@@ -156,13 +160,15 @@ public class ForgotFragment extends Fragment {
                 });
     }
 
+     */
+
 
     /**
      * Sends Asynchronous JSON request to the server for user registration
      * information validation.
      */
     private void verifyAuthWithServer() {
-        navigateToLogin();
+        navigateToEmailCheck();
         //mRegisterModel.connect(
                 //mBinding.editChangeCurPass.getText().toString(),
                 //mBinding.editChangePassword1.getText().toString());
@@ -177,7 +183,7 @@ public class ForgotFragment extends Fragment {
     /**
      * Navigates to the verify fragment to continue registration by verifying email.
      */
-    private void navigateToLogin() {
+    private void navigateToEmailCheck() {
         // ToDO: Register to Verification to autofill login
 //        RegisterFragmentDirections.ActionRegisterFragmentToLoginFragment directions =
 //                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
@@ -185,7 +191,7 @@ public class ForgotFragment extends Fragment {
 //        directions.setEmail(binding.editEmail.getText().toString());
 //        directions.setPassword(binding.editPassword1.getText().toString());
 
-        Navigation.findNavController(getView()).navigate(ForgotFragmentDirections.actionForgotFragmentToLoginFragment());
+        Navigation.findNavController(getView()).navigate(ForgotEmailFragmentDirections.actionForgotEmailFragmentToForgotConfirmFragment());
 
     }
 

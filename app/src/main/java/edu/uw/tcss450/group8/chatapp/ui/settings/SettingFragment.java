@@ -4,6 +4,8 @@ import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.setEmail;
 import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.setJWT;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.setThemeColor;
 
+import android.content.res.Configuration;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +16,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentSettingBinding;
@@ -64,20 +67,37 @@ public class SettingFragment extends Fragment {
             //It will not be added to backstack.
             getActivity().finish();
         });
-        binding.textSettingsOrangeColor.setOnClickListener(button -> SetColor("orange"));
-        binding.textSettingsRedColor.setOnClickListener(button -> SetColor("red"));
-        binding.textSettingsBlueColor.setOnClickListener(button -> SetColor("blue"));
-        binding.textSettingsGreenColor.setOnClickListener(button -> SetColor("green"));
+
+        TextView orange = view.findViewById(R.id.text_settings_OrangeColor);
+        TextView red = view.findViewById(R.id.text_settings_redColor);
+        TextView blue = view.findViewById(R.id.text_settings_blueColor);
+        TextView green = view.findViewById(R.id.text_settings_greenColor);
+
+        binding.textSettingsOrangeColor.setOnClickListener(button -> SetColor(orange,"orange"));
+        binding.textSettingsRedColor.setOnClickListener(button -> SetColor(red,"red"));
+        binding.textSettingsBlueColor.setOnClickListener(button -> SetColor(blue,"blue"));
+        binding.textSettingsGreenColor.setOnClickListener(button -> SetColor(green,"green"));
+
+
+        if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
+            orange.setBackgroundColor(Color.parseColor("#c63f17"));
+            red.setBackgroundColor(Color.parseColor("#8e0000"));
+            blue.setBackgroundColor(Color.parseColor("#003c8f"));
+            green.setBackgroundColor(Color.parseColor("#087f23"));
+
+        }
 
     }
 
 
     /**
      * helper method to set color.
+     *
      * @param color the color of the theme
      */
-    private void SetColor(String color) {
+    private void SetColor(TextView tv, String color) {
         setThemeColor(getActivity(), color);
+        tv.setBackgroundColor(Color.parseColor("#ffffff"));
         getActivity().recreate();
     }
 

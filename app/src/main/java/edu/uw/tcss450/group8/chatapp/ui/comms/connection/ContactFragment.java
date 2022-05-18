@@ -31,7 +31,6 @@ public class ContactFragment extends Fragment{
     private ContactListViewModel mContact;
     private UserInfoViewModel mUser;
 
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

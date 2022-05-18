@@ -57,7 +57,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     }
 
 
-
     /**
      * Objects from this class represent an Individual row View from the List * of rows in the
      * Message Recycler View.

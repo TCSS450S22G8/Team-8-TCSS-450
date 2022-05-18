@@ -43,8 +43,6 @@ import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherViewModel;
 public class ContactListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
 
-
-
     /**
      * Constructor for Contact List ViewModel
      * @param application app

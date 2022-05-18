@@ -35,7 +35,7 @@ public class ForgotFragment extends Fragment {
 
     private FragmentForgotBinding mBinding;
 
-    private ForgotViewModel mRegisterModel;
+    private ForgotViewModel mResetPassword;
 
 
 
@@ -62,7 +62,7 @@ public class ForgotFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRegisterModel = new ViewModelProvider(getActivity())
+        mResetPassword = new ViewModelProvider(getActivity())
                 .get(ForgotViewModel.class);
     }
 
@@ -147,10 +147,9 @@ public class ForgotFragment extends Fragment {
      * information validation.
      */
     private void verifyAuthWithServer() {
+        String email = ForgotFragmentArgs.fromBundle(getArguments()).getEmail();
+        mResetPassword.resetUserPassword(email, mBinding.editForgotPassword2.getText().toString());
         navigateToLogin();
-        //mRegisterModel.connect(
-                //mBinding.editChangeCurPass.getText().toString(),
-                //mBinding.editChangePassword1.getText().toString());
 
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().

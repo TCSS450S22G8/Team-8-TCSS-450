@@ -72,6 +72,9 @@
     <action
         android:id="@+id/action_forgotConfirmFragment_to_forgotFragment"
         app:destination="@id/forgotFragment" />
+        <argument
+            android:name="email"
+            app:argType="string" />
     </fragment>
 
     <fragment
@@ -81,5 +84,8 @@
         <action
             android:id="@+id/action_forgotFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <argument
+            android:name="email"
+            app:argType="string" />
     </fragment>
 </navigation>

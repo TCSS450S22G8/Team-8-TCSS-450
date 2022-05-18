@@ -35,7 +35,7 @@ public class ForgotEmailFragment extends Fragment {
 
     private FragmentForgotEmailBinding mBinding;
 
-    private ForgotViewModel mRegisterModel;
+    private ForgotViewModel mForgotModel;
 
 
 
@@ -65,7 +65,7 @@ public class ForgotEmailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRegisterModel = new ViewModelProvider(getActivity())
+        mForgotModel = new ViewModelProvider(getActivity())
                 .get(ForgotViewModel.class);
     }
 
@@ -132,9 +132,8 @@ public class ForgotEmailFragment extends Fragment {
      */
     private void verifyAuthWithServer() {
         navigateToEmailCheck();
-        //mRegisterModel.connect(
-                //mBinding.editChangeCurPass.getText().toString(),
-                //mBinding.editChangePassword1.getText().toString());
+        mForgotModel.sendForgotPasswordEmail(
+                mBinding.editForgotEmail.getText().toString());
 
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
@@ -154,7 +153,10 @@ public class ForgotEmailFragment extends Fragment {
 //        directions.setEmail(binding.editEmail.getText().toString());
 //        directions.setPassword(binding.editPassword1.getText().toString());
 
-        Navigation.findNavController(getView()).navigate(ForgotEmailFragmentDirections.actionForgotEmailFragmentToForgotConfirmFragment());
+        Navigation.findNavController(getView()).
+                navigate(ForgotEmailFragmentDirections.
+                        actionForgotEmailFragmentToForgotConfirmFragment(
+                                mBinding.editForgotEmail.getText().toString()));
 
     }
 

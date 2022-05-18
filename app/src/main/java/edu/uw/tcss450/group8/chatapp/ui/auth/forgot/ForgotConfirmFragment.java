@@ -21,6 +21,7 @@ import androidx.navigation.Navigation;
 
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotConfirmlBinding;
+import edu.uw.tcss450.group8.chatapp.ui.auth.register.RegisterFragmentDirections;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
@@ -35,7 +36,7 @@ public class ForgotConfirmFragment extends Fragment {
 
     private FragmentForgotConfirmlBinding mBinding;
 
-    private ForgotViewModel mRegisterModel;
+    private ForgotViewModel mModel;
 
 
     /*
@@ -64,7 +65,7 @@ public class ForgotConfirmFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRegisterModel = new ViewModelProvider(getActivity())
+        mModel = new ViewModelProvider(getActivity())
                 .get(ForgotViewModel.class);
     }
 
@@ -81,12 +82,25 @@ public class ForgotConfirmFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
-        mBinding.buttonChange.setOnClickListener(button -> {
-            attemptSubmit(button);
-            //Navigation.findNavController(getView()).navigate(
-            //RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
+        String email = ForgotConfirmFragmentArgs.fromBundle(getArguments()).getEmail();
+        mBinding.buttonForgotConfirmResend.setOnClickListener(button -> {
+             mModel.sendForgotPasswordEmail(email);
         });
+        mBinding.buttonForgotConfirmLink.setOnClickListener(button -> {
+            mModel.sendVerifiedPasswordReset(email);
+
+        });
+
+        mModel.addEmailSuccessObserver(getViewLifecycleOwner(), success -> {
+            if(success) {
+                Navigation.findNavController(getView()).navigate(
+                        ForgotConfirmFragmentDirections.actionForgotConfirmFragmentToForgotFragment(email));
+
+            } else {
+                // popup need to confirm email address to continue
+            }
+        });
+
         /*
         mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
                 this::observeResponse
@@ -96,51 +110,51 @@ public class ForgotConfirmFragment extends Fragment {
 
 
     }
+//
+//    /**
+//     * Attempts to Chane to the new password, validates the user entered information,
+//     * then sends it to the server for validation.
+//     *
+//     * @param button button clicked
+//     */
+//    private void attemptSubmit(final View button) {
+//        //mBinding.layoutWait.setVisibility(View.VISIBLE);
+//        verifyAuthWithServer();
+//    }
 
-    /**
-     * Attempts to Chane to the new password, validates the user entered information,
-     * then sends it to the server for validation.
-     *
-     * @param button button clicked
-     */
-    private void attemptSubmit(final View button) {
-        //mBinding.layoutWait.setVisibility(View.VISIBLE);
-        verifyAuthWithServer();
-    }
 
 
-
-    /**
-     * Sends Asynchronous JSON request to the server for user registration
-     * information validation.
-     */
-    private void verifyAuthWithServer() {
-        navigateToForgot();
-        //mRegisterModel.connect(
-                //mBinding.editChangeCurPass.getText().toString(),
-                //mBinding.editChangePassword1.getText().toString());
+//    /**
+//     * Sends Asynchronous JSON request to the server for user registration
+//     * information validation.
+//     */
+//    private void verifyAuthWithServer() {
+//        navigateToForgot();
+//        mRegisterModel.connect(
+//                mBinding.editChangeCurPass.getText().toString(),
+//                mBinding.editChangePassword1.getText().toString());
 
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
-
-
-    }
+//
+//
+//    }
 
 
     /**
      * Navigates to the verify fragment to continue registration by verifying email.
      */
-    private void navigateToForgot() {
-        // ToDO: Register to Verification to autofill login
+//    private void navigateToForgot() {
+//        // ToDO: Register to Verification to autofill login
 //        RegisterFragmentDirections.ActionRegisterFragmentToLoginFragment directions =
 //                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
 //
 //        directions.setEmail(binding.editEmail.getText().toString());
 //        directions.setPassword(binding.editPassword1.getText().toString());
-
-        Navigation.findNavController(getView()).navigate(ForgotConfirmFragmentDirections.actionForgotConfirmFragmentToForgotFragment());
-
-    }
+//
+//        Navigation.findNavController(getView()).navigate(ForgotConfirmFragmentDirections.actionForgotConfirmFragmentToForgotFragment());
+//
+//    }
 
 
     /**

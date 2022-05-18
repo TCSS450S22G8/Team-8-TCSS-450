@@ -19,7 +19,7 @@
             app:layout_constraintGuide_percent="0.47" />
 
         <Button
-            android:id="@+id/button_change"
+            android:id="@+id/button_forgot_confirm_link"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="28dp"
@@ -29,14 +29,14 @@
             app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <Button
-            android:id="@+id/button_change2"
+            android:id="@+id/button_forgot_confirm_resend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="@string/action_forgot_resend"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_change" />
+            app:layout_constraintTop_toBottomOf="@+id/button_forgot_confirm_link" />
 
         <TextView
             android:id="@+id/textView"

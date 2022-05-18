@@ -84,18 +84,18 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
-    public void getContacts(String jwt) {
-        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve/" + jwt;
-        Request request = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                null,
-                this::handleGetContactSuccess,
-                this::handleGetContactError); {
-        }
-        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
-                .addToRequestQueue(request);
-    }
+//    public void getContacts(String jwt) {
+//        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve/" + jwt;
+//        Request request = new JsonArrayRequest(
+//                Request.Method.GET,
+//                url,
+//                null,
+//                this::handleGetContactSuccess,
+//                this::handleGetContactError); {
+//        }
+//        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+//                .addToRequestQueue(request);
+//    }
 
     public void unfriend(JWT jwt, String email) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/delete";

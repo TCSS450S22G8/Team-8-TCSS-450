@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="@+id/text_title">
 
         <TextView
-            android:id="@+id/text_pubdate"
+            android:id="@+id/text_chatid"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:paddingLeft="8dp"
@@ -40,7 +40,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/buitton_more"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_pubdate" />
+            app:layout_constraintTop_toBottomOf="@+id/text_chatid" />
 
         <TextView
             android:id="@+id/text_preview"
@@ -68,13 +68,12 @@
             app:srcCompat="@drawable/ic_more_grey_24dp" />
 
         <Button
-            android:id="@+id/button_full_post"
+            android:id="@+id/button_chat_room_open_chat"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:text="@string/title_chat"
-            android:textColor="@color/black"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_preview"
             tools:visibility="visible" />

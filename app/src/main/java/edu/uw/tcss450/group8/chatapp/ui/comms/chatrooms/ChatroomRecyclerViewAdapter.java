@@ -1,9 +1,12 @@
 
 package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,13 +29,16 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
     //Store all of the blogs to present
     private final List<Chatroom> mChatroom;
 
+    private final ChatroomListFragment mParent;
+
     /**
      * Constructor for MessageRecyclerViewAdapter
      *
      * @param items list of chatroom
      */
-    public ChatroomRecyclerViewAdapter(List<Chatroom> items) {
+    public ChatroomRecyclerViewAdapter(List<Chatroom> items, ChatroomListFragment parent) {
         this.mChatroom = items;
+        this.mParent = parent;
     }
 
     @NonNull
@@ -61,11 +67,25 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         public final View mView;
         public FragmentChatroomCardBinding binding;
         private Chatroom mChatroom;
+        private Button openChat;
+        private TextView chatId;
+        private TextView chatName;
 
         public ChatroomViewHolder(View view) {
             super(view);
             mView = view;
             binding = FragmentChatroomCardBinding.bind(view);
+            openChat = mView.findViewById(R.id.button_chat_room_open_chat);
+            chatId = mView.findViewById(R.id.text_chatid);
+            chatId.setVisibility(View.INVISIBLE);
+            chatName = mView.findViewById(R.id.text_title);
+            openChat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.e("chatid", chatId.getText().toString());
+                    mParent.startChat(Integer.parseInt(chatId.getText().toString()));
+                }
+            });
         }
 
         /**
@@ -75,11 +95,10 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
          */
         void setChatroom(final Chatroom chatroom) {
             mChatroom = chatroom;
-            binding.textPreview.setText(chatroom.getMessage());
-            binding.textPubdate.setText(chatroom.getSentDate());
-            binding.textTitle.setText(chatroom.getSent());
+            binding.textTitle.setText(chatroom.getChatRoomName());
+            binding.textChatid.setText(chatroom.getChatRoomId());
 
-           // binding.textMessageMessage.setText(chatroom.getMessage());
+            // binding.textMessageMessage.setText(chatroom.getMessage());
         }
     }
 }

@@ -9,11 +9,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import java.util.Objects;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomListBinding;
+import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 
 /**
@@ -27,10 +29,13 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomListBinding;
 public class ChatroomListFragment extends Fragment {
     private ChatroomViewModel mModel;
 
+    private UserInfoViewModel mUser;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mModel = new ViewModelProvider(getActivity()).get(ChatroomViewModel.class);
+        mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
     }
 
     @Override
@@ -44,14 +49,21 @@ public class ChatroomListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FragmentChatroomListBinding binding = FragmentChatroomListBinding.bind(getView());
-        mModel.addBlogListObserver(getViewLifecycleOwner(), blogList -> {
-            if (!blogList.isEmpty()) {
+        mModel.getChatRoomsForUser(mUser.getJwt());
+        mModel.addChatRoomListObserver(getViewLifecycleOwner(), chatList -> {
+            if (!chatList.isEmpty()) {
 
                 binding.listRoot.setAdapter(
-                        new ChatroomRecyclerViewAdapter(ChatroomGenerator.getChatroomList())
+                        new ChatroomRecyclerViewAdapter(chatList, this)
                 );
 //                binding.layoutWait.setVisibility(View.GONE);
             }
         });
+    }
+
+    public void startChat(int chatId) {
+        Navigation.findNavController(getView()).
+                navigate(ChatroomListFragmentDirections.
+                        actionNavChatroomFragmentToMessageListFragment(chatId));
     }
 }

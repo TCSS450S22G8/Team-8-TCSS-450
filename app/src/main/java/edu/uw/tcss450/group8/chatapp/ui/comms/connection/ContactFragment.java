@@ -52,8 +52,8 @@ public class ContactFragment extends Fragment{
         FragmentContactBinding binding = FragmentContactBinding.bind(getView());
 
         // get user contacts
-        //mContact.getContacts(mUser.getJwt());
-        mContact.getContacts("4");
+        mContact.getContacts(mUser.getJwt());
+//        mContact.getContacts("4");
         mContact.addContactsListObserver(getViewLifecycleOwner(), contacts -> {
             binding.listRoot.setAdapter(
                     new ContactRecyclerViewAdapter(contacts, this)

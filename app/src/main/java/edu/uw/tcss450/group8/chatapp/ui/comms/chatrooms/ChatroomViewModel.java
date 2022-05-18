@@ -1,6 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -10,14 +11,21 @@ import androidx.lifecycle.Observer;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.auth0.android.jwt.JWT;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-
+import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
 
 
 /**
@@ -54,25 +62,43 @@ public class ChatroomViewModel extends AndroidViewModel {
 //    /**
 //     * sends a JSON request for all the chats the user is in
 //     *
-//     * @param theZipcode String the zipcode of the desired location
+//     * @param jwt String the zipcode of the desired location
 //     */
-//    public void getChatsForUser(final String theZipcode) {
-//        String url = "https://tcss-450-sp22-group-8.herokuapp.com/weather/zipcode/" + theZipcode;
-//        //String url = "http://10.0.2.2:5000/weather/zipcode";
-//        //create request
-//        Request<JSONObject> request = new JsonObjectRequest(
-//                Request.Method.GET,
+//    public void getChatRoomsForUser(JWT jwt) {
+//        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/get";
+//
+//        Request<JSONArray> request = new JsonArrayRequest(
+//                Request.Method.POST,
 //                url,
 //                null,
-//                this::handleResult,
-//                this::handleErrorZipcode);
-//        request.setRetryPolicy(new DefaultRetryPolicy(
-//                10_000,
-//                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-//                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//        //Instantiate the RequestQueue and add the request to the queue
-//        Volley.newRequestQueue(getApplication().getApplicationContext())
-//                .add(request);
+//                this::handleGetChatRoomSuccess,
+//                this::handleGetChatRoomError) {
+//            @Override
+//            public Map<String, String> getHeaders() {
+//                Map<String, String> headers = new HashMap<>();
+//                // add headers <key,value>
+//                headers.put("Authorization", jwt.toString());
+//                return headers;
+//            }
+//        };
+//        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+//                .addToRequestQueue(request);
+//    }
+//
+//    public void handleGetChatRoomSuccess(final JSONArray chatRooms) {
+//        ArrayList<Chatroom> listChatRooms = new ArrayList<>();
+//        try {
+//            for (int i = 0; i < chatRooms.length(); i++) {
+//                JSONObject temp = chatRooms.getJSONObject(i);
+//                listChatRooms.add(new Chatroom(temp.))
+//            }
+//        } catch (JSONException e){
+//            Log.e("JSON PARSE ERROR", "Found in handle Success");
+//            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
+//        }
+//
+//
+//        //Volley error for handleChatRoomError
 //    }
 
 

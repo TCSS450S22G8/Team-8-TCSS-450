@@ -154,7 +154,7 @@ public class ContactListViewModel extends AndroidViewModel {
         ArrayList<Contact> list = new ArrayList<>();
         try {
             for (int i = 0; i <  obj.length(); i++) {
-                JSONObject  contact = obj.getJSONObject(i);
+                JSONObject contact = obj.getJSONObject(i);
                 list.add(new Contact(
                         contact.getString("username"),
                         contact.getString("email")));

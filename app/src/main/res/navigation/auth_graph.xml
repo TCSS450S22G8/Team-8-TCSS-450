@@ -25,8 +25,8 @@
             app:argType="string"
             android:defaultValue="default" />
         <action
-            android:id="@+id/action_loginFragment_to_forgotFragment"
-            app:destination="@id/forgotFragment" />
+            android:id="@+id/action_loginFragment_to_forgotEmailFragment"
+            app:destination="@id/forgotEmailFragment" />
     </fragment>
     <activity
         android:id="@+id/mainActivity"
@@ -57,6 +57,23 @@
             android:id="@+id/action_verifyFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/forgotEmailFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.auth.forgot.ForgotEmailFragment"
+        android:label="ForgotEmailFragment" >
+        <action
+            android:id="@+id/action_forgotEmailFragment_to_forgotConfirmFragment"
+            app:destination="@id/forgotConfirmFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotConfirmFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.auth.forgot.ForgotConfirmFragment"
+        android:label="ForgotConfirmFragment" >
+    <action
+        android:id="@+id/action_forgotConfirmFragment_to_forgotFragment"
+        app:destination="@id/forgotFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/forgotFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.auth.forgot.ForgotFragment"

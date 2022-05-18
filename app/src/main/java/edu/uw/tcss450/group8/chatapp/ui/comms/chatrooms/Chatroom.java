@@ -13,6 +13,7 @@ public class Chatroom implements Serializable {
     private final String mMessage;
     private final String mSent;
     private final String mSentDate;
+    private final int mChatRoomId;
 
     /**
      * Constructor for Message
@@ -25,6 +26,7 @@ public class Chatroom implements Serializable {
         mMessage = message;
         mSent = sent;
         mSentDate = sentDate;
+        mChatRoomId = 1;
     }
 
     /**
@@ -52,5 +54,9 @@ public class Chatroom implements Serializable {
      */
     public String getSentDate() {
         return mSentDate;
+    }
+
+    public int getChatRoomId() {
+        return mChatRoomId;
     }
 }

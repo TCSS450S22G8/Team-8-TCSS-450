@@ -40,4 +40,10 @@
     <string name="send_message">Send Message</string>
     <string name="unfriend">Unfriend</string>
 
+    <string name="action_submit">Submit</string>
+    <string name="hint_forgot_verify">We have sent a link to the email provided, please clink the link to progress.</string>
+    <string name="action_forgot_resend">Resend Email</string>
+    <string name="action_forgot_clicked">I have clicked the link</string>
+
+
 </resources>

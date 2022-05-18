@@ -16,7 +16,7 @@ import java.util.List;
 public final class ChatroomGenerator {
 
     private static final Chatroom[] CHATROOMS;
-    public static final int COUNT = 2;
+    public static final int COUNT = 4;
 
     /**
      *  generate mock chatroom

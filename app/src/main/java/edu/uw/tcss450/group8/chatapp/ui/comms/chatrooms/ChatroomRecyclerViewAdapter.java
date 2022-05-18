@@ -75,6 +75,8 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
          */
         void setChatroom(final Chatroom chatroom) {
             mChatroom = chatroom;
+            binding.textPreview.setText(chatroom.getMessage());
+
            // binding.textMessageMessage.setText(chatroom.getMessage());
         }
     }

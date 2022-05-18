@@ -37,13 +37,13 @@
         tools:layout="@layout/activity_auth" />
     <fragment
         android:id="@+id/nav_connections_fragment"
-        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.ConnectionsFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactFragment"
         android:label="@string/title_connections"
-        tools:layout="@layout/fragment_connections" />
+        tools:layout="@layout/fragment_contact" />
     <fragment
         android:id="@+id/nav_chatroom_fragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomListFragment"
-        android:label="ChatroomListFragment"/>
+        android:label="@string/title_chat_rooms"/>
     <fragment
         android:id="@+id/changeFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.settings.change.ChangeFragment"

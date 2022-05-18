@@ -52,8 +52,7 @@ public class ChatroomViewModel extends AndroidViewModel {
 
 
 //    /**
-//     * sends a JSON request for the current weather based on zipcode
-//     * the zipcode is sent through the url
+//     * sends a JSON request for all the chats the user is in
 //     *
 //     * @param theZipcode String the zipcode of the desired location
 //     */

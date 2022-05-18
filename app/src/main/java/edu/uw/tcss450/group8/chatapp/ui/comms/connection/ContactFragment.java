@@ -11,9 +11,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactBinding;
+import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 /**
@@ -24,16 +26,18 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
  * @author Rin Pham
  * @version 1.0
  */
-public class ContactFragment extends Fragment {
+public class ContactFragment extends Fragment{
     private ContactListViewModel mContact;
-    //private UserInfoViewModel mUser;
+    //private FragmentContactCardBinding mbinding;
+    private UserInfoViewModel mUser;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContact = new ViewModelProvider(getActivity()).get(ContactListViewModel.class);
-        //mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
+        //mbinding = FragmentContactCardBinding.bind(getView());
+        // get user view model; mUser =
     }
 
     @Override
@@ -47,12 +51,15 @@ public class ContactFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         FragmentContactBinding binding = FragmentContactBinding.bind(getView());
+
+        // get user contacts
+        //mContact.getContacts(mUser.getJwt());
         mContact.getContacts("4");
-        //Log.e("asd", mUser.getJwt().getClaim("email").asString());
         mContact.addContactsListObserver(getViewLifecycleOwner(), contacts -> {
                 binding.listRoot.setAdapter(
                         new ContactRecyclerViewAdapter(contacts)
                 );
         });
+
     }
 }

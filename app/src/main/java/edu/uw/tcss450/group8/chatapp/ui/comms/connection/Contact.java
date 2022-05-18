@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.connection;
 
+import android.util.Log;
+
 import java.io.Serializable;
     /**
      * A class to encapsulate a contact.

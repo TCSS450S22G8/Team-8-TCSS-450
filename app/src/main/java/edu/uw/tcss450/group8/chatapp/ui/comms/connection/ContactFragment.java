@@ -24,11 +24,11 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
  *
  * @author Charles Bryan
  * @author Rin Pham
- * @version 1.0
+ * @author Shilnara Dam
+ * @version 5/17/22
  */
 public class ContactFragment extends Fragment{
     private ContactListViewModel mContact;
-    //private FragmentContactCardBinding mbinding;
     private UserInfoViewModel mUser;
 
 
@@ -36,8 +36,7 @@ public class ContactFragment extends Fragment{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContact = new ViewModelProvider(getActivity()).get(ContactListViewModel.class);
-        //mbinding = FragmentContactCardBinding.bind(getView());
-        // get user view model; mUser =
+        mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
     }
 
     @Override
@@ -57,9 +56,19 @@ public class ContactFragment extends Fragment{
         mContact.getContacts("4");
         mContact.addContactsListObserver(getViewLifecycleOwner(), contacts -> {
                 binding.listRoot.setAdapter(
-                        new ContactRecyclerViewAdapter(contacts)
+                        new ContactRecyclerViewAdapter(contacts, this)
                 );
         });
 
+    }
+
+    public void unFriend(String email) {
+        mContact.unfriend(mUser.getJwt(), email);
+    }
+
+    public void sendMessage(String email) {
+        Bundle bundle = new Bundle();
+        bundle.putString("email", email);
+       // Navigation.findNavController(getView()).navigate(RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
     }
 }

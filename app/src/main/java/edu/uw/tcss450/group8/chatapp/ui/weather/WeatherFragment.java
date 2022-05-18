@@ -31,7 +31,6 @@ public class WeatherFragment extends Fragment {
     private FragmentWeatherBinding mBinding;
 
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,6 +99,7 @@ public class WeatherFragment extends Fragment {
             setDataToBlank();
             mWeatherModel.getWeatherLatLon(mBinding.editWeatherLat.getText().toString(),
                     mBinding.editWeatherLon.getText().toString());
+
         });
 
     }

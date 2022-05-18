@@ -19,13 +19,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherViewModel;
 
 
 /**
@@ -34,11 +37,13 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
  *
  * @author Charles Bryan
  * @author Rin Pham
- * @version 1.0
+ * @author Shilnara Dam
+ * @version 5/17/22
  */
 public class ContactListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
-    private JSONArray mResponse;
+
+
 
     /**
      * Constructor for Contact List ViewModel
@@ -54,11 +59,11 @@ public class ContactListViewModel extends AndroidViewModel {
      * @param owner owner of lifecycle
      * @param observer contact list
      */
-    public void addContactsListObserver(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<Contact>> observer) {
+    public void addContactsListObserver(@NonNull LifecycleOwner owner,
+                                        @NonNull Observer<? super List<Contact>> observer) {
         mContact.observe(owner, observer);
     }
 
-    /*
     public void getContacts(JWT jwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve";
         Request request = new JsonArrayRequest(
@@ -79,8 +84,6 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
-     */
-
     public void getContacts(String jwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve/" + jwt;
         Request request = new JsonArrayRequest(
@@ -89,15 +92,13 @@ public class ContactListViewModel extends AndroidViewModel {
                 null,
                 this::handleGetContactSuccess,
                 this::handleGetContactError); {
-
         }
         RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
                 .addToRequestQueue(request);
     }
 
-
     public void unfriend(JWT jwt, String email) {
-        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/delete/";
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/delete";
          JSONObject body = new JSONObject();
         try {
             body.put("email", email);
@@ -123,7 +124,14 @@ public class ContactListViewModel extends AndroidViewModel {
     }
 
     private void handleUnfriendError(VolleyError volleyError) {
-        volleyError.getMessage();
+        if (Objects.isNull(volleyError.networkResponse)) {
+            Log.e("NETWORK ERROR", volleyError.getMessage());
+        }
+        else {
+            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
+            Log.e("CLIENT ERROR",
+                    volleyError.networkResponse.statusCode + " " + data);
+        }
     }
 
     private void handleUnfriendSuccess(final JSONObject response) {
@@ -131,17 +139,22 @@ public class ContactListViewModel extends AndroidViewModel {
     }
 
     private void handleGetContactError(VolleyError volleyError) {
-        Log.e("CONTACT", volleyError.toString());
+        if (Objects.isNull(volleyError.networkResponse)) {
+            Log.e("NETWORK ERROR", volleyError.getMessage());
+        }
+        else {
+            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
+            mContact.setValue(new ArrayList<>());
+            Log.e("CLIENT ERROR",
+                    volleyError.networkResponse.statusCode + " " + data);
+        }
     }
 
     private void handleGetContactSuccess(final JSONArray obj) {
-        mResponse = obj;
-        Log.e("CONTACT", obj.toString());
-        Log.e("CONTACT", "Here");
         ArrayList<Contact> list = new ArrayList<>();
         try {
-            for (int i = 0; i <  mResponse.length(); i++) {
-                JSONObject  contact = mResponse.getJSONObject(i);
+            for (int i = 0; i <  obj.length(); i++) {
+                JSONObject  contact = obj.getJSONObject(i);
                 list.add(new Contact(
                                 contact.getString("username"),
                                 contact.getString("email")));
@@ -151,8 +164,5 @@ public class ContactListViewModel extends AndroidViewModel {
             Log.e("JSON PARSE ERROR", "Found in handle Success");
             Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
         }
-
     }
-
-
 }

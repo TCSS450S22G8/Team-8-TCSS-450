@@ -17,6 +17,7 @@ public class UserInfoViewModel extends ViewModel{
             this.jwt = jwt;
         }
 
+
         @NonNull
         @Override
         public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
@@ -35,6 +36,8 @@ public class UserInfoViewModel extends ViewModel{
     private UserInfoViewModel(JWT jwt) {
         mJwt = jwt;
     }
+
+
 
 
 

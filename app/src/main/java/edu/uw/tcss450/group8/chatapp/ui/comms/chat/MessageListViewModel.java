@@ -29,7 +29,7 @@ public class MessageListViewModel extends AndroidViewModel {
     public MessageListViewModel(@NonNull Application application) {
         super(application);
         mMessageList = new MutableLiveData<>();
-        mMessageList.setValue(MessageGenerator.getMessageList());
+        mMessageList.setValue(MessageGenerator.getMessageList()); // Get Message from backend
     }
 
     /**

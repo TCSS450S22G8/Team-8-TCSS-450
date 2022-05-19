@@ -1,7 +1,5 @@
-
 package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +20,7 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomCardBinding;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 1.0
+ * @version 5/19/22
  */
 public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRecyclerViewAdapter.ChatroomViewHolder> {
 
@@ -71,6 +69,11 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         private TextView chatId;
         private TextView chatName;
 
+        /**
+         * Constructor for View Holder
+         *
+         * @param view View
+         */
         public ChatroomViewHolder(View view) {
             super(view);
             mView = view;
@@ -82,23 +85,20 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             openChat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Log.e("chatid", chatId.getText().toString());
                     mParent.startChat(Integer.parseInt(chatId.getText().toString()));
                 }
             });
         }
 
         /**
-         * Set message
+         * Sets the chat room id and name
          *
-         * @param chatroom chatroom
+         * @param chatroom Chatroom
          */
         void setChatroom(final Chatroom chatroom) {
             mChatroom = chatroom;
             binding.textTitle.setText(chatroom.getChatRoomName());
             binding.textChatid.setText(chatroom.getChatRoomId());
-
-            // binding.textMessageMessage.setText(chatroom.getMessage());
         }
     }
 }

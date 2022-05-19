@@ -8,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import android.widget.Toast;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactBinding;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 /**
@@ -26,7 +24,7 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
  * @author Charles Bryan
  * @author Rin Pham
  * @author Shilnara Dam
- * @version 5/18/22
+ * @version 5/19/22
  */
 public class ContactFragment extends Fragment{
 
@@ -105,6 +103,5 @@ public class ContactFragment extends Fragment{
     public void sendMessage(String email) {
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
-        // Navigation.findNavController(getView()).navigate(RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
     }
 }

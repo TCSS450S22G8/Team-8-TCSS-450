@@ -14,7 +14,17 @@ import java.util.List;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
 
-
+/**
+ * Recycler View to show all contacts as a list.
+ *
+ * Adapted from original code by Charles Bryan
+ *
+ * @author Charles Bryan
+ * @author Rin Pham
+ * @author Shilnara Dam
+ * @author Sean Logan
+ * @version 5/19/22
+ */
 public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder> {
     private final List<Contact> mContact;
     private final ContactFragment mParent;
@@ -49,7 +59,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     }
 
 
-
     /**
      * Objects from this class represent an Individual row View from the List * of rows in the
      * Message Recycler View.
@@ -64,6 +73,11 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         public TextView email;
         public TextView username;
 
+        /**
+         * Constructor for View Holder
+         *
+         * @param view View
+         */
         public ContactViewHolder(View view) {
             super(view);
             mView = view;

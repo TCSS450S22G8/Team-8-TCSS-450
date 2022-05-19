@@ -13,7 +13,6 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.auth0.jwt.JWT;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,20 +22,26 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
 
 /**
- * do it
+ * View Model for messages sent.
+ * Adapted form original code by Charles Bryan
+ *
+ * @author Charles Bryan
+ * @author Shilnara Dam
+ * @author Sean Logan
+ * @author JenHo Liao
+ * @version 5/19/22
  */
 public class MessageSendViewModel extends AndroidViewModel {
 
     private final MutableLiveData<JSONObject> mResponse;
 
     /**
-     * Do it
+     * Constructor for View Model
      *
-     * @param application
+     * @param application Application
      */
     public MessageSendViewModel(@NonNull Application application) {
         super(application);
@@ -45,10 +50,10 @@ public class MessageSendViewModel extends AndroidViewModel {
     }
 
     /**
-     * do it
+     * Adds an observer response.
      *
-     * @param owner
-     * @param observer
+     * @param owner Lifecycle Owner
+     * @param observer JSON Object
      */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {
@@ -56,11 +61,11 @@ public class MessageSendViewModel extends AndroidViewModel {
     }
 
     /**
-     * do it
+     * Calls the endpoint for sending a message.
      *
-     * @param chatId
-     * @param jwt
-     * @param message
+     * @param chatId integer
+     * @param jwt String
+     * @param message String
      */
     public void sendMessage(final int chatId, final String jwt, final String message) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/messages";
@@ -99,8 +104,9 @@ public class MessageSendViewModel extends AndroidViewModel {
     }
 
     /**
-     * do it
-     * @param error
+     * Handles errors for endpoint call.
+     *
+     * @param error VolleyError
      */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {

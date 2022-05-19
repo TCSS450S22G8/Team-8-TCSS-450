@@ -25,13 +25,21 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentMessageCardBinding;
  *
  * @author Charles Bryan
  * @author JenHo Liao
- * @version 1.0
+ * @author Shilnara Dam
+ * @author Sean Logan
+ * @version 5/19/22
  */
 public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecyclerViewAdapter.MessageViewHolder> {
 
     private final List<Message> mMessages;
     private final String mEmail;
 
+    /**
+     * Constructor for View Adaptor.
+     *
+     * @param messages List
+     * @param email String
+     */
     public MessageRecyclerViewAdapter(List<Message> messages, String email) {
         this.mMessages = messages;
         mEmail = email;
@@ -63,12 +71,22 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
         private final View mView;
         private FragmentMessageCardBinding binding;
 
+        /**
+         * Constructor for View Holder.
+         *
+         * @param view View
+         */
         public MessageViewHolder(@NonNull View view) {
             super(view);
             mView = view;
             binding = FragmentMessageCardBinding.bind(view);
         }
 
+        /**
+         * Sets each card message.
+         *
+         * @param message Message
+         */
         void setMessage(final Message message) {
             final Resources res = mView.getContext().getResources();
             final MaterialCardView card = binding.cardRoot;
@@ -87,17 +105,7 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
                 ((FrameLayout.LayoutParams) card.getLayoutParams()).gravity =
                         Gravity.END;
 
-//                card.setCardBackgroundColor(
-//                        ColorUtils.setAlphaComponent(
-//                                res.getColor(R.color.primaryLightColor, null),
-//                                16));
-//                binding.textMessage.setTextColor(
-//                        res.getColor(R.color.secondaryTextColorFade, null));
-
                 card.setStrokeWidth(standard / 5);
-//                card.setStrokeColor(ColorUtils.setAlphaComponent(
-//                        res.getColor(R.color.primaryLightColor, null),
-//                        200));
 
                 //Round the corners on the left side
                 card.setShapeAppearanceModel(
@@ -123,18 +131,7 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
                 ((FrameLayout.LayoutParams) card.getLayoutParams()).gravity =
                         Gravity.START;
 
-//                card.setCardBackgroundColor(
-//                        ColorUtils.setAlphaComponent(
-//                                res.getColor(R.color.secondaryLightColor, null),
-//                                16));
-
                 card.setStrokeWidth(standard / 5);
-//                card.setStrokeColor(ColorUtils.setAlphaComponent(
-//                        res.getColor(R.color.secondaryLightColor, null),
-//                        200));
-
-//                binding.textMessage.setTextColor(
-//                        res.getColor(R.color.secondaryTextColorFade, null));
 
                 //Round the corners on the right side
                 card.setShapeAppearanceModel(

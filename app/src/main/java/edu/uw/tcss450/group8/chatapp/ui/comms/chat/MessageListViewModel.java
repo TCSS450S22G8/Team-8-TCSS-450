@@ -13,7 +13,6 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.auth0.android.jwt.JWT;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,11 +30,14 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
 
 /**
  * View Model for message list.
+ * Calls endpoints for getting messages.
  * Adapted from original code by Charles Bryan.
  *
  * @author Charles Bryan
  * @author JenHo Liao
- * @version 1.0
+ * @author Shilnara Dam
+ * @author Sean Logan
+ * @version 5/19/22
  */
 public class MessageListViewModel extends AndroidViewModel {
     /**
@@ -102,14 +104,13 @@ public class MessageListViewModel extends AndroidViewModel {
      * @param jwt the users signed JWT
      */
     public void getFirstMessages(final int chatId, final String jwt) {
-        Log.e("chatid passed into call",String.valueOf(chatId));
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/messages/" + chatId + "/";
 
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
                 null, //no body for this get request
-                this::handelSuccess,
+                this::handleSuccess,
                 this::handleError) {
 
             @Override
@@ -128,8 +129,6 @@ public class MessageListViewModel extends AndroidViewModel {
         //Instantiate the RequestQueue and add the request to the queue
         RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
                 .addToRequestQueue(request);
-
-        //code here will run
     }
 
     /**
@@ -152,7 +151,7 @@ public class MessageListViewModel extends AndroidViewModel {
                 Request.Method.GET,
                 url,
                 null, //no body for this get request
-                this::handelSuccess,
+                this::handleSuccess,
                 this::handleError) {
 
             @Override
@@ -171,8 +170,6 @@ public class MessageListViewModel extends AndroidViewModel {
         //Instantiate the RequestQueue and add the request to the queue
         RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
                 .addToRequestQueue(request);
-
-        //code here will run
     }
 
     /**
@@ -187,7 +184,12 @@ public class MessageListViewModel extends AndroidViewModel {
         getOrCreateMapEntry(chatId).setValue(list);
     }
 
-    private void handelSuccess(final JSONObject response) {
+    /**
+     * Handles success scenario for endpoint calls.
+     *
+     * @param response JSONObject
+     */
+    private void handleSuccess(final JSONObject response) {
         List<Message> list;
         if (!response.has("chatId")) {
             throw new IllegalStateException("Unexpected response in ChatViewModel: " + response);
@@ -222,6 +224,11 @@ public class MessageListViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     * Handles errors for endpoint calls.
+     *
+     * @param error JSONObject
+     */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {
             Log.e("NETWORK ERROR", error.getMessage());

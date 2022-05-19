@@ -12,11 +12,8 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import java.util.Objects;
-
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomListBinding;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 
@@ -26,7 +23,9 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 1.0
+ * @author Shilnara Dam
+ * @author Sean Logan
+ * @version 5/19/22
  */
 public class ChatroomListFragment extends Fragment {
     private ChatroomViewModel mModel;
@@ -62,7 +61,6 @@ public class ChatroomListFragment extends Fragment {
                 mBinding.listRoot.setAdapter(
                         new ChatroomRecyclerViewAdapter(chatList, this)
                 );
-//                binding.layoutWait.setVisibility(View.GONE);
             }
         });
 
@@ -75,6 +73,11 @@ public class ChatroomListFragment extends Fragment {
         });
     }
 
+    /**
+     * Enters a chat room with a contact.
+     *
+     * @param chatId int
+     */
     public void startChat(int chatId) {
         Navigation.findNavController(getView()).
                 navigate(ChatroomListFragmentDirections.

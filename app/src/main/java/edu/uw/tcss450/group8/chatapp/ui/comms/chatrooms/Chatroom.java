@@ -4,14 +4,12 @@ import java.io.Serializable;
 
 
 /**
- * A class to encapsulate a chat message.
+ * A class to encapsulate a chat message object.
  *
  * @author Levi McCoy
- * @version 1.0
+ * @version 5/19/22
  */
 public class Chatroom implements Serializable {
-    //    private final String mMessage;
-//    private final String mSent;
     private final String mChatRoomName;
     private final String mChatRoomId;
 
@@ -22,39 +20,25 @@ public class Chatroom implements Serializable {
      * @param chatRoomName the name of the chat
      */
     public Chatroom(String chatRoomId, String chatRoomName) {
-        //mMessage = message; Will add these
-        //mSent = sent;
         mChatRoomId = chatRoomId;
         mChatRoomName = chatRoomName;
     }
 
-//    /**
-//     * Getter for message
-//     *
-//     * @return message string(s)
-//     */
-//    public String getMessage() {
-//        return mMessage;
-//    }
-
-//    /**
-//     * Getter for sent
-//     *
-//     * @return sent message
-//     */
-//    public String getSent() {
-//        return mSent;
-//    }
 
     /**
-     * Getter for date
+     * Getter for chat room nickname
      *
-     * @return returns date of sent message
+     * @return returns nickname of the chat room
      */
     public String getChatRoomName() {
         return mChatRoomName;
     }
 
+    /**
+     * Getter for chat room id
+     *
+     * @return returns the id number of the chat room
+     */
     public String getChatRoomId() {
         return mChatRoomId;
     }

@@ -1,4 +1,5 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.connection;
+
 import android.app.Application;
 import android.util.Log;
 
@@ -7,13 +8,11 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.auth0.android.jwt.JWT;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,8 +26,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
-import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherViewModel;
 
 
 /**
@@ -38,7 +35,8 @@ import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherViewModel;
  * @author Charles Bryan
  * @author Rin Pham
  * @author Shilnara Dam
- * @version 5/17/22
+ * @author Sean Logan
+ * @version 5/19/22
  */
 public class ContactListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
@@ -77,6 +75,11 @@ public class ContactListViewModel extends AndroidViewModel {
         mUnFriend.observe(owner, observer);
     }
 
+    /**
+     * Endpoint to retrieve contacts of the user
+     *
+     * @param jwt String
+     */
     public void getContacts(String jwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve";
         Request request = new JsonArrayRequest(
@@ -97,19 +100,13 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
-//    public void getContacts(String jwt) {
-//        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve/" + jwt;
-//        Request request = new JsonArrayRequest(
-//                Request.Method.GET,
-//                url,
-//                null,
-//                this::handleGetContactSuccess,
-//                this::handleGetContactError); {
-//        }
-//        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
-//                .addToRequestQueue(request);
-//    }
 
+    /**
+     * Endpoint call to un-friend someone (delete a contact)
+     *
+     * @param jwt String
+     * @param email String
+     */
     public void unfriend(String jwt, String email) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/delete";
         JSONObject body = new JSONObject();
@@ -136,6 +133,11 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    /**
+     * Handles errors for unfriend endpoint calls
+     *
+     * @param volleyError VolleyError
+     */
     private void handleUnfriendError(VolleyError volleyError) {
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
@@ -148,10 +150,20 @@ public class ContactListViewModel extends AndroidViewModel {
         mUnFriend.setValue(false);
     }
 
+    /**
+     * Handles the success for unfriend endpoint calls
+     *
+     * @param response JSONObject
+     */
     private void handleUnfriendSuccess(final JSONObject response) {
         mUnFriend.setValue(true);
     }
 
+    /**
+     * Handles errors for the getContact endpoint calls
+     *
+     * @param volleyError VolleyError
+     */
     private void handleGetContactError(VolleyError volleyError) {
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
@@ -164,6 +176,11 @@ public class ContactListViewModel extends AndroidViewModel {
         }
     }
 
+    /**
+     * Handles success for getContact endpoint calls
+     *
+     * @param obj
+     */
     private void handleGetContactSuccess(final JSONArray obj) {
         ArrayList<Contact> list = new ArrayList<>();
         try {

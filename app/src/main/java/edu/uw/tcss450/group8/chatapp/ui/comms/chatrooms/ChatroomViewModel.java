@@ -37,7 +37,9 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 1.0
+ * @author Shilnara Dam
+ * @author Sean Logan
+ * @version 5/19/22
  */
 public class ChatroomViewModel extends AndroidViewModel {
     private MutableLiveData<List<Chatroom>> mChatroomList;

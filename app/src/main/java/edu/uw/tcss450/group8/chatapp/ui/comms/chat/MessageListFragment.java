@@ -18,13 +18,17 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentMessageListBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 /**
+ * Shows all the messages in a chat.
+ * Original code adapted from Charles Bryan
+ *
+ * @author Charles Bryan
+ * @author Shilnara Dam
+ * @author Sean Logan
+ * @author JenHo Liao
+ * @version 5/12/22
  * A simple {@link Fragment} subclass.
  */
 public class MessageListFragment extends Fragment {
-
-    //The chat ID for "global" chat
-//    private static final int HARD_CODED_CHAT_ID = 1;
-
     private MessageSendViewModel mSendModel;
 
     private MessageListViewModel mChatModel;
@@ -99,66 +103,9 @@ public class MessageListFragment extends Fragment {
                     mUserModel.getJwt().toString(),
                     binding.editMessage.getText().toString());
         });
-//when we get the response back from the server, clear the edittext
+        //when we get the response back from the server, clear the edittext
         // TODO: Figure out why this is not clearing the text
         mSendModel.addResponseObserver(getViewLifecycleOwner(), response ->
                 binding.editMessage.setText(""));
     }
 }
-
-
-
-
-//import android.os.Bundle;
-//
-//import androidx.annotation.NonNull;
-//import androidx.annotation.Nullable;
-//import androidx.fragment.app.Fragment;
-//import androidx.lifecycle.ViewModelProvider;
-//
-//import android.view.LayoutInflater;
-//import android.view.View;
-//import android.view.ViewGroup;
-//
-//import edu.uw.tcss450.group8.chatapp.R;
-//import edu.uw.tcss450.group8.chatapp.databinding.FragmentMessageListBinding;
-//
-///**
-// * Create an instance of Message List fragment.
-// * Adapted from original code by Charles Bryan.
-// *
-// * @author Charles Bryan
-// * @author JenHo Liao
-// * @version 1.0
-// */
-//public class MessageListFragment extends Fragment {
-//    private MessageListViewModel mModel;
-//
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        mModel = new ViewModelProvider(getActivity()).get(MessageListViewModel.class);
-//    }
-//
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-//                             Bundle savedInstanceState) {
-//        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_message_list, container, false);
-//    }
-//
-//    @Override
-//    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//        super.onViewCreated(view, savedInstanceState);
-//        FragmentMessageListBinding binding = FragmentMessageListBinding.bind(getView());
-//        mModel.addBlogListObserver(getViewLifecycleOwner(), blogList -> {
-//            if (!blogList.isEmpty()) {
-//
-//                binding.listRoot.setAdapter(
-//                        new MessageRecyclerViewAdapter(MessageGenerator.getMessageList())
-//                );
-////                binding.layoutWait.setVisibility(View.GONE);
-//            }
-//        });
-//    }
-//}

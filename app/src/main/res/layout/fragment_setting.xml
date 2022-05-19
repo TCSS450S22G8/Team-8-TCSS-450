@@ -44,7 +44,7 @@
             app:layout_constraintTop_toTopOf="@+id/button_settings_change">
 
             <TextView
-                android:id="@+id/text_settings_OrangeColor"
+                android:id="@+id/text_settings_orangeColor"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
@@ -56,7 +56,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
-                android:background="@color/red_light"
+                android:background="@color/red"
                 android:gravity="center" />
 
             <TextView
@@ -72,7 +72,7 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="5dp"
-                android:background="@color/green"
+                android:background="@color/green_light"
                 android:gravity="center" />
         </LinearLayout>
 

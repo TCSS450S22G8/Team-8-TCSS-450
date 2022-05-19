@@ -2,8 +2,13 @@ package edu.uw.tcss450.group8.chatapp.ui.settings;
 
 import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.setEmail;
 import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.setJWT;
+import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.getThemeColor;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.setThemeColor;
 
+import android.content.res.Configuration;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -14,6 +19,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentSettingBinding;
@@ -29,7 +35,7 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentSettingBinding;
 public class SettingFragment extends Fragment {
 
     /**
-     * Required empty public contstructor.
+     * Required empty public constructor.
      */
     public SettingFragment() {
         // Required empty public constructor
@@ -64,11 +70,38 @@ public class SettingFragment extends Fragment {
             //It will not be added to backstack.
             getActivity().finish();
         });
+        TextView orange = view.findViewById(R.id.text_settings_orangeColor);
+        TextView red = view.findViewById(R.id.text_settings_redColor);
+        TextView blue = view.findViewById(R.id.text_settings_blueColor);
+        TextView green = view.findViewById(R.id.text_settings_greenColor);
+
         binding.textSettingsOrangeColor.setOnClickListener(button -> SetColor("orange"));
         binding.textSettingsRedColor.setOnClickListener(button -> SetColor("red"));
         binding.textSettingsBlueColor.setOnClickListener(button -> SetColor("blue"));
         binding.textSettingsGreenColor.setOnClickListener(button -> SetColor("green"));
 
+        if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
+            orange.setBackgroundColor(getResources().getColor(R.color.orange_dark, null));
+            red.setBackgroundColor(getResources().getColor(R.color.red_dark, null));
+            blue.setBackgroundColor(getResources().getColor(R.color.blue_dark, null));
+            green.setBackgroundColor(getResources().getColor(R.color.green_dark, null));
+        }
+
+        switch (getThemeColor(getActivity())) {
+            case "orange":
+                SetStroke(orange);
+                break;
+            case "red":
+                SetStroke(red);
+                break;
+            case "blue":
+                SetStroke(blue);
+                break;
+            case "green":
+                SetStroke(green);
+                break;
+
+        }
     }
 
 
@@ -81,7 +114,18 @@ public class SettingFragment extends Fragment {
         getActivity().recreate();
     }
 
-    @Override
+    private void SetStroke(TextView tv) {
+        GradientDrawable dg = new GradientDrawable();
+        dg.setColor(((ColorDrawable) tv.getBackground()).getColor());
+        if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
+            dg.setStroke(10, Color.WHITE);
+        } else {
+            dg.setStroke(10, Color.BLACK);
+        }
+        tv.setBackground(dg);
+    }
+
+        @Override
     public void onDestroyView() {
         super.onDestroyView();
     }

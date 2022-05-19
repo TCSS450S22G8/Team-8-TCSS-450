@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
         JWT jwt = new JWT(args.getJwt());
 
         setJWT(this, args.getJwt());
-        setEmail(this, args.getJwt());
+        setEmail(this, args.getEmail());
         // Check to see if the web token is still valid or not. To make a JWT expire after a
         // longer or shorter time period, change the expiration time when the JWT is
         // created on the web service.

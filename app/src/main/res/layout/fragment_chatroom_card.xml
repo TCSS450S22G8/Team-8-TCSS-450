@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/card_root"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="120dp"
     android:layout_margin="5dp"
     app:cardCornerRadius="5dp">
 
@@ -18,7 +18,7 @@
         <TextView
             android:id="@+id/text_chatid"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:paddingLeft="8dp"
             android:paddingTop="8dp"
             android:paddingRight="8dp"
@@ -63,6 +63,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:background="@android:drawable/screen_background_light_transparent"
+            android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@+id/text_title"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_more_grey_24dp" />
@@ -71,9 +72,11 @@
             android:id="@+id/button_chat_room_open_chat"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:layout_height="35dp"
             android:layout_marginEnd="16dp"
             android:text="@string/title_chat"
+            android:background="@drawable/rounded_corner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_preview"
             tools:visibility="visible" />

@@ -63,7 +63,7 @@
     <fragment
         android:id="@+id/messageListFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListFragment"
-        android:label="MessageListFragment" >
+        android:label="Messages" >
         <argument
             android:name="chatid"
             app:argType="integer" />

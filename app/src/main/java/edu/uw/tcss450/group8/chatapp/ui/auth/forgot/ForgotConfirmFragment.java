@@ -22,7 +22,7 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotConfirmlBinding;
  * @author Levi McCoy
  * @author Shilnara Dam
  * @author Sean Logan
- * @version 5/18/22
+ * @version 5/19/22
  */
 public class ForgotConfirmFragment extends Fragment {
 

@@ -24,7 +24,7 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentSettingBinding;
  *
  * @author Charles Bryan
  * @author Shilnara Dam
- * @version 1.0
+ * @version 5/19/22
  */
 public class SettingFragment extends Fragment {
 

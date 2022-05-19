@@ -25,8 +25,7 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
  * @author Shilnara Dam
  * @author Sean Logan
  * @author JenHo Liao
- * @version 5/12/22
- * A simple {@link Fragment} subclass.
+ * @version 5/19/22
  */
 public class MessageListFragment extends Fragment {
     private MessageSendViewModel mSendModel;

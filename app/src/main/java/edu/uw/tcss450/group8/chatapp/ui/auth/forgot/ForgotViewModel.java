@@ -29,7 +29,7 @@ import java.util.Objects;
  * @author Levi McCoy
  * @author Shilnara Dam
  * @author Sean Logan
- * @version 5/12/22
+ * @version 5/19/22
  */
 public class ForgotViewModel extends AndroidViewModel {
 

@@ -37,7 +37,6 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.services.PushReceiver;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.settings.SettingFragmentDirections;
 
 /**
@@ -47,7 +46,11 @@ import edu.uw.tcss450.group8.chatapp.ui.settings.SettingFragmentDirections;
  *
  * @author Charles Bryan
  * @author Shilnara Dam
- * @version 1.0
+ * @author Sean Logan
+ * @author Levi McCoy
+ * @author JenHo Liao
+ * @author Rih Pham
+ * @version 5/19/22
  */
 public class MainActivity extends AppCompatActivity {
 

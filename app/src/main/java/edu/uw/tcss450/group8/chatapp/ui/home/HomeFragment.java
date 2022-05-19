@@ -5,15 +5,12 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import edu.uw.tcss450.group8.chatapp.R;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentHomeBinding;
-
 
 /**
  * Class for user home page.
@@ -21,7 +18,7 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentHomeBinding;
  *
  * @author Charles Bryan
  * @author Shilnara Dam
- * @version 1.0
+ * @version 5/19/22
  */
 public class HomeFragment extends Fragment {
 

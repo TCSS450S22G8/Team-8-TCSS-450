@@ -24,7 +24,7 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 5/12/22
+ * @version 5/19/22
  */
 public class ForgotEmailFragment extends Fragment {
 

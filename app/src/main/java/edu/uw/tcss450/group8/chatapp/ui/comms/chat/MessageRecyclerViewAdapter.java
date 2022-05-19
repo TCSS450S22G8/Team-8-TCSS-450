@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
@@ -33,16 +34,18 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
 
     private final List<Message> mMessages;
     private final String mEmail;
+    private int mColor;
 
     /**
      * Constructor for View Adaptor.
      *
      * @param messages List
-     * @param email String
+     * @param email    String
      */
-    public MessageRecyclerViewAdapter(List<Message> messages, String email) {
+    public MessageRecyclerViewAdapter(List<Message> messages, String email, int color) {
         this.mMessages = messages;
         mEmail = email;
+        mColor = color;
     }
 
     @NonNull
@@ -89,7 +92,7 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
          */
         void setMessage(final Message message) {
             final Resources res = mView.getContext().getResources();
-            final MaterialCardView card = binding.cardRoot;
+            final CardView card = binding.cardRoot;
 
             int standard = (int) res.getDimension(R.dimen.chat_margin);
             int extended = (int) res.getDimension(R.dimen.chat_margin_sided);
@@ -105,17 +108,8 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
                 ((FrameLayout.LayoutParams) card.getLayoutParams()).gravity =
                         Gravity.END;
 
-                card.setStrokeWidth(standard / 5);
 
-                //Round the corners on the left side
-                card.setShapeAppearanceModel(
-                        card.getShapeAppearanceModel()
-                                .toBuilder()
-                                .setTopLeftCorner(CornerFamily.ROUNDED,standard * 2)
-                                .setBottomLeftCorner(CornerFamily.ROUNDED,standard * 2)
-                                .setBottomRightCornerSize(0)
-                                .setTopRightCornerSize(0)
-                                .build());
+                card.setCardBackgroundColor(res.getColor(R.color.gray, null));
 
                 card.requestLayout();
             } else {
@@ -131,17 +125,8 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
                 ((FrameLayout.LayoutParams) card.getLayoutParams()).gravity =
                         Gravity.START;
 
-                card.setStrokeWidth(standard / 5);
-
+                card.setCardBackgroundColor(mColor);
                 //Round the corners on the right side
-                card.setShapeAppearanceModel(
-                        card.getShapeAppearanceModel()
-                                .toBuilder()
-                                .setTopRightCorner(CornerFamily.ROUNDED,standard * 2)
-                                .setBottomRightCorner(CornerFamily.ROUNDED,standard * 2)
-                                .setBottomLeftCornerSize(0)
-                                .setTopLeftCornerSize(0)
-                                .build());
                 card.requestLayout();
             }
         }

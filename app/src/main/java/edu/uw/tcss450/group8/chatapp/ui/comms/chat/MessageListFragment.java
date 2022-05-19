@@ -3,6 +3,7 @@ package edu.uw.tcss450.group8.chatapp.ui.comms.chat;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,10 +71,15 @@ public class MessageListFragment extends Fragment {
         final RecyclerView rv = binding.recyclerMessages;
         //Set the Adapter to hold a reference to the list FOR THIS chat ID that the ViewModel
         //holds.
+
+        TypedValue typedValue = new TypedValue();
+        getActivity().getTheme().resolveAttribute(R.attr.messageCard,typedValue,true);
+        int color = typedValue.data;
+
         Log.e("chat id iew create in message frag", String.valueOf(chatid));
         rv.setAdapter(new MessageRecyclerViewAdapter(
                 mChatModel.getMessageListByChatId(chatid),
-                mUserModel.getEmail()));
+                mUserModel.getEmail(),color));
 
 
         //When the user scrolls to the top of the RV, the swiper list will "refresh"

@@ -77,7 +77,7 @@ public class ContactListViewModel extends AndroidViewModel {
         mUnFriend.observe(owner, observer);
     }
 
-    public void getContacts(JWT jwt) {
+    public void getContacts(String jwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve";
         Request request = new JsonArrayRequest(
                 Request.Method.GET,
@@ -89,7 +89,7 @@ public class ContactListViewModel extends AndroidViewModel {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 // add headers <key,value>
-                headers.put("Authorization", jwt.toString());
+                headers.put("Authorization", jwt);
                 return headers;
             }
         };
@@ -110,7 +110,7 @@ public class ContactListViewModel extends AndroidViewModel {
 //                .addToRequestQueue(request);
 //    }
 
-    public void unfriend(JWT jwt, String email) {
+    public void unfriend(String jwt, String email) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/delete";
         JSONObject body = new JSONObject();
         try {

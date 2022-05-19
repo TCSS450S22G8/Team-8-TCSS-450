@@ -66,7 +66,7 @@ public class ChatroomViewModel extends AndroidViewModel {
      *
      * @param jwt String the zipcode of the desired location
      */
-    public void getChatRoomsForUser(JWT jwt) {
+    public void getChatRoomsForUser(String jwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/get-chats";
 
         Request<JSONArray> request = new JsonArrayRequest(
@@ -79,7 +79,7 @@ public class ChatroomViewModel extends AndroidViewModel {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 // add headers <key,value>
-                headers.put("Authorization", jwt.toString());
+                headers.put("Authorization", jwt);
                 return headers;
             }
         };

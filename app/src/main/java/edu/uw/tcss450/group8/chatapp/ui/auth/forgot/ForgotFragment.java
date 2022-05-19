@@ -30,15 +30,13 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 1.0
+ * @version 5/12/22
  */
 public class ForgotFragment extends Fragment {
 
     private FragmentForgotBinding mBinding;
 
     private ForgotViewModel mResetPassword;
-
-
 
     private PasswordValidator mEmailValidator = checkPwdLength(2)
             .and(checkExcludeWhiteSpace())
@@ -51,7 +49,6 @@ public class ForgotFragment extends Fragment {
                     .and(checkExcludeWhiteSpace())
                     .and(checkPwdDigit())
                     .and(checkPwdLowerCase().or(checkPwdUpperCase()));
-
 
     /**
      * Required empty constructor for the register fragment
@@ -67,7 +64,6 @@ public class ForgotFragment extends Fragment {
                 .get(ForgotViewModel.class);
     }
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,25 +71,13 @@ public class ForgotFragment extends Fragment {
         return mBinding.getRoot();
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         mBinding.buttonChange.setOnClickListener(button -> {
             attemptChange(button);
-            //Navigation.findNavController(getView()).navigate(
-            //RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
         });
-        /*
-        mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
-                this::observeResponse
-        );
-
-         */
-
-
     }
 
     /**
@@ -106,8 +90,6 @@ public class ForgotFragment extends Fragment {
         mBinding.layoutWait.setVisibility(View.VISIBLE);
         validatePasswordsMatch();
     }
-
-
 
 
     /**
@@ -154,8 +136,6 @@ public class ForgotFragment extends Fragment {
 
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
-
-
     }
 
 
@@ -173,40 +153,5 @@ public class ForgotFragment extends Fragment {
         //send toast message stating password was reset
         Toast.makeText(getActivity(), "Password Updated!", Toast.LENGTH_SHORT).show();
         Navigation.findNavController(getView()).navigate(ForgotFragmentDirections.actionForgotFragmentToLoginFragment());
-
     }
-
-
-    /**
-     * An observer on the HTTP Response from the web server. This observer should be
-     * attached to SignInViewModel.
-     *
-     * @param response the Response from the server
-     */
-    /*
-    private void observeResponse(final JSONObject response) {
-        if (response.length() > 0) {
-            if (response.has("code")) {
-                try {
-                    mBinding.editChangePassword1.setError(
-                            "Error Authenticating: " +
-                                    response.getJSONObject("data").getString("message"));
-                    mBinding.layoutWait.setVisibility(View.GONE);
-                } catch (JSONException e) {
-                    Log.e("JSON Parse Error", e.getMessage());
-                    mBinding.layoutWait.setVisibility(View.GONE);
-                }
-            } else {
-                navigateToLogin();
-            }
-        } else {
-            Log.d("JSON Response", "No Response");
-            mBinding.layoutWait.setVisibility(View.GONE);
-        }
-
-    }
-
-     */
-
-
 }

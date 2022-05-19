@@ -16,6 +16,8 @@ import com.android.volley.toolbox.Volley;
 
 /**
  * Class for Queueing JSON Requests
+ *
+ * @author Charles Bryan
  */
 public class RequestQueueSingleton {
     private static RequestQueueSingleton instance;

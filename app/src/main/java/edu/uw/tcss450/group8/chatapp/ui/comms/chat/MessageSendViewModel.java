@@ -13,6 +13,7 @@ import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.auth0.jwt.JWT;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,21 +26,42 @@ import java.util.Objects;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
 
+/**
+ * do it
+ */
 public class MessageSendViewModel extends AndroidViewModel {
 
     private final MutableLiveData<JSONObject> mResponse;
 
+    /**
+     * Do it
+     *
+     * @param application
+     */
     public MessageSendViewModel(@NonNull Application application) {
         super(application);
         mResponse = new MutableLiveData<>();
         mResponse.setValue(new JSONObject());
     }
 
+    /**
+     * do it
+     *
+     * @param owner
+     * @param observer
+     */
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {
         mResponse.observe(owner, observer);
     }
 
+    /**
+     * do it
+     *
+     * @param chatId
+     * @param jwt
+     * @param message
+     */
     public void sendMessage(final int chatId, final String jwt, final String message) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/messages";
 
@@ -76,8 +98,10 @@ public class MessageSendViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
-
-
+    /**
+     * do it
+     * @param error
+     */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {
             Log.e("NETWORK ERROR", error.getMessage());

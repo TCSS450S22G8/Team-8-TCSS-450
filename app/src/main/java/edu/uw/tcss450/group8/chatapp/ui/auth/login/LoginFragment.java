@@ -1,7 +1,5 @@
 package edu.uw.tcss450.group8.chatapp.ui.auth.login;
 
-import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.getEmail;
-import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.getJWT;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkExcludeWhiteSpace;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdLength;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdSpecialChar;
@@ -19,12 +17,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentLoginBinding;
+import edu.uw.tcss450.group8.chatapp.model.PushyTokenViewModel;
+import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
@@ -34,12 +33,16 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
  * @author Charles Bryan
  * @author Sean Logan
  * @author Shilnara Dam
- * @version 1.0
+ * @author Levi McCoy
+ * @version 5/12/22
  */
 public class LoginFragment extends Fragment {
 
     private FragmentLoginBinding mBinding;
     private LoginViewModel mSignInModel;
+
+    private PushyTokenViewModel mPushyTokenViewModel;
+    private UserInfoViewModel mUserViewModel;
 
     private PasswordValidator mEmailValidator = checkPwdLength(2)
             .and(checkExcludeWhiteSpace())
@@ -60,6 +63,8 @@ public class LoginFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mSignInModel = new ViewModelProvider(getActivity())
                 .get(LoginViewModel.class);
+        mPushyTokenViewModel = new ViewModelProvider(getActivity())
+                .get(PushyTokenViewModel.class);
     }
 
     @Override
@@ -73,15 +78,15 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String jwt = getJWT(getActivity());
-        String email = getEmail(getActivity());
-
-        if(!jwt.equals("")||!email.equals("")){
-            Navigation.findNavController(getView())
-                    .navigate(LoginFragmentDirections
-                            .actionLoginFragmentToMainActivity(email, jwt));
-            getActivity().finish();
-        }
+//        String jwt = getJWT(getActivity());
+//        String email = getEmail(getActivity());
+//
+//        if(!jwt.equals("")||!email.equals("")){
+//            Navigation.findNavController(getView())
+//                    .navigate(LoginFragmentDirections
+//                            .actionLoginFragmentToMainActivity(email, jwt));
+//            getActivity().finish();
+//        }
 
         //Local access to the ViewBinding object. No need to create as Instance Var as it is only
         //used here.
@@ -107,6 +112,15 @@ public class LoginFragment extends Fragment {
         LoginFragmentArgs args = LoginFragmentArgs.fromBundle(getArguments());
         mBinding.editRegisterEmail.setText(args.getEmail().equals("default") ? "" : args.getEmail());
         mBinding.editPassword.setText(args.getPassword().equals("default") ? "" : args.getPassword());
+
+
+        //don't allow sign in until pushy token retrieved
+        mPushyTokenViewModel.addTokenObserver(getViewLifecycleOwner(), token ->
+                mBinding.buttonLoginLogin.setEnabled(!token.isEmpty()));
+
+        mPushyTokenViewModel.addResponseObserver(
+                getViewLifecycleOwner(),
+                this::observePushyPutResponse);
     }
 
     /**
@@ -161,6 +175,34 @@ public class LoginFragment extends Fragment {
     }
 
     /**
+     * Helper to abstract the request to send the pushy token to the web service
+     */
+    private void sendPushyToken() {
+        mPushyTokenViewModel.sendTokenToWebservice(mUserViewModel.getJwt().toString());
+    }
+
+    /**
+     * An observer on the HTTP Response from the web server. This observer should be
+     * attached to PushyTokenViewModel.
+     *
+     * @param response the Response from the server
+     */
+    private void observePushyPutResponse(final JSONObject response) {
+        if (response.length() > 0) {
+            if (response.has("code")) {
+                //this error cannot be fixed by the user changing credentials...
+                mBinding.editRegisterEmail.setError(
+                        "Error Authenticating on Push Token. Please contact support");
+            } else {
+                navigateToSuccess(
+                        mBinding.editRegisterEmail.getText().toString(),
+                        mUserViewModel.getJwt().toString()
+                );
+            }
+        }
+    }
+
+    /**
      * Helper to abstract the navigation to the Activity past Authentication.
      *
      * @param email users email
@@ -180,6 +222,7 @@ public class LoginFragment extends Fragment {
      * @param response the Response from the server
      */
     private void observeResponse(final JSONObject response) {
+
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
@@ -193,10 +236,19 @@ public class LoginFragment extends Fragment {
                 }
             } else {
                 try {
-                    navigateToSuccess(
-                            mBinding.editRegisterEmail.getText().toString(),
-                            response.getString("token")
-                    );
+
+                    mUserViewModel = new ViewModelProvider(getActivity(),
+                            new UserInfoViewModel.UserInfoViewModelFactory(
+                                    mBinding.editRegisterEmail.getText().toString(),
+                                    response.getString("token")
+                            )).get(UserInfoViewModel.class);
+
+                    sendPushyToken();
+                    // Commented out for Pushy Call to happen
+//                    navigateToSuccess(
+//                            mBinding.editRegisterEmail.getText().toString(),
+//                            response.getString("token")
+//                    );
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
                     mBinding.layoutWait.setVisibility(View.GONE);

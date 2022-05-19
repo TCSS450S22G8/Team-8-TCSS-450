@@ -101,7 +101,7 @@ public class MessageListViewModel extends AndroidViewModel {
      * @param chatId the chatroom id to request messages of
      * @param jwt the users signed JWT
      */
-    public void getFirstMessages(final int chatId, final JWT jwt) {
+    public void getFirstMessages(final int chatId, final String jwt) {
         Log.e("chatid passed into call",String.valueOf(chatId));
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/messages/" + chatId + "/";
 
@@ -116,7 +116,7 @@ public class MessageListViewModel extends AndroidViewModel {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 // add headers <key,value>
-                headers.put("Authorization", jwt.toString());
+                headers.put("Authorization", jwt);
                 return headers;
             }
         };
@@ -144,7 +144,7 @@ public class MessageListViewModel extends AndroidViewModel {
      * @param chatId the chatroom id to request messages of
      * @param jwt the users signed JWT
      */
-    public void getNextMessages(final int chatId, final JWT jwt) {
+    public void getNextMessages(final int chatId, final String jwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/messages/" + chatId + "/" +
                 mMessages.get(chatId).getValue().get(0).getMessageId();
 
@@ -159,7 +159,7 @@ public class MessageListViewModel extends AndroidViewModel {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 // add headers <key,value>
-                headers.put("Authorization", jwt.toString());
+                headers.put("Authorization", jwt);
                 return headers;
             }
         };

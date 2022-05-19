@@ -1,18 +1,13 @@
 package edu.uw.tcss450.group8.chatapp.ui.auth.forgot;
 
-import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkClientPredicate;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkExcludeWhiteSpace;
-import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdDigit;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdLength;
-import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdLowerCase;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdSpecialChar;
-import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdUpperCase;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +15,6 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotEmailBinding;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
@@ -30,7 +24,7 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 1.0
+ * @version 5/12/22
  */
 public class ForgotEmailFragment extends Fragment {
 
@@ -38,23 +32,9 @@ public class ForgotEmailFragment extends Fragment {
 
     private ForgotViewModel mForgotModel;
 
-
-
     private PasswordValidator mEmailValidator = checkPwdLength(2)
             .and(checkExcludeWhiteSpace())
             .and(checkPwdSpecialChar("@"));
-
-    /*
-    private PasswordValidator mPassWordValidator =
-            checkClientPredicate(pwd -> pwd.equals(mBinding.editForgotPassword2.getText().toString()))
-                    .and(checkPwdLength(7))
-                    .and(checkPwdSpecialChar())
-                    .and(checkExcludeWhiteSpace())
-                    .and(checkPwdDigit())
-                    .and(checkPwdLowerCase().or(checkPwdUpperCase()));
-
-     */
-
 
     /**
      * Required empty constructor for the register fragment
@@ -86,17 +66,7 @@ public class ForgotEmailFragment extends Fragment {
 
         mBinding.buttonChange.setOnClickListener(button -> {
             attemptSubmit(button);
-            //Navigation.findNavController(getView()).navigate(
-            //RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
         });
-        /*
-        mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
-                this::observeResponse
-        );
-
-         */
-
-
     }
 
     /**
@@ -126,7 +96,6 @@ public class ForgotEmailFragment extends Fragment {
     }
 
 
-
     /**
      * Sends Asynchronous JSON request to the server for user registration
      * information validation.
@@ -138,8 +107,6 @@ public class ForgotEmailFragment extends Fragment {
 
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
-
-
     }
 
 
@@ -159,40 +126,5 @@ public class ForgotEmailFragment extends Fragment {
                 navigate(ForgotEmailFragmentDirections.
                         actionForgotEmailFragmentToForgotConfirmFragment(
                                 mBinding.editForgotEmail.getText().toString()));
-
     }
-
-
-    /**
-     * An observer on the HTTP Response from the web server. This observer should be
-     * attached to SignInViewModel.
-     *
-     * @param response the Response from the server
-     */
-    /*
-    private void observeResponse(final JSONObject response) {
-        if (response.length() > 0) {
-            if (response.has("code")) {
-                try {
-                    mBinding.editChangePassword1.setError(
-                            "Error Authenticating: " +
-                                    response.getJSONObject("data").getString("message"));
-                    mBinding.layoutWait.setVisibility(View.GONE);
-                } catch (JSONException e) {
-                    Log.e("JSON Parse Error", e.getMessage());
-                    mBinding.layoutWait.setVisibility(View.GONE);
-                }
-            } else {
-                navigateToLogin();
-            }
-        } else {
-            Log.d("JSON Response", "No Response");
-            mBinding.layoutWait.setVisibility(View.GONE);
-        }
-
-    }
-
-     */
-
-
 }

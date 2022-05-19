@@ -27,7 +27,9 @@ import java.util.Objects;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 1.0
+ * @author Shilnara Dam
+ * @author Sean Logan
+ * @version 5/12/22
  */
 public class ForgotViewModel extends AndroidViewModel {
 
@@ -57,17 +59,14 @@ public class ForgotViewModel extends AndroidViewModel {
     public void addEmailSuccessObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super Boolean> observer) {
         mSuccessfulResponse.observe(owner, observer);
-
     }
 
     /**
-     *
-     *
-     * @param error
+     * Handles email verification error.
+     * @param error VolleyError error
      */
     private void handleEmailVerificationError(final VolleyError error) {
         mSuccessfulResponse.setValue(false);
-
     }
 
 
@@ -101,9 +100,8 @@ public class ForgotViewModel extends AndroidViewModel {
     }
 
     /**
-     * do it
-     *
-     * @param success
+     * Handles successful password rest verification.
+     * @param success JSONObject success
      */
     private void successfulResetPasswordVerification(JSONObject success) {
         mSuccessfulResponse.setValue(true);
@@ -189,14 +187,4 @@ public class ForgotViewModel extends AndroidViewModel {
         Volley.newRequestQueue(getApplication().getApplicationContext())
                 .add(request);
     }
-
-    /**
-     * Getter for response
-     * @return
-     */
-    public boolean getSuccessResponse() {
-        return mSuccessfulResponse.getValue().booleanValue();
-    }
-
-
 }

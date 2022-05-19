@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,11 +26,13 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
  * @author Charles Bryan
  * @author Rin Pham
  * @author Shilnara Dam
- * @version 5/17/22
+ * @version 5/18/22
  */
 public class ContactFragment extends Fragment{
+
     private ContactListViewModel mContact;
     private UserInfoViewModel mUser;
+    private FragmentContactBinding mBinding;
 
 
     @Override
@@ -49,23 +52,56 @@ public class ContactFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FragmentContactBinding binding = FragmentContactBinding.bind(getView());
+        mBinding = FragmentContactBinding.bind(getView());
 
         // get user contacts
+        mBinding.listRoot.setVisibility(View.GONE);
+        mBinding.progressBar.setVisibility(View.VISIBLE);
         mContact.getContacts(mUser.getJwt());
-//        mContact.getContacts("4");
         mContact.addContactsListObserver(getViewLifecycleOwner(), contacts -> {
-            binding.listRoot.setAdapter(
+            mBinding.listRoot.setVisibility(View.VISIBLE);
+            mBinding.progressBar.setVisibility(View.GONE);
+            mBinding.swipeContactsRefresh.setRefreshing(false);
+            mBinding.listRoot.setAdapter(
                     new ContactRecyclerViewAdapter(contacts, this)
             );
         });
 
+        //removing friend observer to refresh friend list
+        mContact.addUnFriendObserver(getViewLifecycleOwner(), isUnfriend -> {
+            if (isUnfriend) {
+                //message stating unfriend successful
+                Toast.makeText(getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();
+                mBinding.listRoot.setVisibility(View.GONE);
+                mBinding.progressBar.setVisibility(View.VISIBLE);
+                mContact.getContacts(mUser.getJwt());
+            }
+        });
+
+        //refreshing chat list swipe
+        mBinding.swipeContactsRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mContact.getContacts(mUser.getJwt());
+            }
+        });
+
     }
 
+    /**
+     * unfriend a contact
+     *
+     * @param email String email of the friend
+     */
     public void unFriend(String email) {
         mContact.unfriend(mUser.getJwt(), email);
     }
 
+    /**
+     * open chatroom with the desired contact
+     *
+     * @param email String email of the friend
+     */
     public void sendMessage(String email) {
         Bundle bundle = new Bundle();
         bundle.putString("email", email);

@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -84,7 +85,8 @@ public class ForgotConfirmFragment extends Fragment {
 
         String email = ForgotConfirmFragmentArgs.fromBundle(getArguments()).getEmail();
         mBinding.buttonForgotConfirmResend.setOnClickListener(button -> {
-             mModel.sendForgotPasswordEmail(email);
+            Toast.makeText(getActivity(), "We'll resend that email!", Toast.LENGTH_SHORT).show();
+            mModel.sendForgotPasswordEmail(email);
         });
         mBinding.buttonForgotConfirmLink.setOnClickListener(button -> {
             mModel.sendVerifiedPasswordReset(email);
@@ -98,6 +100,7 @@ public class ForgotConfirmFragment extends Fragment {
 
             } else {
                 // popup need to confirm email address to continue
+                Toast.makeText(getActivity(), "Please Verify your email to continue!", Toast.LENGTH_SHORT).show();
             }
         });
 

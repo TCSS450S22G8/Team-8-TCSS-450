@@ -42,7 +42,7 @@ import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherViewModel;
  */
 public class ContactListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
-
+    private MutableLiveData<Boolean> mUnFriend;
 
 
     /**
@@ -62,6 +62,19 @@ public class ContactListViewModel extends AndroidViewModel {
     public void addContactsListObserver(@NonNull LifecycleOwner owner,
                                         @NonNull Observer<? super List<Contact>> observer) {
         mContact.observe(owner, observer);
+        mUnFriend = new MutableLiveData<>();
+        mUnFriend.setValue(false);
+
+    }
+
+    /**
+     * Helper method for observe
+     * @param owner owner of lifecycle
+     * @param observer contact list
+     */
+    public void addUnFriendObserver(@NonNull LifecycleOwner owner,
+                                        @NonNull Observer<? super Boolean> observer) {
+        mUnFriend.observe(owner, observer);
     }
 
     public void getContacts(JWT jwt) {
@@ -132,10 +145,11 @@ public class ContactListViewModel extends AndroidViewModel {
             Log.e("CLIENT ERROR",
                     volleyError.networkResponse.statusCode + " " + data);
         }
+        mUnFriend.setValue(false);
     }
 
     private void handleUnfriendSuccess(final JSONObject response) {
-
+        mUnFriend.setValue(true);
     }
 
     private void handleGetContactError(VolleyError volleyError) {

@@ -57,13 +57,26 @@ public class ForgotViewModel extends AndroidViewModel {
     public void addEmailSuccessObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super Boolean> observer) {
         mSuccessfulResponse.observe(owner, observer);
+
     }
 
     /**
-     * Handles JSON Request Errors and volley errors
      *
-     * @param error error that is given to handle
+     *
+     * @param error
      */
+    private void handleEmailVerificationError(final VolleyError error) {
+        mSuccessfulResponse.setValue(false);
+
+    }
+
+
+    /**
+    * Handles JSON Request Errors and volley errors
+    *
+    * @param error error that is given to handle
+    *
+    */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {
             try {
@@ -135,7 +148,7 @@ public class ForgotViewModel extends AndroidViewModel {
                 url,
                 null,
                 this::successfulResetPasswordVerification,
-                this::handleError);
+                this::handleEmailVerificationError);
 
         request.setRetryPolicy(new DefaultRetryPolicy(
                 10_000,

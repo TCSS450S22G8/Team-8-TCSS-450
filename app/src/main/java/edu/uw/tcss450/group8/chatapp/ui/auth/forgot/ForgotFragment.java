@@ -25,7 +25,7 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotBinding;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
- * Class for the Register Fragment that handles user registration to the application.
+ * Class for the Register Fragment that handles user registration to the application
  * Adapted from original code by Charles Bryan.
  *
  * @author Charles Bryan

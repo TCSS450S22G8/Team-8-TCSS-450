@@ -236,7 +236,6 @@ public class LoginFragment extends Fragment {
                 }
             } else {
                 try {
-
                     mUserViewModel = new ViewModelProvider(getActivity(),
                             new UserInfoViewModel.UserInfoViewModelFactory(
                                     mBinding.editRegisterEmail.getText().toString(),
@@ -244,11 +243,6 @@ public class LoginFragment extends Fragment {
                             )).get(UserInfoViewModel.class);
 
                     sendPushyToken();
-                    // Commented out for Pushy Call to happen
-//                    navigateToSuccess(
-//                            mBinding.editRegisterEmail.getText().toString(),
-//                            response.getString("token")
-//                    );
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());
                     mBinding.layoutWait.setVisibility(View.GONE);
@@ -260,6 +254,4 @@ public class LoginFragment extends Fragment {
         }
 
     }
-
-
 }

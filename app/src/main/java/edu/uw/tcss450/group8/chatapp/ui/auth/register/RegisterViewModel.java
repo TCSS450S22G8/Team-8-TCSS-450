@@ -27,7 +27,9 @@ import java.util.Objects;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 1.0
+ * @author Shilnara Dam
+ * @author Sean Logan
+ * @version 5/12/22
  */
 public class RegisterViewModel extends AndroidViewModel {
 
@@ -124,6 +126,4 @@ public class RegisterViewModel extends AndroidViewModel {
         Volley.newRequestQueue(getApplication().getApplicationContext())
                 .add(request);
     }
-
-
 }

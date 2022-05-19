@@ -2,7 +2,6 @@ package edu.uw.tcss450.group8.chatapp.ui.auth.register;
 
 import android.os.Bundle;
 
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -29,14 +28,15 @@ import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkClientP
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 1.0
+ * @author Shilnara Dam
+ * @author Sean Logan
+ * @version 5/12/22
  */
 public class RegisterFragment extends Fragment {
 
     private FragmentRegisterBinding mBinding;
 
     private RegisterViewModel mRegisterModel;
-
 
     private PasswordValidator mNameValidator = checkPwdLength(1);
 
@@ -83,14 +83,10 @@ public class RegisterFragment extends Fragment {
 
         mBinding.buttonRegisterRegister.setOnClickListener(button -> {
             attemptRegister(button);
-            //Navigation.findNavController(getView()).navigate(
-            //RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
         });
         mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
                 this::observeResponse
         );
-
-
     }
 
     /**
@@ -206,8 +202,6 @@ public class RegisterFragment extends Fragment {
 
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
-
-
     }
 
 
@@ -222,8 +216,9 @@ public class RegisterFragment extends Fragment {
 //        directions.setEmail(binding.editEmail.getText().toString());
 //        directions.setPassword(binding.editPassword1.getText().toString());
 
-        Navigation.findNavController(getView()).navigate(RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
-
+        Navigation.findNavController(getView()).
+                navigate(RegisterFragmentDirections.
+                        actionRegisterFragmentToVerifyFragment());
     }
 
 
@@ -252,8 +247,5 @@ public class RegisterFragment extends Fragment {
             Log.d("JSON Response", "No Response");
             mBinding.layoutWait.setVisibility(View.GONE);
         }
-
     }
-
-
 }

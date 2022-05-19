@@ -5,6 +5,8 @@ import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.setJWT;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.getThemeColor;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.setCustomizedThemes;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import androidx.lifecycle.ViewModelProvider;
@@ -20,8 +22,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.auth0.android.jwt.JWT;
 import com.google.android.material.badge.BadgeDrawable;
@@ -98,8 +102,6 @@ public class MainActivity extends AppCompatActivity {
 
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
 
-//        setCustomizedThemes(this, getThemeColor(this));
-
         setContentView(mBinding.getRoot());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -158,11 +160,13 @@ public class MainActivity extends AppCompatActivity {
         } catch (IllegalStateException e) {
             JwtExpire();
         }
+    }
 
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull String name, @NonNull Context context, @NonNull AttributeSet attrs) {
         setCustomizedThemes(this, getThemeColor(this));
-
-//        setContentView(R.layout.activity_main);
-
+        return super.onCreateView(name, context, attrs);
     }
 
     //back button for home

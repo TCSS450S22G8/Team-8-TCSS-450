@@ -19,7 +19,7 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentVerifyBinding;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 1.0
+ * @version 5/12/22
  */
 public class VerifyFragment extends Fragment {
 

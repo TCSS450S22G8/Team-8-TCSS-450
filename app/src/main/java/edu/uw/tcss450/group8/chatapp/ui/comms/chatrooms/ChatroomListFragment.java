@@ -18,8 +18,8 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 
 /**
- * Create an instance of Message List fragment.
- * Adapted from original code by Charles Bryan.
+ * Create an instance of Message List fragment
+ * Adapted from original code by Charles Bryan
  *
  * @author Charles Bryan
  * @author Levi McCoy

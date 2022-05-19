@@ -18,8 +18,8 @@ import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherViewModel;
 
 
 /**
- * Class for user home page.
- * Adapted from original code by Charles Bryan.
+ * Class for user home page
+ * Adapted from original code by Charles Bryan
  *
  * @author Charles Bryan
  * @author Shilnara Dam

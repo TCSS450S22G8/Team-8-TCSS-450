@@ -19,7 +19,7 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentMessageListBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 /**
- * Shows all the messages in a chat.
+ * Shows all the messages in a chat
  * Original code adapted from Charles Bryan
  *
  * @author Charles Bryan

@@ -34,6 +34,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import edu.uw.tcss450.group8.chatapp.databinding.ActivityMainBinding;
 import edu.uw.tcss450.group8.chatapp.model.NewMessageCountViewModel;
+import edu.uw.tcss450.group8.chatapp.model.PushyTokenViewModel;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.services.PushReceiver;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
@@ -232,6 +233,17 @@ public class MainActivity extends AppCompatActivity {
                         getString(R.string.keys_shared_prefs),
                         Context.MODE_PRIVATE);
         prefs.edit().remove(getString(R.string.keys_prefs_jwt)).apply();
+
+        PushyTokenViewModel model = new ViewModelProvider(this)
+                .get(PushyTokenViewModel.class);
+        //when we hear back from the web service quit
+        model.addResponseObserver(this, result -> finishAndRemoveTask());
+        model.deleteTokenFromWebservice(
+                new ViewModelProvider(this)
+                        .get(UserInfoViewModel.class)
+                        .getJwt()
+        );
+
         //Go back to login page
         Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.authenticationActivity);
 

@@ -109,7 +109,6 @@ public class MessageListFragment extends Fragment {
                     binding.editMessage.getText().toString());
         });
         //when we get the response back from the server, clear the edittext
-        // TODO: Figure out why this is not clearing the text
         mSendModel.addResponseObserver(getViewLifecycleOwner(), response ->
                 binding.editMessage.setText(""));
     }

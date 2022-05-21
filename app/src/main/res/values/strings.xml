@@ -46,4 +46,9 @@
     <string name="action_forgot_clicked">I have clicked the link</string>
 
 
+    <string name="keys_shared_prefs">My Auth App Shared Prefs</string>
+    <string name="keys_prefs_jwt">Sharded Prefs JWT</string>
+    <string name="switch_log_in">Stay Logged in</string>
+
+
 </resources>

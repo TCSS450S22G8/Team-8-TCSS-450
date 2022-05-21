@@ -21,6 +21,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.view.Menu;
@@ -216,6 +217,10 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.settingFragment:
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_setting_fragment);
+                break;
+            case R.id.action_sign_out:
+                JwtExpire();
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -227,12 +232,10 @@ public class MainActivity extends AppCompatActivity {
         setJWT(this, "");
         setEmail(this, "");
 
-        Navigation.findNavController(this, R.id.mainActivity).navigate(
-                SettingFragmentDirections
-                        .actionSettingFragmentToAuthenticationActivity());
+        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.authenticationActivity);
+
         this.finish();
 
     }
-
 
 }

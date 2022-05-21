@@ -58,18 +58,7 @@ public class SettingFragment extends Fragment {
                     SettingFragmentDirections
                             .actionSettingFragmentToChangeFragment());
         });
-        //on button click,navigate to settings
-        // TODO once login system is done, remove signed in user info.
-        binding.buttonSettingsLogout.setOnClickListener(button -> {
-            setJWT(getActivity(), "");
-            setEmail(getActivity(), "");
-            Navigation.findNavController(getView()).navigate(
-                    SettingFragmentDirections
-                            .actionSettingFragmentToAuthenticationActivity());
-            //This tells the containing Activity that we are done with it.
-            //It will not be added to backstack.
-            getActivity().finish();
-        });
+
         TextView orange = view.findViewById(R.id.text_settings_orangeColor);
         TextView red = view.findViewById(R.id.text_settings_redColor);
         TextView blue = view.findViewById(R.id.text_settings_blueColor);
@@ -103,6 +92,7 @@ public class SettingFragment extends Fragment {
 
         }
     }
+
 
 
     /**

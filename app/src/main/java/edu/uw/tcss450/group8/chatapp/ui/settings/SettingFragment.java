@@ -9,6 +9,9 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+
+import android.graphics.drawable.LayerDrawable;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -20,6 +23,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentSettingBinding;
@@ -59,6 +65,7 @@ public class SettingFragment extends Fragment {
                             .actionSettingFragmentToChangeFragment());
         });
 
+
         TextView orange = view.findViewById(R.id.text_settings_orangeColor);
         TextView red = view.findViewById(R.id.text_settings_redColor);
         TextView blue = view.findViewById(R.id.text_settings_blueColor);
@@ -74,6 +81,7 @@ public class SettingFragment extends Fragment {
             red.setBackgroundColor(getResources().getColor(R.color.red_dark, null));
             blue.setBackgroundColor(getResources().getColor(R.color.blue_dark, null));
             green.setBackgroundColor(getResources().getColor(R.color.green_dark, null));
+
         }
 
         switch (getThemeColor(getActivity())) {
@@ -91,12 +99,14 @@ public class SettingFragment extends Fragment {
                 break;
 
         }
+
     }
 
 
 
     /**
      * helper method to set color.
+     *
      * @param color the color of the theme
      */
     private void SetColor(String color) {
@@ -115,7 +125,8 @@ public class SettingFragment extends Fragment {
         tv.setBackground(dg);
     }
 
-        @Override
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
     }

@@ -159,10 +159,10 @@ public class MainActivity extends AppCompatActivity {
                         new UserInfoViewModel.UserInfoViewModelFactory(args.getEmail(), args.getJwt()))
                         .get(UserInfoViewModel.class);
             } else {
-                JwtExpire();
+                signOut();
             }
         } catch (IllegalStateException e) {
-            JwtExpire();
+            signOut();
         }
     }
 
@@ -219,23 +219,23 @@ public class MainActivity extends AppCompatActivity {
                 Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.nav_setting_fragment);
                 break;
             case R.id.action_sign_out:
-                JwtExpire();
+                signOut();
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    /**
-     * helper method when jwt expire.
-     */
-    private void JwtExpire() {
-        setJWT(this, "");
-        setEmail(this, "");
 
+    private void signOut() {
+        SharedPreferences prefs =
+                getSharedPreferences(
+                        getString(R.string.keys_shared_prefs),
+                        Context.MODE_PRIVATE);
+        prefs.edit().remove(getString(R.string.keys_prefs_jwt)).apply();
+        //Go back to login page
         Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.authenticationActivity);
 
         this.finish();
-
     }
 
 }

@@ -23,8 +23,8 @@
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home">
         <action
-            android:id="@+id/action_homeFragment_to_messageFragment3"
-            app:destination="@id/nav_chat_fragment" />
+            android:id="@+id/action_nav_home_fragment_to_chatroomListFragment"
+            app:destination="@id/nav_chatroom_fragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_weather_fragment"
@@ -37,14 +37,21 @@
         tools:layout="@layout/activity_auth" />
     <fragment
         android:id="@+id/nav_connections_fragment"
-        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.ConnectionsFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactFragment"
         android:label="@string/title_connections"
-        tools:layout="@layout/fragment_connections" />
+        tools:layout="@layout/fragment_contact" >
+        <action
+            android:id="@+id/action_nav_connections_fragment_to_messageListFragment"
+            app:destination="@id/messageListFragment" />
+    </fragment>
     <fragment
-        android:id="@+id/nav_chat_fragment"
-        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListFragment"
-        android:label="@string/title_chat"
-        tools:layout="@layout/fragment_message_list" />
+        android:id="@+id/nav_chatroom_fragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomListFragment"
+        android:label="@string/title_chat_rooms">
+        <action
+            android:id="@+id/action_nav_chatroom_fragment_to_messageListFragment"
+            app:destination="@id/messageListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/changeFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.settings.change.ChangeFragment"
@@ -52,5 +59,13 @@
         <action
             android:id="@+id/action_changeFragment_to_nav_home_fragment"
             app:destination="@id/nav_home_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/messageListFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListFragment"
+        android:label="Messages" >
+        <argument
+            android:name="chatid"
+            app:argType="integer" />
     </fragment>
 </navigation>

@@ -27,11 +27,15 @@ import java.util.Objects;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 1.0
+ * @author Shilnara Dam
+ * @author Sean Logan
+ * @version 5/19/22
  */
 public class ForgotViewModel extends AndroidViewModel {
 
     private MutableLiveData<JSONObject> mResponse;
+
+    private MutableLiveData<Boolean> mSuccessfulResponse;
 
     /**
      * Constructor that instantiates the register View Model
@@ -42,6 +46,8 @@ public class ForgotViewModel extends AndroidViewModel {
         super(application);
         mResponse = new MutableLiveData<>();
         mResponse.setValue(new JSONObject());
+        mSuccessfulResponse = new MutableLiveData<>();
+        mSuccessfulResponse.setValue(false);
     }
 
     /**
@@ -50,16 +56,26 @@ public class ForgotViewModel extends AndroidViewModel {
      * @param owner    current lifecycle
      * @param observer observes live data
      */
-    public void addResponseObserver(@NonNull LifecycleOwner owner,
-                                    @NonNull Observer<? super JSONObject> observer) {
-        mResponse.observe(owner, observer);
+    public void addEmailSuccessObserver(@NonNull LifecycleOwner owner,
+                                    @NonNull Observer<? super Boolean> observer) {
+        mSuccessfulResponse.observe(owner, observer);
     }
 
     /**
-     * Handles JSON Request Errors and volley errors
-     *
-     * @param error error that is given to handle
+     * Handles email verification error.
+     * @param error VolleyError error
      */
+    private void handleEmailVerificationError(final VolleyError error) {
+        mSuccessfulResponse.setValue(false);
+    }
+
+
+    /**
+    * Handles JSON Request Errors and volley errors
+    *
+    * @param error error that is given to handle
+    *
+    */
     private void handleError(final VolleyError error) {
         if (Objects.isNull(error.networkResponse)) {
             try {
@@ -84,24 +100,80 @@ public class ForgotViewModel extends AndroidViewModel {
     }
 
     /**
-     * Sends JSON Request to the server for the registration process.
-     *
-     * @param passwordNew    users new password
-     * @param passwordOld    users old password
+     * Handles successful password rest verification.
+     * @param success JSONObject success
      */
-    public void connect(final String passwordOld,
-                        final String passwordNew) {
-        String url = "https://tcss-450-sp22-group-8.herokuapp.com/auth";
+    private void successfulResetPasswordVerification(JSONObject success) {
+        mSuccessfulResponse.setValue(true);
+    }
+
+    /**
+     * Sends JSON Request to the server for the forgot password verification process.
+     *
+     * @param userEmail    users email
+     */
+    public void sendForgotPasswordEmail(final String userEmail) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/forgot-password/" + userEmail;
+
+        Request request = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                null,
+                mResponse::setValue,
+                this::handleError);
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10_000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //Instantiate the RequestQueue and add the request to the queue
+        Volley.newRequestQueue(getApplication().getApplicationContext())
+                .add(request);
+    }
+
+    /**
+     * Sends JSON Request to the server to check if the user has clicked the link in the
+     * verification email we have sent. If they have clicked the link, the database updates
+     * the forgotPassVerification flag from a 0 to a 1.
+     *
+     * @param userEmail    users email
+     */
+    public void sendVerifiedPasswordReset(final String userEmail) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/forgot-password/check-flag/" + userEmail;
+
+        Request request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                this::successfulResetPasswordVerification,
+                this::handleEmailVerificationError);
+
+        request.setRetryPolicy(new DefaultRetryPolicy(
+                10_000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        //Instantiate the RequestQueue and add the request to the queue
+        Volley.newRequestQueue(getApplication().getApplicationContext())
+                .add(request);
+    }
+
+    /**
+     * Sends JSON Request to the server reset the users password.
+     *
+     * @param userNewPassword    users new password
+     */
+    public void resetUserPassword(final String email, final String userNewPassword) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/forgot-password/new-password/";
         JSONObject body = new JSONObject();
         try {
-            body.put("email", passwordOld);
-            body.put("password", passwordNew);
+            body.put("email", email);
+            body.put("password", userNewPassword);
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
         Request request = new JsonObjectRequest(
-                Request.Method.POST,
+                Request.Method.PUT,
                 url,
                 body,
                 mResponse::setValue,
@@ -115,6 +187,4 @@ public class ForgotViewModel extends AndroidViewModel {
         Volley.newRequestQueue(getApplication().getApplicationContext())
                 .add(request);
     }
-
-
 }

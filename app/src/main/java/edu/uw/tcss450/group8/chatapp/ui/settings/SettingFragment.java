@@ -9,7 +9,9 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.GradientDrawable;
+
 import android.graphics.drawable.LayerDrawable;
+
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -24,6 +26,7 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentSettingBinding;
 
@@ -33,12 +36,12 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentSettingBinding;
  *
  * @author Charles Bryan
  * @author Shilnara Dam
- * @version 1.0
+ * @version 5/19/22
  */
 public class SettingFragment extends Fragment {
 
     /**
-     * Required empty public contstructor.
+     * Required empty public constructor.
      */
     public SettingFragment() {
         // Required empty public constructor
@@ -61,18 +64,7 @@ public class SettingFragment extends Fragment {
                     SettingFragmentDirections
                             .actionSettingFragmentToChangeFragment());
         });
-        //on button click,navigate to settings
-        // TODO once login system is done, remove signed in user info.
-        binding.buttonSettingsLogout.setOnClickListener(button -> {
-            setJWT(getActivity(), "");
-            setEmail(getActivity(), "");
-            Navigation.findNavController(getView()).navigate(
-                    SettingFragmentDirections
-                            .actionSettingFragmentToAuthenticationActivity());
-            //This tells the containing Activity that we are done with it.
-            //It will not be added to backstack.
-            getActivity().finish();
-        });
+
 
         TextView orange = view.findViewById(R.id.text_settings_orangeColor);
         TextView red = view.findViewById(R.id.text_settings_redColor);
@@ -84,13 +76,12 @@ public class SettingFragment extends Fragment {
         binding.textSettingsBlueColor.setOnClickListener(button -> SetColor("blue"));
         binding.textSettingsGreenColor.setOnClickListener(button -> SetColor("green"));
 
-
         if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
-            orange.setBackgroundColor(Color.parseColor("#c63f17"));
-            orange.setBackgroundColor(getResources().getColor(R.color.orange_dark));
-            red.setBackgroundColor(getResources().getColor(R.color.red_dark));
-            blue.setBackgroundColor(getResources().getColor(R.color.blue_dark));
-            green.setBackgroundColor(getResources().getColor(R.color.green_dark));
+            orange.setBackgroundColor(getResources().getColor(R.color.orange_dark, null));
+            red.setBackgroundColor(getResources().getColor(R.color.red_dark, null));
+            blue.setBackgroundColor(getResources().getColor(R.color.blue_dark, null));
+            green.setBackgroundColor(getResources().getColor(R.color.green_dark, null));
+
         }
 
         switch (getThemeColor(getActivity())) {
@@ -110,6 +101,7 @@ public class SettingFragment extends Fragment {
         }
 
     }
+
 
 
     /**
@@ -132,6 +124,7 @@ public class SettingFragment extends Fragment {
         }
         tv.setBackground(dg);
     }
+
 
     @Override
     public void onDestroyView() {

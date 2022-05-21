@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Toast;
 
 
 import com.squareup.picasso.Picasso;
@@ -155,11 +156,12 @@ public class WeatherFragment extends Fragment {
         //checking which type of data error
         switch (theError) {
             case "zipcode":
-                mBinding.editWeatherZipcode.setError("Invalid Zipcode");
+                //send toast message stating bad zipcode
+                Toast.makeText(getActivity(), "Invalid Zipcode!", Toast.LENGTH_SHORT).show();
                 break;
             case "lat/lon":
-                mBinding.editWeatherLat.setError("Invalid Latitude");
-                mBinding.editWeatherLon.setError("Invalid Longitude");
+                //send toast message stating bad lat long
+                Toast.makeText(getActivity(), "Invalid Lat/Lon!", Toast.LENGTH_SHORT).show();
         }
     }
 

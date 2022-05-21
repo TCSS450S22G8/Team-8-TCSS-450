@@ -27,7 +27,7 @@ import java.util.Objects;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 1.0
+ * @version 5/19/22
  */
 public class ChangeViewModel extends AndroidViewModel {
 

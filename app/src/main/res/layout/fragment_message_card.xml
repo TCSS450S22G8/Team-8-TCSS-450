@@ -1,41 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:layout_marginEnd="8dp">
+    android:layout_height="wrap_content">
+    <!--
+        Nest the card inside of a frame. Programmatically set the
+        gravity of the Card inside to the start (left) or
+        end (right) while the Frame extends the width of the
+        screen.
+    -->
 
+    <!--  MaterialCardView instead of androidx.CardView  -->
     <androidx.cardview.widget.CardView
-        android:id="@+id/card_chat_message"
+        android:id="@+id/card_root"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="12dp"
-        app:cardElevation="0dp"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:cardBackgroundColor="?colorPrimary">
+        android:layout_gravity="end"
+        android:layout_margin="@dimen/chat_margin"
+        app:cardBackgroundColor="?colorPrimary"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="0dp">
 
-        <LinearLayout
-            android:id="@+id/layout_chat_container"
+
+        <TextView
+            android:id="@+id/text_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:padding="8dp"
+            android:textAppearance="?attr/textAppearanceListItem"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/text_message_message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:maxWidth="260dp"
-                android:paddingLeft="12dp"
-                android:paddingTop="8dp"
-                android:paddingRight="12dp"
-                android:textSize="16sp" />
-        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

@@ -1,12 +1,19 @@
 
 package edu.uw.tcss450.group8.chatapp.ui.comms.chat;
 
+import android.content.res.Resources;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.shape.CornerFamily;
 
 import java.util.List;
 
@@ -19,20 +26,26 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentMessageCardBinding;
  *
  * @author Charles Bryan
  * @author JenHo Liao
- * @version 1.0
+ * @author Shilnara Dam
+ * @author Sean Logan
+ * @version 5/19/22
  */
 public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecyclerViewAdapter.MessageViewHolder> {
 
-    //Store all of the blogs to present
-    private final List<Message> mMessage;
+    private final List<Message> mMessages;
+    private final String mEmail;
+    private int mColor;
 
     /**
-     * Constructor for MessageRecyclerViewAdapter
+     * Constructor for View Adaptor.
      *
-     * @param items list of message
+     * @param messages List
+     * @param email    String
      */
-    public MessageRecyclerViewAdapter(List<Message> items) {
-        this.mMessage = items;
+    public MessageRecyclerViewAdapter(List<Message> messages, String email, int color) {
+        this.mMessages = messages;
+        mEmail = email;
+        mColor = color;
     }
 
     @NonNull
@@ -45,37 +58,77 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        holder.setMessage(mMessage.get(position));
+        holder.setMessage(mMessages.get(position));
     }
 
     @Override
     public int getItemCount() {
-        return this.mMessage.size();
+        return this.mMessages.size();
     }
 
     /**
      * Objects from this class represent an Individual row View from the List * of rows in the
      * Message Recycler View.
      */
-    public class MessageViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public FragmentMessageCardBinding binding;
-        private Message mMessage;
+    class MessageViewHolder extends RecyclerView.ViewHolder {
+        private final View mView;
+        private FragmentMessageCardBinding binding;
 
-        public MessageViewHolder(View view) {
+        /**
+         * Constructor for View Holder.
+         *
+         * @param view View
+         */
+        public MessageViewHolder(@NonNull View view) {
             super(view);
             mView = view;
             binding = FragmentMessageCardBinding.bind(view);
         }
 
         /**
-         * Set message
+         * Sets each card message.
          *
-         * @param message message
+         * @param message Message
          */
         void setMessage(final Message message) {
-            mMessage = message;
-            binding.textMessageMessage.setText(message.getMessage());
+            final Resources res = mView.getContext().getResources();
+            final CardView card = binding.cardRoot;
+
+            int standard = (int) res.getDimension(R.dimen.chat_margin);
+            int extended = (int) res.getDimension(R.dimen.chat_margin_sided);
+
+            if (mEmail.equals(message.getSender())) {
+                //This message is from the user. Format it as such
+                binding.textMessage.setText(message.getMessage());
+                ViewGroup.MarginLayoutParams layoutParams =
+                        (ViewGroup.MarginLayoutParams) card.getLayoutParams();
+                //Set the left margin
+                layoutParams.setMargins(extended, standard, standard, standard);
+                // Set this View to the right (end) side
+                ((FrameLayout.LayoutParams) card.getLayoutParams()).gravity =
+                        Gravity.END;
+
+
+                card.setCardBackgroundColor(res.getColor(R.color.gray, null));
+
+                card.requestLayout();
+            } else {
+                //This message is from another user. Format it as such
+                binding.textMessage.setText(message.getSender() +
+                        ": " + message.getMessage());
+                ViewGroup.MarginLayoutParams layoutParams =
+                        (ViewGroup.MarginLayoutParams) card.getLayoutParams();
+
+                //Set the right margin
+                layoutParams.setMargins(standard, standard, extended, standard);
+                // Set this View to the left (start) side
+                ((FrameLayout.LayoutParams) card.getLayoutParams()).gravity =
+                        Gravity.START;
+
+                card.setCardBackgroundColor(mColor);
+                //Round the corners on the right side
+                card.requestLayout();
+            }
         }
     }
 }

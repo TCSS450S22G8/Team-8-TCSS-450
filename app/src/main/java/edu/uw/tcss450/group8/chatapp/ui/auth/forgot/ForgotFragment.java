@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,20 +25,18 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotBinding;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
- * Class for the Register Fragment that handles user registration to the application.
+ * Class for the Register Fragment that handles user registration to the application
  * Adapted from original code by Charles Bryan.
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 1.0
+ * @version 5/19/22
  */
 public class ForgotFragment extends Fragment {
 
     private FragmentForgotBinding mBinding;
 
-    private ForgotViewModel mRegisterModel;
-
-
+    private ForgotViewModel mResetPassword;
 
     private PasswordValidator mEmailValidator = checkPwdLength(2)
             .and(checkExcludeWhiteSpace())
@@ -51,7 +50,6 @@ public class ForgotFragment extends Fragment {
                     .and(checkPwdDigit())
                     .and(checkPwdLowerCase().or(checkPwdUpperCase()));
 
-
     /**
      * Required empty constructor for the register fragment
      */
@@ -62,10 +60,9 @@ public class ForgotFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRegisterModel = new ViewModelProvider(getActivity())
+        mResetPassword = new ViewModelProvider(getActivity())
                 .get(ForgotViewModel.class);
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -74,25 +71,13 @@ public class ForgotFragment extends Fragment {
         return mBinding.getRoot();
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-
         mBinding.buttonChange.setOnClickListener(button -> {
             attemptChange(button);
-            //Navigation.findNavController(getView()).navigate(
-            //RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
         });
-        /*
-        mRegisterModel.addResponseObserver(getViewLifecycleOwner(),
-                this::observeResponse
-        );
-
-         */
-
-
     }
 
     /**
@@ -103,23 +88,9 @@ public class ForgotFragment extends Fragment {
      */
     private void attemptChange(final View button) {
         mBinding.layoutWait.setVisibility(View.VISIBLE);
-        validateEmail();
+        validatePasswordsMatch();
     }
 
-
-    /**
-     * Checks user input for email to match required parameters.
-     * Calls validate password match.
-     */
-    private void validateEmail() {
-        mEmailValidator.processResult(
-                mEmailValidator.apply(mBinding.editForgotEmail.getText().toString().trim()),
-                this::validatePasswordsMatch,
-                result -> {
-                    mBinding.editForgotEmail.setError("Please enter a valid Email address.");
-                    mBinding.layoutWait.setVisibility(View.GONE);
-                });
-    }
 
     /**
      * Checks if the user input matches the required parameters for matching passwords.
@@ -159,15 +130,12 @@ public class ForgotFragment extends Fragment {
      * information validation.
      */
     private void verifyAuthWithServer() {
+        String email = ForgotFragmentArgs.fromBundle(getArguments()).getEmail();
+        mResetPassword.resetUserPassword(email, mBinding.editForgotPassword2.getText().toString());
         navigateToLogin();
-        //mRegisterModel.connect(
-                //mBinding.editChangeCurPass.getText().toString(),
-                //mBinding.editChangePassword1.getText().toString());
 
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
-
-
     }
 
 
@@ -182,41 +150,8 @@ public class ForgotFragment extends Fragment {
 //        directions.setEmail(binding.editEmail.getText().toString());
 //        directions.setPassword(binding.editPassword1.getText().toString());
 
+        //send toast message stating password was reset
+        Toast.makeText(getActivity(), "Password Updated!", Toast.LENGTH_SHORT).show();
         Navigation.findNavController(getView()).navigate(ForgotFragmentDirections.actionForgotFragmentToLoginFragment());
-
     }
-
-
-    /**
-     * An observer on the HTTP Response from the web server. This observer should be
-     * attached to SignInViewModel.
-     *
-     * @param response the Response from the server
-     */
-    /*
-    private void observeResponse(final JSONObject response) {
-        if (response.length() > 0) {
-            if (response.has("code")) {
-                try {
-                    mBinding.editChangePassword1.setError(
-                            "Error Authenticating: " +
-                                    response.getJSONObject("data").getString("message"));
-                    mBinding.layoutWait.setVisibility(View.GONE);
-                } catch (JSONException e) {
-                    Log.e("JSON Parse Error", e.getMessage());
-                    mBinding.layoutWait.setVisibility(View.GONE);
-                }
-            } else {
-                navigateToLogin();
-            }
-        } else {
-            Log.d("JSON Response", "No Response");
-            mBinding.layoutWait.setVisibility(View.GONE);
-        }
-
-    }
-
-     */
-
-
 }

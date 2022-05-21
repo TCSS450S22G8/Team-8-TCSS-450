@@ -30,9 +30,9 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
  * Adapted from original code by Charles Bryan.
  *
  * @author Charles Bryan
- * @author sean logan
- * @author shilnara dam
- * @version 1.0
+ * @author Sean Logan
+ * @author Shilnara Dam
+ * @version 5/19/12
  */
 public class LoginViewModel extends AndroidViewModel {
 

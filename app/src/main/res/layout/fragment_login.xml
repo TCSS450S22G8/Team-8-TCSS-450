@@ -16,11 +16,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:checked="true"
-            android:text="Switch"
+            android:text="@string/switch_log_in"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/button_login_forgot"
-            tools:text="@string/switch_sign_in" />
+            tools:text="@string/switch_log_in" />
 
         <EditText
             android:id="@+id/edit_register_email"

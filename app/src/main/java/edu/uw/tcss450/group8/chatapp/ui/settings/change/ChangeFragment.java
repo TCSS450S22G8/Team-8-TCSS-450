@@ -155,7 +155,7 @@ public class ChangeFragment extends Fragment {
                 mPassWordValidator2.apply(mBinding.editChangeCurPass.getText().toString()),
                 this::verifyAuthWithServer,
                 result -> {
-                    mBinding.editChangeCurPass.setError("Please enter a valid Password 2.");
+                    mBinding.editChangeCurPass.setError("Please enter your current password.");
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }

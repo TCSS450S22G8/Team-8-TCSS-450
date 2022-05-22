@@ -40,8 +40,6 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
  */
 public class ContactListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
-    private MutableLiveData<Boolean> mUnFriend;
-
 
     /**
      * Constructor for Contact List ViewModel
@@ -60,19 +58,6 @@ public class ContactListViewModel extends AndroidViewModel {
     public void addContactsListObserver(@NonNull LifecycleOwner owner,
                                         @NonNull Observer<? super List<Contact>> observer) {
         mContact.observe(owner, observer);
-        mUnFriend = new MutableLiveData<>();
-        mUnFriend.setValue(false);
-
-    }
-
-    /**
-     * Helper method for observe
-     * @param owner owner of lifecycle
-     * @param observer contact list
-     */
-    public void addUnFriendObserver(@NonNull LifecycleOwner owner,
-                                        @NonNull Observer<? super Boolean> observer) {
-        mUnFriend.observe(owner, observer);
     }
 
     /**
@@ -125,7 +110,7 @@ public class ContactListViewModel extends AndroidViewModel {
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
                 // add headers <key,value>
-                headers.put("Authorization", jwt.toString());
+                headers.put("Authorization", jwt);
                 return headers;
             }
         };
@@ -147,7 +132,6 @@ public class ContactListViewModel extends AndroidViewModel {
             Log.e("CLIENT ERROR",
                     volleyError.networkResponse.statusCode + " " + data);
         }
-        mUnFriend.setValue(false);
     }
 
     /**
@@ -156,7 +140,7 @@ public class ContactListViewModel extends AndroidViewModel {
      * @param response JSONObject
      */
     private void handleUnfriendSuccess(final JSONObject response) {
-        mUnFriend.setValue(true);
+
     }
 
     /**

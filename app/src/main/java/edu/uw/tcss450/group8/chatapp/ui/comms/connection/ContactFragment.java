@@ -65,17 +65,6 @@ public class ContactFragment extends Fragment{
             );
         });
 
-        //removing friend observer to refresh friend list
-        mContact.addUnFriendObserver(getViewLifecycleOwner(), isUnfriend -> {
-            if (isUnfriend) {
-                //message stating unfriend successful
-                Toast.makeText(getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();
-                mBinding.listRoot.setVisibility(View.GONE);
-                mBinding.progressBar.setVisibility(View.VISIBLE);
-                mContact.getContacts(mUser.getJwt());
-            }
-        });
-
         //refreshing chat list swipe
         mBinding.swipeContactsRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

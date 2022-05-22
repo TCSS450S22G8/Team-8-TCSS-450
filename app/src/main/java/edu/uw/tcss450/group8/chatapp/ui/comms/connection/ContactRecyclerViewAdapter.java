@@ -5,12 +5,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import edu.uw.tcss450.group8.chatapp.MainActivity;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
 
@@ -87,22 +89,20 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             email = view.findViewById(R.id.text_contact_email);
             username = view.findViewById(R.id.text_contact_username);
 
-
             mUnFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mParent.unFriend(email.getText().toString());
+                    mContact.remove((getAdapterPosition()));
+                    notifyItemRemoved(getAdapterPosition());
+                    notifyItemRangeChanged(getAdapterPosition(), mContact.size());
+                    Toast.makeText(mParent.getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();
                 }
             });
 
             messageFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    /*
-                    mContact.remove((getAdapterPosition()));
-                    notifyItemRemoved(getAdapterPosition());
-                    notifyItemRangeChanged(getAdapterPosition(), mContact.size());
-                     */
                     mParent.sendMessage(email.getText().toString());
                 }
             });

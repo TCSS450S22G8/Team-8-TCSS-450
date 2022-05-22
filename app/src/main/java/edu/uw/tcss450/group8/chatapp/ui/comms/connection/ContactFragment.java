@@ -65,11 +65,6 @@ public class ContactFragment extends Fragment{
             );
         });
 
-        //removing friend observer to makes toast message
-        mContact.addUnFriendObserver(getViewLifecycleOwner(), isUnfriend -> {
-            Toast.makeText(getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();
-        });
-
         //refreshing chat list swipe
         mBinding.swipeContactsRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override

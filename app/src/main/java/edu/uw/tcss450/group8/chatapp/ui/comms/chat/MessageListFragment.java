@@ -35,6 +35,7 @@ public class MessageListFragment extends Fragment {
     private UserInfoViewModel mUserModel;
 
     private int chatid;
+    private String chatName;
 
     public MessageListFragment() {
         // Required empty public constructor
@@ -49,6 +50,7 @@ public class MessageListFragment extends Fragment {
 
         mSendModel = provider.get(MessageSendViewModel.class);
         chatid = MessageListFragmentArgs.fromBundle(getArguments()).getChatid();
+        chatName = MessageListFragmentArgs.fromBundle(getArguments()).getChatName();
     }
 
     @Override

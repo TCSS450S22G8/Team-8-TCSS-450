@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.MainActivity;
@@ -28,7 +29,7 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
  * @version 5/19/22
  */
 public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder> {
-    private final List<Contact> mContact;
+    private List<Contact> mContact;
     private final ContactFragment mParent;
 
     /**
@@ -58,6 +59,11 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     @Override
     public int getItemCount() {
         return this.mContact.size();
+    }
+
+    public void contactList(ArrayList<Contact> contactList) {
+        mContact = contactList;
+        notifyDataSetChanged();
     }
 
 

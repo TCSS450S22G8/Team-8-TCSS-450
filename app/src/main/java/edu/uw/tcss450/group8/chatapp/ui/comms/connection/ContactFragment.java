@@ -8,10 +8,16 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.Locale;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactBinding;
@@ -31,6 +37,7 @@ public class ContactFragment extends Fragment{
     private ContactListViewModel mContact;
     private UserInfoViewModel mUser;
     private FragmentContactBinding mBinding;
+    private ContactRecyclerViewAdapter mAdapter;
 
 
     @Override
@@ -38,7 +45,9 @@ public class ContactFragment extends Fragment{
         super.onCreate(savedInstanceState);
         mContact = new ViewModelProvider(getActivity()).get(ContactListViewModel.class);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
+
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -60,8 +69,10 @@ public class ContactFragment extends Fragment{
             mBinding.listRoot.setVisibility(View.VISIBLE);
             mBinding.progressBar.setVisibility(View.GONE);
             mBinding.swipeContactsRefresh.setRefreshing(false);
+            mAdapter = new ContactRecyclerViewAdapter(contacts, this);
+
             mBinding.listRoot.setAdapter(
-                    new ContactRecyclerViewAdapter(contacts, this)
+                  mAdapter
             );
         });
 
@@ -72,7 +83,36 @@ public class ContactFragment extends Fragment{
                 mContact.getContacts(mUser.getJwt());
             }
         });
+        EditText editText = mBinding.searchBar;
 
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                filter(editable.toString());
+            }
+        });
+    }
+
+    private  void filter(String text) {
+        ArrayList<Contact> contactList = new ArrayList<>();
+        for (Contact contact: mContact.getContactList()) {
+            if(contact.getUserName().toLowerCase().contains(text.toLowerCase()) ||
+                    contact.getEmail().toLowerCase().contains(text.toLowerCase())) {
+                contactList.add(contact);
+            }
+        }
+
+        mAdapter.contactList(contactList);
     }
 
     /**

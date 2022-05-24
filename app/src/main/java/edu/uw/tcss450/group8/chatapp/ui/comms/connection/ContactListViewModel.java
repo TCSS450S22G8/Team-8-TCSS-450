@@ -50,6 +50,10 @@ public class ContactListViewModel extends AndroidViewModel {
         mContact = new MutableLiveData<>();
     }
 
+    public List<Contact> getContactList() {
+        return mContact.getValue();
+    }
+
     /**
      * Helper method for observe
      * @param owner owner of lifecycle

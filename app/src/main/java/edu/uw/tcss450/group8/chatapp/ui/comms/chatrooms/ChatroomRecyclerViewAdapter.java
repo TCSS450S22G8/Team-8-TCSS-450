@@ -85,7 +85,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             openChat.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mParent.startChat(Integer.parseInt(chatId.getText().toString()));
+                    mParent.startChat(Integer.parseInt(chatId.getText().toString()), chatName.getText().toString());
                 }
             });
         }

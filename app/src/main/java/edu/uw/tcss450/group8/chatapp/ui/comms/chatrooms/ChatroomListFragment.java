@@ -1,6 +1,8 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms;
 
+import android.app.ActionBar;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,9 +80,10 @@ public class ChatroomListFragment extends Fragment {
      *
      * @param chatId int
      */
-    public void startChat(int chatId) {
+    public void startChat(int chatId, String chatName) {
         Navigation.findNavController(getView()).
                 navigate(ChatroomListFragmentDirections.
-                        actionNavChatroomFragmentToMessageListFragment(chatId));
+                        actionNavChatroomFragmentToMessageListFragment(chatName, chatId));
+
     }
 }

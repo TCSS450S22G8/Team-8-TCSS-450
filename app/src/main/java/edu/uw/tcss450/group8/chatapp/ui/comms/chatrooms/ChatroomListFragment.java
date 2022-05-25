@@ -56,7 +56,6 @@ public class ChatroomListFragment extends Fragment {
         mBinding = FragmentChatroomListBinding.bind(getView());
 
         super.onViewCreated(view, savedInstanceState);
-        mModel.getChatRoomsForUser(mUser.getJwt());
         mModel.addChatRoomListObserver(getViewLifecycleOwner(), chatList -> {
             if (!chatList.isEmpty()) {
                 mBinding.swipeContactsRefresh.setRefreshing(false);

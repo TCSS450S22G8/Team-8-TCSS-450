@@ -55,7 +55,6 @@ public class ContactFragment extends Fragment{
         // get user contacts
         mBinding.listRoot.setVisibility(View.GONE);
         mBinding.progressBar.setVisibility(View.VISIBLE);
-        mContact.getContacts(mUser.getJwt());
         mContact.addContactsListObserver(getViewLifecycleOwner(), contacts -> {
             mBinding.listRoot.setVisibility(View.VISIBLE);
             mBinding.progressBar.setVisibility(View.GONE);

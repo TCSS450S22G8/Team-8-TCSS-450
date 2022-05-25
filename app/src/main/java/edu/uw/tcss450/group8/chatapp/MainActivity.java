@@ -44,6 +44,8 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListFragment;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomListFragment;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
 
 /**
  * Class for Main Activity
@@ -109,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             //Incrementing count for new friend requests
             if (intent.hasExtra("friendRequest")) {
                 Log.e("friend", "made it inside if statement");
-                if(nd.getId() != R.id.nav_connections_fragment) {
+                if (nd.getId() != R.id.nav_connections_fragment) {
                     mNewFriendRequestModel.increment();
                 }
 
@@ -124,9 +126,36 @@ public class MainActivity extends AppCompatActivity {
 
         MainActivityArgs args = MainActivityArgs.fromBundle(getIntent().getExtras());
 
-        new ViewModelProvider(this,
-                new UserInfoViewModel.UserInfoViewModelFactory(args.getEmail(), args.getJwt())
-        ).get(UserInfoViewModel.class);
+        //Import com.auth0.android.jwt.JWT
+        JWT jwt = new JWT(args.getJwt());
+
+        // Check to see if the web token is still valid or not. To make a JWT expire after a
+        // longer or shorter time period, change the expiration time when the JWT is
+        // created on the web service.
+        // TODO: Signing in JWT is expired sometimes, send a request back to backend to do verification and send new JWT back
+
+        try {
+            if (!jwt.isExpired(5)) {
+                new ViewModelProvider(
+                        this,
+                        new UserInfoViewModel.UserInfoViewModelFactory(args.getEmail(), args.getJwt()))
+                        .get(UserInfoViewModel.class);
+            } else {
+                signOut();
+            }
+        } catch (IllegalStateException e) {
+            signOut();
+        }
+
+        // load contact and chatroom as soon as login
+
+        ViewModelProvider viewModelProvider = new ViewModelProvider(this);
+        UserInfoViewModel mUserModel = viewModelProvider.get(UserInfoViewModel.class);
+        ChatroomViewModel mChatModel = viewModelProvider.get(ChatroomViewModel.class);
+        ContactListViewModel mContactModel = viewModelProvider.get(ContactListViewModel.class);
+
+        mContactModel.getContacts(mUserModel.getJwt());
+        mChatModel.getChatRoomsForUser(mUserModel.getJwt());
 
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
 
@@ -152,7 +181,7 @@ public class MainActivity extends AppCompatActivity {
                 mNewMessageModel.reset();
             }
             // Resets friend request badge count to 0 if we are on the connections fragment
-            else if(destination.getId() == R.id.nav_connections_fragment) {
+            else if (destination.getId() == R.id.nav_connections_fragment) {
                 mNewFriendRequestModel.reset();
             }
         });
@@ -185,26 +214,7 @@ public class MainActivity extends AppCompatActivity {
                 badge.setVisible(false);
             }
         });
-        //Import com.auth0.android.jwt.JWT
-        JWT jwt = new JWT(args.getJwt());
 
-        // Check to see if the web token is still valid or not. To make a JWT expire after a
-        // longer or shorter time period, change the expiration time when the JWT is
-        // created on the web service.
-        // TODO: Signing in JWT is expired sometimes, send a request back to backend to do verification and send new JWT back
-
-        try {
-            if (!jwt.isExpired(5)) {
-                new ViewModelProvider(
-                        this,
-                        new UserInfoViewModel.UserInfoViewModelFactory(args.getEmail(), args.getJwt()))
-                        .get(UserInfoViewModel.class);
-            } else {
-                signOut();
-            }
-        } catch (IllegalStateException e) {
-            signOut();
-        }
     }
 
     @Nullable

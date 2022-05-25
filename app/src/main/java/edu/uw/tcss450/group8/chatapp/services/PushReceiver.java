@@ -48,7 +48,7 @@ public class PushReceiver extends BroadcastReceiver {
         //So perform logic/routing based on the "type"
         //feel free to change the key or type of values.
         String notificationType = intent.getStringExtra("type");
-        switch(notificationType) {
+        switch (notificationType) {
             case "msg":
                 messagePushNotification(context, intent);
                 break;
@@ -259,6 +259,9 @@ public class PushReceiver extends BroadcastReceiver {
 
             Intent i = new Intent(context, MainActivity.class);
             i.putExtras(intent.getExtras());
+            i.putExtra("chatid", chatId);
+
+            context.sendBroadcast(i);
 
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                     i, PendingIntent.FLAG_MUTABLE);

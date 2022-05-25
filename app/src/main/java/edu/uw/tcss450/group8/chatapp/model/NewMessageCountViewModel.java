@@ -6,6 +6,8 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
+import java.io.FileOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,21 +16,33 @@ import java.util.Map;
  *
  * @author Charles Bryan
  */
-public class NewMessageCountViewModel extends ViewModel {
+public class NewMessageCountViewModel extends ViewModel implements Serializable {
     private Map<Integer, MutableLiveData<Integer>> mNewMessageCount;
+    private MutableLiveData<Integer> mCount;
 
 
     // change to a map, apply the chatroom id to it with the count
 
     public NewMessageCountViewModel() {
         mNewMessageCount = new HashMap<>();
-        mNewMessageCount.put(-1, new MutableLiveData<>(0));
+        mCount = new MutableLiveData<>(0);
     }
 
-    public void addMessageCountObserver(@NonNull LifecycleOwner owner,
-                                        @NonNull Observer<? super Integer> observer) {
-        mNewMessageCount.get(-1).observe(owner, observer);
+    public void addNewMessageCountObserver(@NonNull LifecycleOwner owner,
+                                           @NonNull Observer<? super Integer> observer) {
+        mCount.observe(owner, observer);
     }
+
+
+    public void addMessageCountObserver(int chatId, @NonNull LifecycleOwner owner,
+                                        @NonNull Observer<? super Integer> observer) {
+
+        if (!mNewMessageCount.containsKey(chatId)) {
+            mNewMessageCount.put(chatId, new MutableLiveData<>(0));
+        }
+        mNewMessageCount.get(chatId).observe(owner, observer);
+    }
+
 
     public void increment(int chatId) {
         if (mNewMessageCount.containsKey(chatId)) {
@@ -41,15 +55,15 @@ public class NewMessageCountViewModel extends ViewModel {
         update();
     }
 
-    public void clear(int chatId){
-        if(mNewMessageCount.containsKey(chatId)){
+    public void clear(int chatId) {
+        if (mNewMessageCount.containsKey(chatId)) {
             mNewMessageCount.get(chatId).setValue(0);
         }
         update();
     }
+
     public void update() {
         int i = mNewMessageCount.keySet().stream().filter(m -> m != -1).mapToInt(m -> mNewMessageCount.get(m).getValue()).sum();
-        mNewMessageCount.get(-1).setValue(i);
-
+        mCount.setValue(i);
     }
 }

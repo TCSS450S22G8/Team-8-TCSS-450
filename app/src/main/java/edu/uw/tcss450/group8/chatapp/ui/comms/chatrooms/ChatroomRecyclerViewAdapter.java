@@ -35,6 +35,8 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
 
     private MessageListViewModel mMessageModel;
 
+    private NewMessageCountViewModel mNewMessageModel;
+
     /**
      * Constructor for MessageRecyclerViewAdapter
      *
@@ -44,6 +46,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         this.mChatroom = items;
         this.mParent = parent;
         this.mMessageModel = new ViewModelProvider(mParent.getActivity()).get(MessageListViewModel.class);
+        this.mNewMessageModel = new ViewModelProvider(mParent.getActivity()).get(NewMessageCountViewModel.class);
     }
 
     @NonNull
@@ -116,6 +119,21 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
                     binding.textPreview.setText(newMessage);
                 }
             });
+
+            mNewMessageModel.addMessageCountObserver(chatId, mParent.getViewLifecycleOwner(), count -> {
+
+                if (count == 0) {
+
+                    binding.textUnread.setVisibility(View.INVISIBLE);
+                } else {
+                    binding.textUnread.setVisibility(View.VISIBLE);
+                    String str = String.valueOf(count);
+                    binding.textUnread.setText(str);
+
+                }
+
+            });
+
         }
     }
 }

@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
         // load contact and chatroom as soon as login
 
         ViewModelProvider viewModelProvider = new ViewModelProvider(this);
+
         UserInfoViewModel mUserModel = viewModelProvider.get(UserInfoViewModel.class);
         ChatroomViewModel mChatModel = viewModelProvider.get(ChatroomViewModel.class);
         ContactListViewModel mContactModel = viewModelProvider.get(ContactListViewModel.class);

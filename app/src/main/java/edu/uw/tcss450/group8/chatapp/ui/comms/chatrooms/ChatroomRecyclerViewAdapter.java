@@ -14,6 +14,7 @@ import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomCardBinding;
+import edu.uw.tcss450.group8.chatapp.model.NewMessageCountViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
 
@@ -92,6 +93,8 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
                 @Override
                 public void onClick(View view) {
                     mParent.startChat(Integer.parseInt(chatId.getText().toString()), chatName.getText().toString());
+                    NewMessageCountViewModel mNewMessageModel = new ViewModelProvider(mParent.getActivity()).get(NewMessageCountViewModel.class);
+                    mNewMessageModel.clear(Integer.parseInt(chatId.getText().toString()));
                 }
             });
         }
@@ -109,7 +112,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             mMessageModel.addMessageObserver(chatId, mParent.getViewLifecycleOwner(), messages -> {
                 List<Message> messageList = mMessageModel.getMessageListByChatId(chatId);
                 if (!messageList.isEmpty()) {
-                    String newMessage = messageList.get(messageList.size()-1).getMessage();
+                    String newMessage = messageList.get(messageList.size() - 1).getMessage();
                     binding.textPreview.setText(newMessage);
                 }
             });

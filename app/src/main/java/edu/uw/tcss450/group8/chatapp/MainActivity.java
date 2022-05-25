@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 //If the user is not on the chat screen, update the
                 // NewMessageCountView Model
                 if (nd.getId() != R.id.messageListFragment) {
-                    mNewMessageModel.increment();
+                    mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
                 }
                 //Inform the view model holding chatroom messages of the new
                 //message.
@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 //If the user is not on the chat screen, update the
                 // NewMessageCountView Model
                 if (nd.getId() != R.id.messageListFragment) {
-                    mNewMessageModel.increment();
+                    mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
                 }
             }
 
@@ -179,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
                 //When the user navigates to the chats page, reset the new message count.
                 //This will need some extra logic for your project as it should have
                 //multiple chat rooms.
-                mNewMessageModel.reset();
+                mNewMessageModel.update();
             }
             // Resets friend request badge count to 0 if we are on the connections fragment
             else if (destination.getId() == R.id.nav_connections_fragment) {

@@ -1,7 +1,5 @@
 package edu.uw.tcss450.group8.chatapp.ui.settings;
 
-import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.setEmail;
-import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.setJWT;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.getThemeColor;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.setThemeColor;
 
@@ -22,6 +20,7 @@ import androidx.navigation.Navigation;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -70,18 +69,19 @@ public class SettingFragment extends Fragment {
         TextView red = view.findViewById(R.id.text_settings_redColor);
         TextView blue = view.findViewById(R.id.text_settings_blueColor);
         TextView green = view.findViewById(R.id.text_settings_greenColor);
+        TextView uw = view.findViewById(R.id.text_settings_uwColor);
 
         binding.textSettingsOrangeColor.setOnClickListener(button -> SetColor("orange"));
         binding.textSettingsRedColor.setOnClickListener(button -> SetColor("red"));
         binding.textSettingsBlueColor.setOnClickListener(button -> SetColor("blue"));
         binding.textSettingsGreenColor.setOnClickListener(button -> SetColor("green"));
+        binding.textSettingsUwColor.setOnClickListener(button -> SetColor("uw"));
 
-        if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
+        if (isDarkMode()) {
             orange.setBackgroundColor(getResources().getColor(R.color.orange_dark, null));
             red.setBackgroundColor(getResources().getColor(R.color.red_dark, null));
             blue.setBackgroundColor(getResources().getColor(R.color.blue_dark, null));
             green.setBackgroundColor(getResources().getColor(R.color.green_dark, null));
-
         }
 
         switch (getThemeColor(getActivity())) {
@@ -97,11 +97,17 @@ public class SettingFragment extends Fragment {
             case "green":
                 SetStroke(green);
                 break;
+            case "uw":
+                if (isDarkMode()) {
+                    uw.setBackgroundColor(Color.WHITE);
+                } else {
+                    uw.setBackgroundColor(Color.BLACK);
+                }
+                break;
 
         }
 
     }
-
 
 
     /**
@@ -114,15 +120,29 @@ public class SettingFragment extends Fragment {
         getActivity().recreate();
     }
 
+    /**
+     * set the stroke for TextView
+     *
+     * @param tv
+     */
     private void SetStroke(TextView tv) {
         GradientDrawable dg = new GradientDrawable();
         dg.setColor(((ColorDrawable) tv.getBackground()).getColor());
-        if ((getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES) {
+        if (isDarkMode()) {
             dg.setStroke(10, Color.WHITE);
         } else {
             dg.setStroke(10, Color.BLACK);
         }
         tv.setBackground(dg);
+    }
+
+    /**
+     * check if the device is in dark mode.
+     *
+     * @return true if dark mode
+     */
+    private boolean isDarkMode() {
+        return (getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
     }
 
 

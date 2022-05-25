@@ -13,6 +13,7 @@ import androidx.core.app.NotificationCompat;
 import org.json.JSONException;
 
 import edu.uw.tcss450.group8.chatapp.AuthenticationActivity;
+import edu.uw.tcss450.group8.chatapp.MainActivity;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import me.pushy.sdk.Pushy;
@@ -45,7 +46,7 @@ public class PushReceiver extends BroadcastReceiver {
         String typeOfMessage = intent.getStringExtra("type");
         Message message = null;
         int chatId = -1;
-        try{
+        try {
             message = Message.createFromJsonString(intent.getStringExtra("message"));
             chatId = intent.getIntExtra("chatid", -1);
         } catch (JSONException e) {
@@ -72,7 +73,7 @@ public class PushReceiver extends BroadcastReceiver {
             //app is in the background so create and post a notification
             Log.d("PUSHY", "Message received in background: " + message.getMessage());
 
-            Intent i = new Intent(context, AuthenticationActivity.class);
+            Intent i = new Intent(context, MainActivity.class);
             i.putExtras(intent.getExtras());
 
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,

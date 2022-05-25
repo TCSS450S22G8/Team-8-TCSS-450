@@ -21,9 +21,6 @@ public class ThemeManager {
      */
     public static void setCustomizedThemes(Context context, String theme) {
         switch (theme) {
-            case "orange":
-                context.setTheme(R.style.Theme_MyApplication);
-                break;
             case "red":
                 context.setTheme(R.style.Theme_Red);
                 break;
@@ -32,6 +29,12 @@ public class ThemeManager {
                 break;
             case "green":
                 context.setTheme(R.style.Theme_Green);
+                break;
+            case "uw":
+                context.setTheme(R.style.Theme_UW);
+                break;
+            default:
+                context.setTheme(R.style.Theme_MyApplication);
                 break;
 
         }

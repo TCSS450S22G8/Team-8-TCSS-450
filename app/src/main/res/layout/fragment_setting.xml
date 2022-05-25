@@ -82,6 +82,15 @@
                 android:layout_margin="5dp"
                 android:background="@color/green_light"
                 android:gravity="center" />
+
+            <TextView
+                android:id="@+id/text_settings_uwColor"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_margin="5dp"
+                android:drawableStart="@drawable/ic_setting_uw_50dp"
+                android:background="@color/uw_gold"
+                android:gravity="center" />
         </LinearLayout>
 
 

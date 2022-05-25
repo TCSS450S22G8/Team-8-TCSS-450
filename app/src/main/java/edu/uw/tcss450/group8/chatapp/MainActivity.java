@@ -1,7 +1,5 @@
 package edu.uw.tcss450.group8.chatapp;
 
-import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.setEmail;
-import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.setJWT;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.getThemeColor;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.setCustomizedThemes;
 
@@ -9,6 +7,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -17,6 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -38,8 +40,9 @@ import edu.uw.tcss450.group8.chatapp.model.PushyTokenViewModel;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.services.PushReceiver;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListFragment;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.settings.SettingFragmentDirections;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomListFragment;
 
 /**
  * Class for Main Activity
@@ -78,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                     Navigation.findNavController(
                             MainActivity.this, R.id.nav_host_fragment);
             NavDestination nd = nc.getCurrentDestination();
-
             if (intent.hasExtra("chatMessage")) {
 
                 Message cm = (Message) intent.getSerializableExtra("chatMessage");
@@ -97,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        onNewIntent(getIntent());
         super.onCreate(savedInstanceState);
 
         MainActivityArgs args = MainActivityArgs.fromBundle(getIntent().getExtras());
@@ -120,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
         mNewMessageModel = new ViewModelProvider(this).get(NewMessageCountViewModel.class);
 
-
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.messageListFragment) {
                 //When the user navigates to the chats page, reset the new message count.
@@ -131,8 +133,8 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mNewMessageModel.addMessageCountObserver(this, count -> {
-            BadgeDrawable badge = mBinding.navView.getOrCreateBadge(R.id.messageListFragment);
-            badge.setMaxCharacterCount(2);
+            BadgeDrawable badge = mBinding.navView.getOrCreateBadge(R.id.nav_chatroom_fragment);
+//            badge.setMaxCharacterCount(2);
             if (count > 0) {
                 //new messages! update and show the notification badge.
                 badge.setNumber(count);
@@ -146,8 +148,6 @@ public class MainActivity extends AppCompatActivity {
         //Import com.auth0.android.jwt.JWT
         JWT jwt = new JWT(args.getJwt());
 
-        setJWT(this, args.getJwt());
-        setEmail(this, args.getEmail());
         // Check to see if the web token is still valid or not. To make a JWT expire after a
         // longer or shorter time period, change the expiration time when the JWT is
         // created on the web service.
@@ -182,6 +182,17 @@ public class MainActivity extends AppCompatActivity {
                 || super.onSupportNavigateUp();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            if (extras.containsKey("menuFragment")) {
+                // todo move fragment
+            }
+        }
+    }
+
 
     @Override
     public void onResume() {
@@ -196,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        if (mPushMessageReceiver != null){
+        if (mPushMessageReceiver != null) {
             unregisterReceiver(mPushMessageReceiver);
         }
     }

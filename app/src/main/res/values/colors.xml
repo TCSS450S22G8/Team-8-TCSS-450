@@ -17,6 +17,10 @@
     <color name="green_light">#80e27e</color>
     <color name="green_dark">#087f23</color>
 
+    <color name="uw_purple">#4b2e83</color>
+    <color name="uw_gold">#b7a57a</color>
+    <color name="uw_metallic_gold">#85754d</color>
+
     <color name="black">#000000</color>
     <color name="white">#ffffff</color>
     <color name="gray">#808080</color>

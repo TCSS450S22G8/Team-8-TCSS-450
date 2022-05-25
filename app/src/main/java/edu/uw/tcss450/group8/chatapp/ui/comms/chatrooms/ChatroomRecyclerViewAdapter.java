@@ -7,12 +7,15 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomCardBinding;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
 
 /**
  * RecyclerViewAdapter for message.
@@ -29,6 +32,8 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
 
     private final ChatroomListFragment mParent;
 
+    private MessageListViewModel mMessageModel;
+
     /**
      * Constructor for MessageRecyclerViewAdapter
      *
@@ -37,6 +42,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
     public ChatroomRecyclerViewAdapter(List<Chatroom> items, ChatroomListFragment parent) {
         this.mChatroom = items;
         this.mParent = parent;
+        this.mMessageModel = new ViewModelProvider(mParent.getActivity()).get(MessageListViewModel.class);
     }
 
     @NonNull
@@ -99,6 +105,14 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             mChatroom = chatroom;
             binding.textTitle.setText(chatroom.getChatRoomName());
             binding.textChatid.setText(chatroom.getChatRoomId());
+            int chatId = Integer.parseInt(chatroom.getChatRoomId());
+            mMessageModel.addMessageObserver(chatId, mParent.getViewLifecycleOwner(), messages -> {
+                List<Message> messageList = mMessageModel.getMessageListByChatId(chatId);
+                if (!messageList.isEmpty()) {
+                    String newMessage = messageList.get(messageList.size()-1).getMessage();
+                    binding.textPreview.setText(newMessage);
+                }
+            });
         }
     }
 }

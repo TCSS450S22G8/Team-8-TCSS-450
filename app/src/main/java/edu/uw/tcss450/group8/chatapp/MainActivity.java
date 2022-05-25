@@ -96,6 +96,16 @@ public class MainActivity extends AppCompatActivity {
                 mModel.addMessage(intent.getIntExtra("chatid", -1), cm);
             }
 
+            // Increment count for messages (for new chatroom)
+            if (intent.hasExtra("addedToChat")) {
+                //If the user is not on the chat screen, update the
+                // NewMessageCountView Model
+                if (nd.getId() != R.id.messageListFragment) {
+                    mNewMessageModel.increment();
+                }
+            }
+
+
             //Incrementing count for new friend requests
             if (intent.hasExtra("friendRequest")) {
                 Log.e("friend", "made it inside if statement");

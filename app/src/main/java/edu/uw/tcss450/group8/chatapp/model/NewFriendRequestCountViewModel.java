@@ -11,25 +11,25 @@ import androidx.lifecycle.ViewModel;
  *
  * @author Charles Bryan
  */
-public class NewMessageCountViewModel extends ViewModel {
-    private MutableLiveData<Integer> mNewMessageCount;
+public class NewFriendRequestCountViewModel extends ViewModel {
+    private MutableLiveData<Integer> mNewFriendRequestCount;
     // change to a map, apply the chatroom id to it with the count
 
-    public NewMessageCountViewModel() {
-        mNewMessageCount = new MutableLiveData<>();
-        mNewMessageCount.setValue(0);
+    public NewFriendRequestCountViewModel() {
+        mNewFriendRequestCount = new MutableLiveData<>();
+        mNewFriendRequestCount.setValue(0);
     }
 
-    public void addMessageCountObserver(@NonNull LifecycleOwner owner,
+    public void addFriendRequestCountObserver(@NonNull LifecycleOwner owner,
                                         @NonNull Observer<? super Integer> observer) {
-        mNewMessageCount.observe(owner, observer);
+        mNewFriendRequestCount.observe(owner, observer);
     }
 
     public void increment() {
-        mNewMessageCount.setValue(mNewMessageCount.getValue() + 1);
+        mNewFriendRequestCount.setValue(mNewFriendRequestCount.getValue() + 1);
     }
 
     public void reset() {
-        mNewMessageCount.setValue(0);
+        mNewFriendRequestCount.setValue(0);
     }
 }

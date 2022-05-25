@@ -35,6 +35,7 @@ import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import edu.uw.tcss450.group8.chatapp.databinding.ActivityMainBinding;
+import edu.uw.tcss450.group8.chatapp.model.NewFriendRequestCountViewModel;
 import edu.uw.tcss450.group8.chatapp.model.NewMessageCountViewModel;
 import edu.uw.tcss450.group8.chatapp.model.PushyTokenViewModel;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
 
     private NewMessageCountViewModel mNewMessageModel;
 
+    private NewFriendRequestCountViewModel mNewFriendRequestModel;
+
     /**
      * A BroadcastReceiver that listens for messages sent from PushReceiver
      */
@@ -82,9 +85,7 @@ public class MainActivity extends AppCompatActivity {
                             MainActivity.this, R.id.nav_host_fragment);
             NavDestination nd = nc.getCurrentDestination();
             if (intent.hasExtra("chatMessage")) {
-
                 Message cm = (Message) intent.getSerializableExtra("chatMessage");
-
                 //If the user is not on the chat screen, update the
                 // NewMessageCountView Model
                 if (nd.getId() != R.id.messageListFragment) {
@@ -93,6 +94,15 @@ public class MainActivity extends AppCompatActivity {
                 //Inform the view model holding chatroom messages of the new
                 //message.
                 mModel.addMessage(intent.getIntExtra("chatid", -1), cm);
+            }
+
+            //Incrementing count for new friend requests
+            if (intent.hasExtra("friendRequest")) {
+                Log.e("friend", "made it inside if statement");
+                if(nd.getId() != R.id.nav_connections_fragment) {
+                    mNewFriendRequestModel.increment();
+                }
+
             }
         }
     }
@@ -122,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
         mNewMessageModel = new ViewModelProvider(this).get(NewMessageCountViewModel.class);
+        mNewFriendRequestModel = new ViewModelProvider(this).get(NewFriendRequestCountViewModel.class);
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.messageListFragment) {
@@ -130,10 +141,29 @@ public class MainActivity extends AppCompatActivity {
                 //multiple chat rooms.
                 mNewMessageModel.reset();
             }
+            // Resets friend request badge count to 0 if we are on the connections fragment
+            else if(destination.getId() == R.id.nav_connections_fragment) {
+                mNewFriendRequestModel.reset();
+            }
         });
 
         mNewMessageModel.addMessageCountObserver(this, count -> {
             BadgeDrawable badge = mBinding.navView.getOrCreateBadge(R.id.nav_chatroom_fragment);
+//            badge.setMaxCharacterCount(2);
+            if (count > 0) {
+                //new messages! update and show the notification badge.
+                badge.setNumber(count);
+                badge.setVisible(true);
+            } else {
+                //user did some action to clear the new messages, remove the badge
+                badge.clearNumber();
+                badge.setVisible(false);
+            }
+        });
+
+        // Update badge for connections nav element
+        mNewFriendRequestModel.addFriendRequestCountObserver(this, count -> {
+            BadgeDrawable badge = mBinding.navView.getOrCreateBadge(R.id.nav_connections_fragment);
 //            badge.setMaxCharacterCount(2);
             if (count > 0) {
                 //new messages! update and show the notification badge.

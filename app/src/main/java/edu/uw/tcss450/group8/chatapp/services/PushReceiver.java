@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.widget.Switch;
 
 import androidx.core.app.NotificationCompat;
 
@@ -30,7 +31,8 @@ public class PushReceiver extends BroadcastReceiver {
 
     public static final String RECEIVED_NEW_MESSAGE = "new message from pushy";
 
-    private static final String CHANNEL_ID = "1";
+    private static final String MESSAGE_CHANNEL_ID = "1";
+    private static final String FRIEND_REQUEST_CHANNEL_ID = "2";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -43,7 +45,72 @@ public class PushReceiver extends BroadcastReceiver {
         //for your project, the WS needs to send different types of push messages.
         //So perform logic/routing based on the "type"
         //feel free to change the key or type of values.
-        String typeOfMessage = intent.getStringExtra("type");
+        String notificationType = intent.getStringExtra("type");
+        switch(notificationType) {
+            case "msg":
+                messagePushNotification(context, intent);
+                break;
+            case "friendRequest":
+                friendRequestNotification(context, intent);
+                break;
+        }
+    }
+
+
+    private void friendRequestNotification(Context context, Intent intent) {
+
+        String message = intent.getStringExtra("message");
+
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
+
+        if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+            Log.d("PUSHY", "Message received in foreground: " + message);
+
+            Intent i = new Intent("Received New Friend Request!");
+            i.putExtra("message", message);
+            i.putExtra("friendRequest", "request");
+            i.putExtras(intent.getExtras());
+
+            context.sendBroadcast(i);
+        } else {
+            //app is in the background so create and post a notification
+            Log.d("PUSHY", "Message received in background: " + message);
+
+            Intent i = new Intent(context, MainActivity.class);
+            i.putExtras(intent.getExtras());
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+                    i, PendingIntent.FLAG_MUTABLE);
+
+            //research more on notifications the how to display them
+            //https://developer.android.com/guide/topics/ui/notifiers/notifications
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, FRIEND_REQUEST_CHANNEL_ID)
+                    .setAutoCancel(true)
+                    .setSmallIcon(R.drawable.slapchaticon)
+                    .setContentTitle(message)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(pendingIntent);
+
+            // Automatically configure a FriendRequestNotification Channel for devices running Android O+
+            Pushy.setNotificationChannel(builder, context);
+
+            // Get an instance of the NotificationManager service
+            NotificationManager notificationManager =
+                    (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+
+            // Build the notification and display it
+            notificationManager.notify(2, builder.build());
+        }
+    }
+
+    /**
+     * Push Notification sent to user when a new message is received.
+     *
+     * @param context
+     * @param intent
+     */
+    private void messagePushNotification(Context context, Intent intent) {
         Message message = null;
         int chatId = -1;
         try {
@@ -81,7 +148,7 @@ public class PushReceiver extends BroadcastReceiver {
 
             //research more on notifications the how to display them
             //https://developer.android.com/guide/topics/ui/notifiers/notifications
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, MESSAGE_CHANNEL_ID)
                     .setAutoCancel(true)
                     .setSmallIcon(R.drawable.ic_chat_notification)
                     .setContentTitle("Message from: " + message.getSender())
@@ -99,6 +166,5 @@ public class PushReceiver extends BroadcastReceiver {
             // Build the notification and display it
             notificationManager.notify(1, builder.build());
         }
-
     }
 }

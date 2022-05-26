@@ -134,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
         mNewMessageModel.addNewMessageCountObserver(this, count -> {
             BadgeDrawable badge = mBinding.navView.getOrCreateBadge(R.id.nav_chatroom_fragment);
+            badge.setBackgroundColor(getResources().getColor(R.color.badge_red, null));
 //            badge.setMaxCharacterCount(2);
             if (count > 0) {
                 //new messages! update and show the notification badge.
@@ -272,7 +273,6 @@ public class MainActivity extends AppCompatActivity {
                 Message cm = (Message) intent.getSerializableExtra("chatMessage");
                 //If the user is not on the chat screen, update the
                 // NewMessageCountView Model
-
                 mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
 
                 //Inform the view model holding chatroom messages of the new
@@ -284,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
             if (intent.hasExtra("addedToChat")) {
                 //If the user is not on the chat screen, update the
                 // NewMessageCountView Model
+
                 mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
             }
 

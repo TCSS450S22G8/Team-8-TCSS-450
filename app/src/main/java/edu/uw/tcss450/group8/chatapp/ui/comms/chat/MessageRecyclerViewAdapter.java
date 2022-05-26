@@ -1,4 +1,3 @@
-
 package edu.uw.tcss450.group8.chatapp.ui.comms.chat;
 
 import android.content.res.Resources;
@@ -12,13 +11,11 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.card.MaterialCardView;
-import com.google.android.material.shape.CornerFamily;
-
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentMessageCardBinding;
+import edu.uw.tcss450.group8.chatapp.model.NewMessageCountViewModel;
 
 /**
  * RecyclerViewAdapter for message.
@@ -35,6 +32,8 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
     private final List<Message> mMessages;
     private final String mEmail;
     private int mColor;
+    private int mChatId;
+    private NewMessageCountViewModel mNewMessageCountViewModel;
 
     /**
      * Constructor for View Adaptor.
@@ -42,10 +41,12 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
      * @param messages List
      * @param email    String
      */
-    public MessageRecyclerViewAdapter(List<Message> messages, String email, int color) {
+    public MessageRecyclerViewAdapter(List<Message> messages, String email, int color, int chatId, NewMessageCountViewModel newMessageCountViewModel) {
         this.mMessages = messages;
         mEmail = email;
         mColor = color;
+        mChatId = chatId;
+        mNewMessageCountViewModel = newMessageCountViewModel;
     }
 
     @NonNull
@@ -91,6 +92,9 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
          * @param message Message
          */
         void setMessage(final Message message) {
+
+            mNewMessageCountViewModel.clear(mChatId);
+
             final Resources res = mView.getContext().getResources();
             final CardView card = binding.cardRoot;
 

@@ -3,18 +3,6 @@ package edu.uw.tcss450.group8.chatapp;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.getThemeColor;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.setCustomizedThemes;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
-
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -26,6 +14,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import com.auth0.android.jwt.JWT;
 import com.google.android.material.badge.BadgeDrawable;
@@ -65,54 +63,6 @@ public class MainActivity extends AppCompatActivity {
     private NewMessageCountViewModel mNewMessageModel;
 
     private NewFriendRequestCountViewModel mNewFriendRequestModel;
-
-    /**
-     * A BroadcastReceiver that listens for messages sent from PushReceiver
-     */
-    private class MainPushMessageReceiver extends BroadcastReceiver {
-
-        private MessageListViewModel mModel =
-                new ViewModelProvider(MainActivity.this)
-                        .get(MessageListViewModel.class);
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            NavController nc =
-                    Navigation.findNavController(
-                            MainActivity.this, R.id.nav_host_fragment);
-            NavDestination nd = nc.getCurrentDestination();
-            if (intent.hasExtra("chatMessage")) {
-                Message cm = (Message) intent.getSerializableExtra("chatMessage");
-                //If the user is not on the chat screen, update the
-                // NewMessageCountView Model
-                if (nd.getId() != R.id.messageListFragment) {
-                    mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
-                }
-                //Inform the view model holding chatroom messages of the new
-                //message.
-                mModel.addMessage(intent.getIntExtra("chatid", -1), cm);
-            }
-
-            // Increment count for messages (for new chatroom)
-            if (intent.hasExtra("addedToChat")) {
-                //If the user is not on the chat screen, update the
-                // NewMessageCountView Model
-                if (nd.getId() != R.id.messageListFragment) {
-                    mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
-                }
-            }
-
-
-            //Incrementing count for new friend requests
-            if (intent.hasExtra("friendRequest")) {
-                Log.e("friend", "made it inside if statement");
-                if (nd.getId() != R.id.nav_connections_fragment) {
-                    mNewFriendRequestModel.increment();
-                }
-
-            }
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,7 +189,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -258,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
     //onCreateOptionsMenu and onOptionsItemSelected are top right, 3 dot settings
     //toolbar.xml file
     @Override
@@ -266,7 +214,6 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.toolbar, menu);
         return true;
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -282,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
 
     private void signOut() {
         SharedPreferences prefs =
@@ -305,6 +251,52 @@ public class MainActivity extends AppCompatActivity {
         Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.authenticationActivity);
 
         this.finish();
+    }
+
+    /**
+     * A BroadcastReceiver that listens for messages sent from PushReceiver
+     */
+    private class MainPushMessageReceiver extends BroadcastReceiver {
+
+        private MessageListViewModel mModel =
+                new ViewModelProvider(MainActivity.this)
+                        .get(MessageListViewModel.class);
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            NavController nc =
+                    Navigation.findNavController(
+                            MainActivity.this, R.id.nav_host_fragment);
+            NavDestination nd = nc.getCurrentDestination();
+            if (intent.hasExtra("chatMessage")) {
+                Message cm = (Message) intent.getSerializableExtra("chatMessage");
+                //If the user is not on the chat screen, update the
+                // NewMessageCountView Model
+
+                mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
+
+                //Inform the view model holding chatroom messages of the new
+                //message.
+                mModel.addMessage(intent.getIntExtra("chatid", -1), cm);
+            }
+
+            // Increment count for messages (for new chatroom)
+            if (intent.hasExtra("addedToChat")) {
+                //If the user is not on the chat screen, update the
+                // NewMessageCountView Model
+                mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
+            }
+
+
+            //Incrementing count for new friend requests
+            if (intent.hasExtra("friendRequest")) {
+                Log.e("friend", "made it inside if statement");
+                if (nd.getId() != R.id.nav_connections_fragment) {
+                    mNewFriendRequestModel.increment();
+                }
+
+            }
+        }
     }
 
 }

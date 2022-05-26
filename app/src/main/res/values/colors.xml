@@ -8,6 +8,7 @@
     <color name="red_light">#8e0000</color>
     <color name="red_dark">#c62828</color>
 
+    <color name="badge_red">#CF6679</color>
 
     <color name="blue">#1565c0</color>
     <color name="blue_light">#5e92f3</color>

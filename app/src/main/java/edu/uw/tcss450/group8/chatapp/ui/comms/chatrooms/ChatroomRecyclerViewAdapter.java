@@ -10,6 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
+
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
@@ -88,11 +91,11 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             super(view);
             mView = view;
             binding = FragmentChatroomCardBinding.bind(view);
-            openChat = mView.findViewById(R.id.button_chat_room_open_chat);
+
             chatId = mView.findViewById(R.id.text_chatid);
             chatId.setVisibility(View.INVISIBLE);
             chatName = mView.findViewById(R.id.text_title);
-            openChat.setOnClickListener(new View.OnClickListener() {
+            binding.cardRoot.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mParent.startChat(Integer.parseInt(chatId.getText().toString()), chatName.getText().toString());

@@ -12,6 +12,7 @@
         <entry key="..\:/Users/pug4r/AndroidStudioProjects/Team-8-TCSS-450-real/app/src/main/res/layout/fragment_login.xml" value="0.33" />
         <entry key="..\:/Users/pug4r/AndroidStudioProjects/Team-8-TCSS-450-real/app/src/main/res/layout/fragment_register.xml" value="0.190625" />
         <entry key="..\:/Users/pug4r/AndroidStudioProjects/Team-8-TCSS-450-real/app/src/main/res/layout/fragment_setting.xml" value="0.5" />
+        <entry key="app/src/main/res/drawable/badge_background.xml" value="0.1045" />
         <entry key="app/src/main/res/drawable/ic_send_dark.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_settings_uwLogo_50dp.xml" value="0.1" />
         <entry key="app/src/main/res/drawable/ic_washington_huskies_logo.xml" value="0.1215" />
@@ -20,7 +21,7 @@
         <entry key="app/src/main/res/layout/activity_authentication.xml" value="0.17958459979736577" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.129981884057971" />
         <entry key="app/src/main/res/layout/fragment_change.xml" value="0.11203703703703703" />
-        <entry key="app/src/main/res/layout/fragment_chatroom_card.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_chatroom_card.xml" value="0.25501432664756446" />
         <entry key="app/src/main/res/layout/fragment_contact_card.xml" value="0.18414387031408308" />
         <entry key="app/src/main/res/layout/fragment_forgot.xml" value="0.1" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.37273550724637683" />

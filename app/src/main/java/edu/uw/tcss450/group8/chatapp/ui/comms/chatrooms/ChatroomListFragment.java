@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomListBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
 
 
 /**
@@ -34,13 +35,17 @@ public class ChatroomListFragment extends Fragment {
 
     private UserInfoViewModel mUser;
 
+    private MessageListViewModel mMessage;
+
     private FragmentChatroomListBinding mBinding;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mModel = new ViewModelProvider(getActivity()).get(ChatroomViewModel.class);
-        mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
+        ViewModelProvider viewModelProvider = new ViewModelProvider(getActivity());
+        mModel = viewModelProvider.get(ChatroomViewModel.class);
+        mUser = viewModelProvider.get(UserInfoViewModel.class);
+        mMessage = viewModelProvider.get(MessageListViewModel.class);
 
     }
 
@@ -56,13 +61,18 @@ public class ChatroomListFragment extends Fragment {
         mBinding = FragmentChatroomListBinding.bind(getView());
 
         super.onViewCreated(view, savedInstanceState);
-        mModel.getChatRoomsForUser(mUser.getJwt());
         mModel.addChatRoomListObserver(getViewLifecycleOwner(), chatList -> {
             if (!chatList.isEmpty()) {
+                chatList.forEach(chatroom -> {
+                    int chatId = Integer.parseInt(chatroom.getChatRoomId());
+                    mMessage.getFirstMessages(chatId, mUser.getJwt());
+                    mMessage.addMessageObserver(chatId, getViewLifecycleOwner(), messages -> {
+                        mBinding.listRoot.setAdapter(
+                                new ChatroomRecyclerViewAdapter(chatList, this)
+                        );
+                    });
+                });
                 mBinding.swipeContactsRefresh.setRefreshing(false);
-                mBinding.listRoot.setAdapter(
-                        new ChatroomRecyclerViewAdapter(chatList, this)
-                );
             }
         });
 

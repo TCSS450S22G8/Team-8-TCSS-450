@@ -7,8 +7,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -17,7 +15,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 
-import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -41,9 +38,9 @@ import edu.uw.tcss450.group8.chatapp.model.PushyTokenViewModel;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.services.PushReceiver;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListFragment;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomListFragment;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
 
 /**
  * Class for Main Activity
@@ -89,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
                 //If the user is not on the chat screen, update the
                 // NewMessageCountView Model
                 if (nd.getId() != R.id.messageListFragment) {
-                    mNewMessageModel.increment();
+                    mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
                 }
                 //Inform the view model holding chatroom messages of the new
                 //message.
@@ -101,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
                 //If the user is not on the chat screen, update the
                 // NewMessageCountView Model
                 if (nd.getId() != R.id.messageListFragment) {
-                    mNewMessageModel.increment();
+                    mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
                 }
             }
 
@@ -109,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             //Incrementing count for new friend requests
             if (intent.hasExtra("friendRequest")) {
                 Log.e("friend", "made it inside if statement");
-                if(nd.getId() != R.id.nav_connections_fragment) {
+                if (nd.getId() != R.id.nav_connections_fragment) {
                     mNewFriendRequestModel.increment();
                 }
 
@@ -124,9 +121,37 @@ public class MainActivity extends AppCompatActivity {
 
         MainActivityArgs args = MainActivityArgs.fromBundle(getIntent().getExtras());
 
-        new ViewModelProvider(this,
-                new UserInfoViewModel.UserInfoViewModelFactory(args.getEmail(), args.getJwt())
-        ).get(UserInfoViewModel.class);
+        //Import com.auth0.android.jwt.JWT
+        JWT jwt = new JWT(args.getJwt());
+
+        // Check to see if the web token is still valid or not. To make a JWT expire after a
+        // longer or shorter time period, change the expiration time when the JWT is
+        // created on the web service.
+        // TODO: Signing in JWT is expired sometimes, send a request back to backend to do verification and send new JWT back
+
+        try {
+            if (!jwt.isExpired(5)) {
+                new ViewModelProvider(
+                        this,
+                        new UserInfoViewModel.UserInfoViewModelFactory(args.getEmail(), args.getJwt()))
+                        .get(UserInfoViewModel.class);
+            } else {
+                signOut();
+            }
+        } catch (IllegalStateException e) {
+            signOut();
+        }
+
+        // load contact and chatroom as soon as login
+
+        ViewModelProvider viewModelProvider = new ViewModelProvider(this);
+
+        UserInfoViewModel mUserModel = viewModelProvider.get(UserInfoViewModel.class);
+        ChatroomViewModel mChatModel = viewModelProvider.get(ChatroomViewModel.class);
+        ContactListViewModel mContactModel = viewModelProvider.get(ContactListViewModel.class);
+
+        mContactModel.getContacts(mUserModel.getJwt());
+        mChatModel.getChatRoomsForUser(mUserModel.getJwt());
 
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
 
@@ -149,15 +174,15 @@ public class MainActivity extends AppCompatActivity {
                 //When the user navigates to the chats page, reset the new message count.
                 //This will need some extra logic for your project as it should have
                 //multiple chat rooms.
-                mNewMessageModel.reset();
+                mNewMessageModel.update();
             }
             // Resets friend request badge count to 0 if we are on the connections fragment
-            else if(destination.getId() == R.id.nav_connections_fragment) {
+            else if (destination.getId() == R.id.nav_connections_fragment) {
                 mNewFriendRequestModel.reset();
             }
         });
 
-        mNewMessageModel.addMessageCountObserver(this, count -> {
+        mNewMessageModel.addNewMessageCountObserver(this, count -> {
             BadgeDrawable badge = mBinding.navView.getOrCreateBadge(R.id.nav_chatroom_fragment);
 //            badge.setMaxCharacterCount(2);
             if (count > 0) {
@@ -185,26 +210,7 @@ public class MainActivity extends AppCompatActivity {
                 badge.setVisible(false);
             }
         });
-        //Import com.auth0.android.jwt.JWT
-        JWT jwt = new JWT(args.getJwt());
 
-        // Check to see if the web token is still valid or not. To make a JWT expire after a
-        // longer or shorter time period, change the expiration time when the JWT is
-        // created on the web service.
-        // TODO: Signing in JWT is expired sometimes, send a request back to backend to do verification and send new JWT back
-
-        try {
-            if (!jwt.isExpired(5)) {
-                new ViewModelProvider(
-                        this,
-                        new UserInfoViewModel.UserInfoViewModelFactory(args.getEmail(), args.getJwt()))
-                        .get(UserInfoViewModel.class);
-            } else {
-                signOut();
-            }
-        } catch (IllegalStateException e) {
-            signOut();
-        }
     }
 
     @Nullable

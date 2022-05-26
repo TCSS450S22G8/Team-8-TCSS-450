@@ -7,12 +7,16 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomCardBinding;
+import edu.uw.tcss450.group8.chatapp.model.NewMessageCountViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
 
 /**
  * RecyclerViewAdapter for message.
@@ -29,6 +33,10 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
 
     private final ChatroomListFragment mParent;
 
+    private MessageListViewModel mMessageModel;
+
+    private NewMessageCountViewModel mNewMessageModel;
+
     /**
      * Constructor for MessageRecyclerViewAdapter
      *
@@ -37,6 +45,8 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
     public ChatroomRecyclerViewAdapter(List<Chatroom> items, ChatroomListFragment parent) {
         this.mChatroom = items;
         this.mParent = parent;
+        this.mMessageModel = new ViewModelProvider(mParent.getActivity()).get(MessageListViewModel.class);
+        this.mNewMessageModel = new ViewModelProvider(mParent.getActivity()).get(NewMessageCountViewModel.class);
     }
 
     @NonNull
@@ -86,6 +96,8 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
                 @Override
                 public void onClick(View view) {
                     mParent.startChat(Integer.parseInt(chatId.getText().toString()), chatName.getText().toString());
+                    NewMessageCountViewModel mNewMessageModel = new ViewModelProvider(mParent.getActivity()).get(NewMessageCountViewModel.class);
+                    mNewMessageModel.clear(Integer.parseInt(chatId.getText().toString()));
                 }
             });
         }
@@ -99,6 +111,29 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             mChatroom = chatroom;
             binding.textTitle.setText(chatroom.getChatRoomName());
             binding.textChatid.setText(chatroom.getChatRoomId());
+            int chatId = Integer.parseInt(chatroom.getChatRoomId());
+            mMessageModel.addMessageObserver(chatId, mParent.getViewLifecycleOwner(), messages -> {
+                List<Message> messageList = mMessageModel.getMessageListByChatId(chatId);
+                if (!messageList.isEmpty()) {
+                    String newMessage = messageList.get(messageList.size() - 1).getMessage();
+                    binding.textPreview.setText(newMessage);
+                }
+            });
+
+            mNewMessageModel.addMessageCountObserver(chatId, mParent.getViewLifecycleOwner(), count -> {
+
+                if (count == 0) {
+
+                    binding.textUnread.setVisibility(View.INVISIBLE);
+                } else {
+                    binding.textUnread.setVisibility(View.VISIBLE);
+                    String str = String.valueOf(count);
+                    binding.textUnread.setText(str);
+
+                }
+
+            });
+
         }
     }
 }

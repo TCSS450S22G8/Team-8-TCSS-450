@@ -12,6 +12,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentHomeBinding;
+import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomRecyclerViewAdapter;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.weather.Weather;
 import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherHourlyRecyclerViewAdapter;
 import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherViewModel;

@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentMessageListBinding;
+import edu.uw.tcss450.group8.chatapp.model.NewMessageCountViewModel;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 /**
@@ -32,6 +33,7 @@ public class MessageListFragment extends Fragment {
     private MessageSendViewModel mSendModel;
 
     private MessageListViewModel mChatModel;
+    private NewMessageCountViewModel mNewMessageModel;
     private UserInfoViewModel mUserModel;
 
     private int chatid;
@@ -47,7 +49,7 @@ public class MessageListFragment extends Fragment {
         ViewModelProvider provider = new ViewModelProvider(getActivity());
         mUserModel = provider.get(UserInfoViewModel.class);
         mChatModel = provider.get(MessageListViewModel.class);
-
+        mNewMessageModel = provider.get(NewMessageCountViewModel.class);
         mSendModel = provider.get(MessageSendViewModel.class);
         chatid = MessageListFragmentArgs.fromBundle(getArguments()).getChatid();
         chatName = MessageListFragmentArgs.fromBundle(getArguments()).getChatName();
@@ -75,13 +77,13 @@ public class MessageListFragment extends Fragment {
         //holds.
 
         TypedValue typedValue = new TypedValue();
-        getActivity().getTheme().resolveAttribute(R.attr.messageCard,typedValue,true);
+        getActivity().getTheme().resolveAttribute(R.attr.messageCard, typedValue, true);
         int color = typedValue.data;
 
         Log.e("chat id iew create in message frag", String.valueOf(chatid));
         rv.setAdapter(new MessageRecyclerViewAdapter(
                 mChatModel.getMessageListByChatId(chatid),
-                mUserModel.getEmail(),color));
+                mUserModel.getEmail(), color, chatid, mNewMessageModel));
 
 
         //When the user scrolls to the top of the RV, the swiper list will "refresh"

@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModel;
 
-import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,25 +14,36 @@ import java.util.Map;
  * Notification system for new messages.
  *
  * @author Charles Bryan
+ * @author JenHo Liao
+ * @version 5/25/22
  */
 public class NewMessageCountViewModel extends ViewModel implements Serializable {
     private Map<Integer, MutableLiveData<Integer>> mNewMessageCount;
     private MutableLiveData<Integer> mCount;
 
 
-    // change to a map, apply the chatroom id to it with the count
-
     public NewMessageCountViewModel() {
         mNewMessageCount = new HashMap<>();
         mCount = new MutableLiveData<>(0);
     }
 
+    /**
+     * Register as an observer to listen for the total number of unread message.
+     *
+     * @param owner    the fragments lifecycle owner
+     * @param observer the observer
+     */
     public void addNewMessageCountObserver(@NonNull LifecycleOwner owner,
                                            @NonNull Observer<? super Integer> observer) {
         mCount.observe(owner, observer);
     }
 
-
+    /**
+     * Register as an observer to listen for unread message for single chatroom
+     *
+     * @param owner    the fragments lifecycle owner
+     * @param observer the observer
+     */
     public void addMessageCountObserver(int chatId, @NonNull LifecycleOwner owner,
                                         @NonNull Observer<? super Integer> observer) {
 
@@ -44,6 +54,11 @@ public class NewMessageCountViewModel extends ViewModel implements Serializable 
     }
 
 
+    /**
+     * Increment chatroom unread.
+     *
+     * @param chatId the id of chatroom
+     */
     public void increment(int chatId) {
         if (mNewMessageCount.containsKey(chatId)) {
             mNewMessageCount.get(chatId).setValue(
@@ -55,6 +70,11 @@ public class NewMessageCountViewModel extends ViewModel implements Serializable 
         update();
     }
 
+    /**
+     * clear the unread for a chatroom.
+     *
+     * @param chatId the id of chatroom
+     */
     public void clear(int chatId) {
         if (mNewMessageCount.containsKey(chatId)) {
             mNewMessageCount.get(chatId).setValue(0);
@@ -62,6 +82,9 @@ public class NewMessageCountViewModel extends ViewModel implements Serializable 
         update();
     }
 
+    /**
+     * update to total unread.
+     */
     public void update() {
         int i = mNewMessageCount.keySet().stream().filter(m -> m != -1).mapToInt(m -> mNewMessageCount.get(m).getValue()).sum();
         mCount.setValue(i);

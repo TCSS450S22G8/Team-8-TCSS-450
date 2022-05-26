@@ -273,9 +273,8 @@ public class MainActivity extends AppCompatActivity {
                 Message cm = (Message) intent.getSerializableExtra("chatMessage");
                 //If the user is not on the chat screen, update the
                 // NewMessageCountView Model
-                if (nd.getId() != R.id.messageListFragment) {
-                    mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
-                }
+                mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
+
                 //Inform the view model holding chatroom messages of the new
                 //message.
                 mModel.addMessage(intent.getIntExtra("chatid", -1), cm);
@@ -285,9 +284,8 @@ public class MainActivity extends AppCompatActivity {
             if (intent.hasExtra("addedToChat")) {
                 //If the user is not on the chat screen, update the
                 // NewMessageCountView Model
-                if (nd.getId() != R.id.messageListFragment) {
-                    mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
-                }
+
+                mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
             }
 
 

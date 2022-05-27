@@ -84,6 +84,8 @@ public class PushReceiver extends BroadcastReceiver {
             Log.d("PUSHY", "Message received in foreground: " + message);
 
             Intent i = new Intent(RECEIVED_NEW_MESSAGE);
+            i.putExtra("message", message);
+            i.putExtra("friendRequest", "request");
             i.putExtras(intent.getExtras());
 
             context.sendBroadcast(i);

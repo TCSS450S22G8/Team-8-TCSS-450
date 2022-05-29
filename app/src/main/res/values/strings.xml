@@ -50,5 +50,12 @@
     <string name="keys_prefs_jwt">Sharded Prefs JWT</string>
     <string name="switch_log_in">Stay Logged in</string>
 
+    <string name="GOOGLE_MAPS_API_KEY">AIzaSyDfBe1Rhu6_zwuZwzVSTmphUu0Qk9lpylI</string>
+    <string name="title_activity_maps">MapsActivity</string>
+
+    <string name="title_map">Map</string>
+    <string name="title_locations">Saved Locations</string>
+
+
 
 </resources>

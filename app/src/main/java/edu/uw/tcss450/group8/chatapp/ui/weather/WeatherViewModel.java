@@ -155,8 +155,8 @@ public class WeatherViewModel extends AndroidViewModel {
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         //Instantiate the RequestQueue and add the request to the queue
-        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
-                .addToRequestQueue(request);
+        //RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+        //        .addToRequestQueue(request);
     }
 
     /**
@@ -276,6 +276,7 @@ public class WeatherViewModel extends AndroidViewModel {
      *
      */
     private void setDaily() {
+        Log.e("LOCATION", "SOMETIHNG" );
         ArrayList<Weather> weatherList = new ArrayList<>();
         try {
             JSONArray daily = mResponse.getJSONArray("daily");
@@ -292,6 +293,7 @@ public class WeatherViewModel extends AndroidViewModel {
                                 mResponse.getString("city"),
                                 formatter.format(date),
                                 temp.getString("day"),
+                                temp.getString("night"),
                                 setEachWordCap(weather.getString("description")),
                                 weather.getString("icon")
                         ));

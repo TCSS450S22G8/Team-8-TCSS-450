@@ -50,5 +50,9 @@
     <string name="keys_prefs_jwt">Sharded Prefs JWT</string>
     <string name="switch_log_in">Stay Logged in</string>
 
+    <string name="action_add_user">Add user</string>
+    <string name="action_add">Add</string>
+    <string name="hint_enter_name">Enter the chat name</string>
+
 
 </resources>

@@ -51,6 +51,9 @@
         <action
             android:id="@+id/action_nav_chatroom_fragment_to_messageListFragment"
             app:destination="@id/messageListFragment" />
+        <action
+            android:id="@+id/action_nav_chatroom_fragment_to_chatroomAddFragment"
+            app:destination="@id/chatroomAddFragment" />
     </fragment>
     <fragment
         android:id="@+id/changeFragment"
@@ -71,4 +74,8 @@
             android:name="chatid"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/chatroomAddFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add.ChatroomAddFragment"
+        android:label="ChatroomAddFragment" />
 </navigation>

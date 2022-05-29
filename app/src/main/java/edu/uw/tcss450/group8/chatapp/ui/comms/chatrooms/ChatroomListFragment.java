@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomListBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.auth.login.LoginFragmentDirections;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
 
 
@@ -83,6 +84,11 @@ public class ChatroomListFragment extends Fragment {
                 mModel.getChatRoomsForUser(mUser.getJwt());
             }
         });
+
+        mBinding.floatingButtonAdd.setOnClickListener(button ->
+                Navigation.findNavController(getView()).navigate(
+                        ChatroomListFragmentDirections.actionNavChatroomFragmentToChatroomAddFragment()
+                ));
     }
 
     /**
@@ -96,4 +102,6 @@ public class ChatroomListFragment extends Fragment {
                         actionNavChatroomFragmentToMessageListFragment(chatName, chatId));
 
     }
+
+
 }

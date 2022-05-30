@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_nav_home_fragment_to_chatroomListFragment"
             app:destination="@id/nav_chatroom_fragment" />
+        <action
+            android:id="@+id/action_nav_home_fragment_to_messageListFragment"
+            app:destination="@id/messageListFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_weather_fragment"

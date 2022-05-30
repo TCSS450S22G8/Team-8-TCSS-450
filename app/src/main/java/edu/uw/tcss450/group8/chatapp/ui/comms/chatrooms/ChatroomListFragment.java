@@ -46,7 +46,6 @@ public class ChatroomListFragment extends Fragment {
         mModel = viewModelProvider.get(ChatroomViewModel.class);
         mUser = viewModelProvider.get(UserInfoViewModel.class);
         mMessage = viewModelProvider.get(MessageListViewModel.class);
-
     }
 
     @Override

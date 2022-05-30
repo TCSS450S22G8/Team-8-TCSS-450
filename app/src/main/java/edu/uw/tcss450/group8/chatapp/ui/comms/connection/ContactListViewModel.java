@@ -40,6 +40,7 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
  */
 public class ContactListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
+    private MutableLiveData<List<Contact>> mNonContact;
 
     /**
      * Constructor for Contact List ViewModel
@@ -48,10 +49,14 @@ public class ContactListViewModel extends AndroidViewModel {
     public ContactListViewModel(@NonNull Application application) {
         super(application);
         mContact = new MutableLiveData<>();
+        mNonContact = new MutableLiveData<>();
     }
 
     public List<Contact> getContactList() {
         return mContact.getValue();
+    }
+    public List<Contact> getNonContactList() {
+        return mNonContact.getValue();
     }
 
     /**
@@ -62,6 +67,11 @@ public class ContactListViewModel extends AndroidViewModel {
     public void addContactsListObserver(@NonNull LifecycleOwner owner,
                                         @NonNull Observer<? super List<Contact>> observer) {
         mContact.observe(owner, observer);
+    }
+
+    public void addNonContactsListObserver(@NonNull LifecycleOwner owner,
+                                           @NonNull Observer<? super List<Contact>> observer) {
+        mNonContact.observe(owner, observer);
     }
 
     /**
@@ -89,6 +99,48 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    public void getNonFriendList(String jwt) {
+        Log.e("ERR","3");
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve/nonfriends";
+        Request request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                this::handleGetNonFriendListSuccess,
+                this::handleError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+    }
+
+
+
+    private void handleGetNonFriendListSuccess(JSONObject obj) {
+        Log.e("ERR","1");
+        ArrayList<Contact> list = new ArrayList<>();
+        try {
+            JSONArray array = obj.getJSONArray("members");
+            for (int i = 0; i <  array.length(); i++) {
+                JSONObject contact = array.getJSONObject(i);
+                list.add(new Contact(
+                        contact.getString("username"),
+                        contact.getString("email")));
+            }
+            mNonContact.setValue(list);
+        } catch (JSONException e){
+            Log.e("JSON PARSE ERROR", "Found in handle Success");
+            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
+        }
+        Log.e("ERR","2");
+    }
+
 
     /**
      * Endpoint call to un-friend someone (delete a contact)
@@ -109,7 +161,32 @@ public class ContactListViewModel extends AndroidViewModel {
                 url,
                 body,
                 this::handleUnfriendSuccess,
-                this::handleUnfriendError) {
+                this::handleError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+    }
+    public void addFriend(String jwt, String email) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/add";
+        JSONObject body = new JSONObject();
+        try {
+            body.put("email", email);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Request<JSONObject> request = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                body,
+                this::handleAddFriendSuccess,
+                this::handleError) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -122,12 +199,19 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    private void handleAddFriendSuccess(JSONObject jsonObject) {
+       
+    }
+
+
+
     /**
      * Handles errors for unfriend endpoint calls
      *
      * @param volleyError VolleyError
      */
-    private void handleUnfriendError(VolleyError volleyError) {
+    private void handleError(VolleyError volleyError) {
+        Log.e("ERR","4");
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
         }

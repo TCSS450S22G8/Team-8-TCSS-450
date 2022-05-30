@@ -14,30 +14,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import edu.uw.tcss450.group8.chatapp.R;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactBinding;
+import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactAddContactBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 /**
- * Create an instance of Contact List fragment.
- * Adapted from original code by Charles Bryan.
- *
- * @author Charles Bryan
- * @author Rin Pham
- * @author Shilnara Dam
- * @version 5/19/22
+ * create an instance of this fragment.
  */
-public class ContactFragment extends Fragment{
+public class AddContactFragment extends Fragment {
 
     private ContactListViewModel mContact;
     private UserInfoViewModel mUser;
-    private FragmentContactBinding mBinding;
-    private ContactRecyclerViewAdapter mAdapter;
+    private FragmentContactAddContactBinding mBinding;
+    private AddContactRecyclerViewAdapter mAdapter;
 
 
     @Override
@@ -48,31 +40,23 @@ public class ContactFragment extends Fragment{
 
     }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contact, container, false);
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mBinding = FragmentContactBinding.bind(getView());
+        mBinding = FragmentContactAddContactBinding.bind(getView());
 
         // get user contacts
         mBinding.listRoot.setVisibility(View.GONE);
         mBinding.progressBar.setVisibility(View.VISIBLE);
-        mContact.getContacts(mUser.getJwt());
-        mContact.addContactsListObserver(getViewLifecycleOwner(), contacts -> {
+        mContact.getNonFriendList(mUser.getJwt());
+        mContact.addNonContactsListObserver(getViewLifecycleOwner(), contacts -> {
             mBinding.listRoot.setVisibility(View.VISIBLE);
             mBinding.progressBar.setVisibility(View.GONE);
             mBinding.swipeContactsRefresh.setRefreshing(false);
-            mAdapter = new ContactRecyclerViewAdapter(contacts, this);
+            mAdapter = new AddContactRecyclerViewAdapter(contacts, this);
 
             mBinding.listRoot.setAdapter(
-                  mAdapter
+                    mAdapter
             );
         });
 
@@ -105,7 +89,7 @@ public class ContactFragment extends Fragment{
 
     private  void filter(String text) {
         ArrayList<Contact> contactList = new ArrayList<>();
-        for (Contact contact: mContact.getContactList()) {
+        for (Contact contact: mContact.getNonContactList()) {
             if(contact.getUserName().toLowerCase().contains(text.toLowerCase()) ||
                     contact.getEmail().toLowerCase().contains(text.toLowerCase())) {
                 contactList.add(contact);
@@ -115,25 +99,15 @@ public class ContactFragment extends Fragment{
         mAdapter.contactList(contactList);
     }
 
-    /**
-     * unfriend a contact
-     *
-     * @param email String email of the friend
-     */
-    public void unFriend(String email) {
-        mContact.unfriend(mUser.getJwt(), email);
+    public void addFriend(String email) {
+
+        mContact.addFriend(mUser.getJwt(), email);
     }
 
-    /**
-     * open chatroom with the desired contact
-     *
-     * @param email String email of the friend
-     */
-    public void sendMessage(String email) {
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_contact_add_contact, container, false);
     }
-
-
-
 }

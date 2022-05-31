@@ -78,6 +78,7 @@ public class WeatherHourlyRecyclerViewAdapter extends RecyclerView.Adapter<Weath
             Picasso.get().load(theWeather.getIcon()).into(mBinding.imageWeather);
             mBinding.textTemperature.setText(theWeather.getTemp());
             mBinding.textTime.setText(theWeather.getTime());
+            //comment for pushing
         }
     }
 

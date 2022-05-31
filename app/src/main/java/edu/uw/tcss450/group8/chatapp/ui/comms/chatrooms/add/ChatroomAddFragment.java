@@ -1,6 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,11 +13,16 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddBinding;
+import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddCardBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.auth.login.LoginFragmentDirections;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomListFragmentDirections;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactRecyclerViewAdapter;
 
@@ -31,15 +37,17 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactRecyclerViewAdap
  */
 public class ChatroomAddFragment extends Fragment{
 
-    private ChatroomAddListViewModel mContact;
+    private ChatroomAddListViewModel mAdd;
     private UserInfoViewModel mUser;
     private FragmentChatroomAddBinding mBinding;
+    private FragmentChatroomAddCardBinding mBinding2;
+    List<String> namesToAdd = new ArrayList<String>();
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mContact = new ViewModelProvider(getActivity()).get(ChatroomAddListViewModel.class);
+        mAdd = new ViewModelProvider(getActivity()).get(ChatroomAddListViewModel.class);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
     }
 
@@ -56,15 +64,18 @@ public class ChatroomAddFragment extends Fragment{
         mBinding = FragmentChatroomAddBinding.bind(getView());
 
 
-        mBinding.buttonAddChat.setOnClickListener(button ->
-                Navigation.findNavController(getView()).navigate(
-                        LoginFragmentDirections.actionLoginFragmentToRegisterFragment()
-                ));
+       // mBinding.buttonAddChat.setOnClickListener(button ->
+                //Navigation.findNavController(getView()).navigate(
+                        //ChatroomAddFragmentDirections.actionChatroomAddFragmentToNavChatroomFragment()
+                //unFriend()
+                //);
+
+        mBinding.buttonAddChat.setOnClickListener(this::attemptAdd);
 
         // get user contacts
         mBinding.listRoot.setVisibility(View.GONE);
         mBinding.progressBar.setVisibility(View.VISIBLE);
-        mContact.addChatroomAddListObserver(getViewLifecycleOwner(), contacts -> {
+        mAdd.addChatroomAddListObserver(getViewLifecycleOwner(), contacts -> {
             mBinding.listRoot.setVisibility(View.VISIBLE);
             mBinding.progressBar.setVisibility(View.GONE);
             mBinding.swipeChatroomAddRefresh.setRefreshing(false);
@@ -77,20 +88,30 @@ public class ChatroomAddFragment extends Fragment{
         mBinding.swipeChatroomAddRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mContact.getContacts(mUser.getJwt());
+                mAdd.getContacts(mUser.getJwt());
             }
         });
 
     }
 
+
     /**
      * unfriend a contact
      *
-     * @param email String email of the friend
+     *
      */
-    public void unFriend(String email) {
-        mContact.unfriend(mUser.getJwt(), email);
+    public void attemptAdd(View view) {
+        mBinding.progressBar.setVisibility(View.VISIBLE);
+        Log.e("JWT", mUser.getJwt());
+        Log.e("mynames", namesToAdd.toString() );
+        //mBinding2.checkBoxAdd.isChecked();
+        mAdd.add1(mUser.getJwt(), mBinding.editChatroomAddName.getText().toString().trim(),namesToAdd);
+        mBinding.progressBar.setVisibility(View.GONE);
+        Navigation.findNavController(getView()).navigate(
+        ChatroomAddFragmentDirections.actionChatroomAddFragmentToNavChatroomFragment());
     }
+
+
 
     /**
      * open chatroom with the desired contact

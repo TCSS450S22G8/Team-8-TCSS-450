@@ -1,18 +1,23 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
+import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddCardBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
@@ -43,6 +48,7 @@ public class ChatroomAddRecyclerViewAdapter extends RecyclerView.Adapter<Chatroo
         mParent = parent;
     }
 
+
     @NonNull
     @Override
     public ChatroomAddRecyclerViewAdapter.ChatroomAddViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -70,12 +76,13 @@ public class ChatroomAddRecyclerViewAdapter extends RecyclerView.Adapter<Chatroo
     public class ChatroomAddViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public FragmentChatroomAddCardBinding mBinding;
+        //public FragmentChatroomAddBinding mBinding2;
 
-        public Button mUnFriend;
+        public CheckBox mAdd;
         public Button messageFriend;
 
         public TextView email;
-        public TextView username;
+        public EditText name;
 
         /**
          * Constructor for View Holder
@@ -86,22 +93,22 @@ public class ChatroomAddRecyclerViewAdapter extends RecyclerView.Adapter<Chatroo
             super(view);
             mView = view;
             mBinding = FragmentChatroomAddCardBinding.bind(view);
-            //mUnFriend = view.findViewById(R.id.button_contact_unfriend);
+            //mBinding2 = FragmentChatroomAddBinding.bind(view);
+            mAdd = view.findViewById(R.id.checkBox_add);
             //messageFriend = view.findViewById(R.id.button_contact_send_message);
-            email = view.findViewById(R.id.text_contact_email);
-            username = view.findViewById(R.id.text_contact_username);
+            //email = view.findViewById(R.id.text_contact_email);
+            name = view.findViewById(R.id.edit_chatroom_add_name);
 
-            /*
-            mUnFriend.setOnClickListener(new View.OnClickListener() {
+
+            mAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mParent.unFriend(email.getText().toString());
-                    mContact.remove((getAdapterPosition()));
-                    notifyItemRemoved(getAdapterPosition());
-                    notifyItemRangeChanged(getAdapterPosition(), mContact.size());
-                    Toast.makeText(mParent.getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();
+                    mParent.namesToAdd.add(mBinding.textChatroomAddEmail.getText().toString());
+                    Log.e("emailtoadd", mBinding.textChatroomAddEmail.getText().toString());
                 }
             });
+
+/*
 
             messageFriend.setOnClickListener(new View.OnClickListener() {
                 @Override

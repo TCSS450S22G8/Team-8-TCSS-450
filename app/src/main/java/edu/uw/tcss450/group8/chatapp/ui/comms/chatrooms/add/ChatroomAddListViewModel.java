@@ -41,6 +41,9 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
  */
 public class ChatroomAddListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
+    private MutableLiveData<Integer> mChatid;
+    private MutableLiveData<String> mjwt;
+    private MutableLiveData<List<String>> mNames;
 
     /**
      * Constructor for Contact List ViewModel
@@ -49,6 +52,9 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
     public ChatroomAddListViewModel(@NonNull Application application) {
         super(application);
         mContact = new MutableLiveData<>();
+        mChatid = new MutableLiveData<>();
+        mjwt = new MutableLiveData<>();
+        mNames = new MutableLiveData<>();
     }
 
     /**
@@ -86,6 +92,109 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    /**
+     * Endpoint call to un-friend someone (delete a contact)
+     *  @param jwt String
+     * @param name String
+     * @param namesToAdd
+     */
+    public void add1(String jwt, String name, List<String> namesToAdd) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats";
+        mjwt.setValue(jwt);
+        mNames.setValue(namesToAdd);
+        JSONObject body = new JSONObject();
+        Log.e("add1", "inadd1:1");
+        try {
+            body.put("name", name);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Request<JSONObject> request = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                body,
+                this::handleAdd1Success,
+                this::handleAdd1Error) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+    }
+
+    /**
+     * Endpoint call to un-friend someone (delete a contact)
+     *
+     *
+     */
+    public void add2(int chatId) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/addSelf/"+chatId;
+        JSONObject body = new JSONObject();
+        Log.e("add2", "inadd2:1");
+        try {
+            body.put("chatId", chatId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Request<JSONObject> request = new JsonObjectRequest(
+                Request.Method.PUT,
+                url,
+                body,
+                this::handleAdd2Success,
+                this::handleAdd2Error) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", mjwt.getValue());
+                return headers;
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+    }
+
+    /**
+     * Endpoint call to un-friend someone (delete a contact)
+     *
+     *
+     */
+    public void add3(List<String> namesToAdd) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/addOther/"+mChatid.getValue();
+        Log.e("sizenamesadd", namesToAdd.size()+"" );
+        for(int j = 0; j < namesToAdd.size();j++) {
+            JSONObject body = new JSONObject();
+            Log.e("add3", "inadd3:1");
+            Log.e("add3", namesToAdd.get(j));
+            try {
+                body.put("chatId", mChatid.getValue());
+                body.put("email", namesToAdd.get(j));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Request<JSONObject> request = new JsonObjectRequest(
+                    Request.Method.PUT,
+                    url,
+                    body,
+                    this::handleAdd3Success,
+                    this::handleAdd3Error) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> headers = new HashMap<>();
+                    // add headers <key,value>
+                    headers.put("Authorization", mjwt.getValue());
+                    return headers;
+                }
+            };
+            RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                    .addToRequestQueue(request);
+        }
+    }
 
     /**
      * Endpoint call to un-friend someone (delete a contact)
@@ -105,8 +214,8 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
                 Request.Method.POST,
                 url,
                 body,
-                this::handleUnfriendSuccess,
-                this::handleUnfriendError) {
+                this::handleAdd1Success,
+                this::handleAdd1Error) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -124,7 +233,42 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
      *
      * @param volleyError VolleyError
      */
-    private void handleUnfriendError(VolleyError volleyError) {
+    private void handleAdd1Error(VolleyError volleyError) {
+        Log.e("error", "handleAdd1Error");
+        if (Objects.isNull(volleyError.networkResponse)) {
+            Log.e("NETWORK ERROR", volleyError.getMessage());
+        }
+        else {
+            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
+            Log.e("CLIENT ERROR",
+                    volleyError.networkResponse.statusCode + " " + data);
+        }
+    }
+
+    /**
+     * Handles errors for unfriend endpoint calls
+     *
+     * @param volleyError VolleyError
+     */
+    private void handleAdd2Error(VolleyError volleyError) {
+        Log.e("error", "handleAdd1Error");
+        if (Objects.isNull(volleyError.networkResponse)) {
+            Log.e("NETWORK ERROR", volleyError.getMessage());
+        }
+        else {
+            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
+            Log.e("CLIENT ERROR",
+                    volleyError.networkResponse.statusCode + " " + data);
+        }
+    }
+
+    /**
+     * Handles errors for unfriend endpoint calls
+     *
+     * @param volleyError VolleyError
+     */
+    private void handleAdd3Error(VolleyError volleyError) {
+        Log.e("error", "handleAdd1Error");
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
         }
@@ -140,8 +284,36 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
      *
      * @param response JSONObject
      */
-    private void handleUnfriendSuccess(final JSONObject response) {
+    private void handleAdd1Success(final JSONObject response) {
+        Log.e("sucess", response.toString());
+        try {
+            int chatId = response.getInt("chatID");
+            mChatid.setValue(chatId);
+            Log.e("ID", chatId+"");
+            add2(chatId);
+        } catch (JSONException e) {
+           // Log.e("ID", "testhere2");
+            e.printStackTrace();
+        }
+    }
 
+    /**
+     * Handles the success for unfriend endpoint calls
+     *
+     * @param response JSONObject
+     */
+    private void handleAdd2Success(final JSONObject response) {
+        Log.e("sucess2", response.toString());
+        add3(mNames.getValue());
+    }
+
+    /**
+     * Handles the success for unfriend endpoint calls
+     *
+     * @param response JSONObject
+     */
+    private void handleAdd3Success(final JSONObject response) {
+        Log.e("sucess3", response.toString());
     }
 
     /**

@@ -16,6 +16,8 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentHomeBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.location.Location;
+import edu.uw.tcss450.group8.chatapp.ui.location.LocationViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.weather.Weather;
 import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherHourlyRecyclerViewAdapter;
 import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherViewModel;
@@ -37,6 +39,7 @@ public class HomeFragment extends Fragment {
     private ChatroomViewModel mChatroomModel;
     private ContactListViewModel mContactListModel;
     private UserInfoViewModel mUser;
+    private LocationViewModel mLocation;
 
 
 
@@ -49,14 +52,18 @@ public class HomeFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
 
+        mContactListModel = new ViewModelProvider(requireActivity()).get(ContactListViewModel.class);
+
         mWeatherModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
-        mWeatherModel.getWeatherZipCode("98404");
 
         mChatroomModel = new ViewModelProvider(requireActivity()).get(ChatroomViewModel.class);
         mChatroomModel.getChatRoomsForUser(mUser.getJwt());
 
         mContactListModel = new ViewModelProvider(requireActivity()).get(ContactListViewModel.class);
         mContactListModel.getContacts(mUser.getJwt());
+
+        mLocation = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
+
     }
 
     @Override
@@ -95,6 +102,11 @@ public class HomeFragment extends Fragment {
                             new HomeChatroomViewRecyclerAdapter(chatroomList, this)
                     );
 
+        });
+
+        mLocation.addLocationObserver(getViewLifecycleOwner(), location -> {
+            mWeatherModel.getWeatherLatLon(String.valueOf(location.getLatitude()),
+                    String.valueOf(location.getLongitude()));
         });
 
     }

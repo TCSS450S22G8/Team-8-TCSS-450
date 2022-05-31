@@ -1,6 +1,5 @@
 package edu.uw.tcss450.group8.chatapp.ui.location;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,20 +9,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentLocationBinding;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentWeatherBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactRecyclerViewAdapter;
-import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherDailyRecyclerViewAdapter;
-import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherFragmentDirections;
-import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherHourlyRecyclerViewAdapter;
 
 /**
  * Shows a list of locations the user would like to view weather information for
@@ -39,6 +31,9 @@ public class LocationListFragment extends Fragment {
     private UserInfoViewModel mUser;
 
 
+    /**
+     * empty constructor
+     */
     public LocationListFragment() {
         // Required empty public constructor
     }
@@ -49,6 +44,7 @@ public class LocationListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mModel = new ViewModelProvider(requireActivity()).get(LocationListViewModel.class);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
+        //getActivity().findViewById()
     }
 
     @Override
@@ -93,7 +89,25 @@ public class LocationListFragment extends Fragment {
         });
     }
 
+    /**
+     * deletes a location from users saved location
+     *
+     * @param theLat String the latitude
+     * @param theLon String the longitude
+     */
     public void deleteLocation(String theLat, String theLon) {
         mModel.deleteLocation(mUser.getJwt(), theLat, theLon);
+    }
+
+    /**
+     * navigates to weather fragment to show locations weather
+     *
+     * @param theLat String the latitude
+     * @param theLon String the longitude
+     */
+    public void getWeather(String theLat, String theLon) {
+        Navigation.findNavController(getView()).navigate(
+                LocationListFragmentDirections
+                        .actionLocationFragmentToNavWeatherFragment(theLat, theLon));
     }
 }

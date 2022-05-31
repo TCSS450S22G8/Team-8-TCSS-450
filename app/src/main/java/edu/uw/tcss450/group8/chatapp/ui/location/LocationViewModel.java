@@ -11,7 +11,6 @@ import androidx.lifecycle.ViewModel;
 
 /**
  * view model that retains information on the user's location
- * Adapted from original code by Charles Bryan.
  * @author Charles Bryan
  */
 public class LocationViewModel extends ViewModel {

@@ -64,6 +64,7 @@ public class LocationListRecyclerViewAdapter extends RecyclerView.Adapter<Locati
         private final View mView;
         private final FragmentLocationCardBinding mBinding;
         private final ImageButton mDelete;
+        private final ImageButton mWeather;
         private Location mSingleLocation;
 
         /**
@@ -76,6 +77,9 @@ public class LocationListRecyclerViewAdapter extends RecyclerView.Adapter<Locati
             mView = theView;
             mBinding = FragmentLocationCardBinding.bind(theView);
             mDelete = theView.findViewById(R.id.button_location_remove);
+            mWeather = theView.findViewById(R.id.button_location_weather);
+
+
 
 
             //delete saved location
@@ -86,7 +90,15 @@ public class LocationListRecyclerViewAdapter extends RecyclerView.Adapter<Locati
                     mLocations.remove((getAdapterPosition()));
                     notifyItemRemoved(getAdapterPosition());
                     notifyItemRangeChanged(getAdapterPosition(), mLocations.size());
-                    Toast.makeText(mParent.getActivity(), "Removed Location", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mParent.getActivity(), "Location Removed", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            //delete saved location
+            mWeather.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mParent.getWeather(mSingleLocation.getLat(), mSingleLocation.getLon());
                 }
             });
         }

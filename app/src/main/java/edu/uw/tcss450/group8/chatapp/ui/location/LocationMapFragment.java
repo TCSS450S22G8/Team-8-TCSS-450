@@ -2,9 +2,7 @@ package edu.uw.tcss450.group8.chatapp.ui.location;
 
 import android.Manifest;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -12,10 +10,10 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,22 +30,17 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
 
 import edu.uw.tcss450.group8.chatapp.R;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentLocationBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentLocationMapBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
 
 /**
  * Fragment to display map for user to view and add locations
  *
  * @author shilnara dam
- * @version 5/29/22
+ * @version 5/30/22
  */
 public class LocationMapFragment extends Fragment implements OnMapReadyCallback, GoogleMap.OnMapClickListener {
 
@@ -56,6 +49,7 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
     private UserInfoViewModel mUser;
     private GoogleMap mMap;
     private Marker marker;
+    private FragmentLocationMapBinding mBinding;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,6 +57,7 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
         mListModel = new ViewModelProvider(getActivity()).get(LocationListViewModel.class);
         mModel = new ViewModelProvider(getActivity()).get(LocationViewModel.class);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
+
     }
 
 
@@ -87,12 +82,38 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
                 (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         //add this fragment as the OnMapReadyCallback -> See onMapReady()
         mapFragment.getMapAsync((OnMapReadyCallback) this);
+
+        //allows for searching locations
+        Log.e("TAG", "onViewCreated: 1");
+        mBinding = FragmentLocationMapBinding.bind(requireView());
+        mBinding.searchLocationMap.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                String location = mBinding.searchLocationMap.getQuery().toString();
+                List<Address> addressList = null;
+                Geocoder geocoder = new Geocoder(getActivity());
+                //using try catch to check if text input is valid
+                try {
+                    addressList = geocoder.getFromLocationName(location, 1);
+                    Address address = addressList.get(0);
+                    LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+                } catch (IOException | IndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
+                return false;
+            }
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
         UiSettings settings = mMap.getUiSettings();
         settings.setZoomControlsEnabled(true);
         settings.setCompassEnabled(true);
@@ -121,6 +142,7 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
             }
         });
         mMap.setOnMapClickListener(this);
+
     }
 
     @Override
@@ -136,7 +158,6 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         mListModel.addLocation(mUser.getJwt(), latLng.latitude, latLng.longitude);
-                        //turn on loading screen
                     }
                 })
                 .setNegativeButton("Cancel", null)
@@ -144,7 +165,6 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
         mMap.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(
                         latLng, mMap.getCameraPosition().zoom));
-
     }
 
     public void observeError(@NonNull LatLng latLng) {

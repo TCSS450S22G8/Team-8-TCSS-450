@@ -12,7 +12,6 @@ import androidx.lifecycle.Observer;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
@@ -27,7 +26,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
-import edu.uw.tcss450.group8.chatapp.ui.weather.Weather;
 
 /**
  * view model to get all user saved locations and add/delete locations.
@@ -103,7 +101,6 @@ public class LocationListViewModel extends AndroidViewModel {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/location/add/"
                 + theLat + "/" + theLon;
         //creating request
-        Log.e("stuff", "something ");
         Request request = new JsonObjectRequest(
                 Request.Method.POST,
                 url,
@@ -151,10 +148,6 @@ public class LocationListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
-
-
-
-
     /**
      * handler for successful add locations request
      *
@@ -162,7 +155,6 @@ public class LocationListViewModel extends AndroidViewModel {
      */
     private void handleAddResult(final JSONObject theResult) {
         mAdd.setValue("yes");
-        Log.e("stuff", theResult.toString());
     }
 
 
@@ -206,7 +198,6 @@ public class LocationListViewModel extends AndroidViewModel {
      * @param theError VolleyError request error
      */
     private void handleError(final VolleyError theError) {
-        Log.e("stuff", theError.toString());
         if (Objects.isNull(theError.networkResponse)) {
             Log.e("NETWORK ERROR", theError.getMessage());
         }

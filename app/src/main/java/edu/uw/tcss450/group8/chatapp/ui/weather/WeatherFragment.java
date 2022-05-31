@@ -45,7 +45,8 @@ public class WeatherFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mWeatherModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
         mLocationModel = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
-        //((MainActivity)getActivity()).startLocationUpdates();
+        mLocationModel = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
+
 
     }
 
@@ -60,16 +61,25 @@ public class WeatherFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        try {
+            //get weather info from arguments (saved locations)
+            WeatherFragmentArgs args = WeatherFragmentArgs.fromBundle(getArguments());
+            mWeatherModel.getWeatherLatLon(args.getLat(),
+                    args.getLon());
+        } catch (IllegalArgumentException e) {
+            //get weather info from user current location
+            //adding observer for current location's to set weather
+            mLocationModel.addLocationObserver(getViewLifecycleOwner(), location -> {
+                mWeatherModel.getWeatherLatLon(String.valueOf(location.getLatitude()),
+                        String.valueOf(location.getLongitude()));
+            });
+        }
+
+
         mBinding = FragmentWeatherBinding.bind(requireView());
         mBinding.progressBar.setVisibility(View.VISIBLE);
 
-        //adding observer for current location's to set weather
-        mLocationModel.addLocationObserver(getViewLifecycleOwner(), location -> {
-            mWeatherModel.getWeatherLatLon(String.valueOf(location.getLatitude()),
-                    String.valueOf(location.getLongitude()));
-            Log.e("LOCATION", String.valueOf(location.getLongitude()));
-            //((MainActivity)getActivity()).stopLocationUpdates();
-        });
+
 
         //adding weather observers
         mWeatherModel.addCurrentWeatherObserver(

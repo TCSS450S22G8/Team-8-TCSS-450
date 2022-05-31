@@ -39,10 +39,10 @@
             app:destination="@id/locationFragment" />
         <argument
             android:name="lat"
-            app:argType="float" />
+            app:argType="string" />
         <argument
             android:name="lon"
-            app:argType="float" />
+            app:argType="string" />
     </fragment>
     <activity
         android:id="@+id/authenticationActivity"

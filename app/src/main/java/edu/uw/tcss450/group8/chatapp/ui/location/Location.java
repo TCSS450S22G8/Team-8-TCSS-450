@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.location;
 
+import androidx.annotation.NonNull;
+
 import java.io.Serializable;
 
 /**
@@ -36,6 +38,16 @@ public class Location implements Serializable {
         mCity = theCity;
         mLat = theLat;
         mLon = theLon;
+    }
+
+    /**
+     * tostring method for location
+     * @return string representation of location
+     */
+    @NonNull
+    @Override
+    public String toString() {
+        return "{City: " + mCity + ", Lat/Lon: " + mLat + "/" + mLon + "}";
     }
 
     /**

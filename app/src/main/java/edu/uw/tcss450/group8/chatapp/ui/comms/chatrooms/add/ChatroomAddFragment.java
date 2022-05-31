@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -102,10 +104,21 @@ public class ChatroomAddFragment extends Fragment{
         mBinding.progressBar.setVisibility(View.VISIBLE);
         Log.e("JWT", mUser.getJwt());
         Log.e("mynames", namesToAdd.toString() );
-        mAdd.add1(mUser.getJwt(), mBinding.editChatroomAddName.getText().toString().trim(),namesToAdd);
-        mBinding.progressBar.setVisibility(View.GONE);
-        Navigation.findNavController(getView()).navigate(
-        ChatroomAddFragmentDirections.actionChatroomAddFragmentToNavChatroomFragment());
+        if (mBinding.editChatroomAddName.getText().toString().trim().equals("")) {
+//            mBinding.editChatroomAddName.setError("Must have a name for the chat room!");
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            dialog.setTitle("Make sure you are naming your chat room!")
+                    .setNegativeButton("Okay", null)
+                    .show().setCanceledOnTouchOutside(true);
+            mBinding.progressBar.setVisibility(View.GONE);
+            return;
+        }
+        else {
+            mAdd.add1(mUser.getJwt(), mBinding.editChatroomAddName.getText().toString().trim(), namesToAdd);
+            mBinding.progressBar.setVisibility(View.GONE);
+            Navigation.findNavController(getView()).navigate(
+                    ChatroomAddFragmentDirections.actionChatroomAddFragmentToNavChatroomFragment());
+        }
     }
 
 }

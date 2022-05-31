@@ -4,6 +4,16 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonArrayRequest;
+
+import org.json.JSONArray;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
+
 /**
  * Store user info for app handling.
  *

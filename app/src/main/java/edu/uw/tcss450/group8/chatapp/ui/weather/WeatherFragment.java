@@ -1,5 +1,6 @@
 package edu.uw.tcss450.group8.chatapp.ui.weather;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 
@@ -7,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,6 +22,8 @@ import com.squareup.picasso.Picasso;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentWeatherBinding;
+import edu.uw.tcss450.group8.chatapp.ui.location.LocationViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.settings.SettingFragmentDirections;
 
 /**
  * Class for Weather Fragment to display weather
@@ -29,18 +33,20 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentWeatherBinding;
  */
 public class WeatherFragment extends Fragment {
     private WeatherViewModel mWeatherModel;
+    private LocationViewModel mLocationModel;
     private FragmentWeatherBinding mBinding;
+
+    private Activity mActivity;
 
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mWeatherModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
-        //hardcoded zipcode
-        String zipcode = "98404";
-        mWeatherModel.getWeatherZipCode(zipcode);
+        mLocationModel = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
+        mLocationModel = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
+
 
     }
 
@@ -55,8 +61,26 @@ public class WeatherFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        try {
+            //get weather info from arguments (saved locations)
+            WeatherFragmentArgs args = WeatherFragmentArgs.fromBundle(getArguments());
+            mWeatherModel.getWeatherLatLon(args.getLat(),
+                    args.getLon());
+        } catch (IllegalArgumentException e) {
+            //get weather info from user current location
+            //adding observer for current location's to set weather
+            mLocationModel.addLocationObserver(getViewLifecycleOwner(), location -> {
+                mWeatherModel.getWeatherLatLon(String.valueOf(location.getLatitude()),
+                        String.valueOf(location.getLongitude()));
+            });
+        }
+
+
         mBinding = FragmentWeatherBinding.bind(requireView());
         mBinding.progressBar.setVisibility(View.VISIBLE);
+
+
+
         //adding weather observers
         mWeatherModel.addCurrentWeatherObserver(
                 getViewLifecycleOwner(),
@@ -70,6 +94,7 @@ public class WeatherFragment extends Fragment {
                 weatherList -> {
                     mBinding.listWeatherDaily.setAdapter(new WeatherDailyRecyclerViewAdapter(weatherList));
         });
+
         //button listener for zipcode
         mBinding.buttonWeatherZipcodeEnter.setOnClickListener(button -> {
             try {
@@ -103,7 +128,14 @@ public class WeatherFragment extends Fragment {
                     mBinding.editWeatherLon.getText().toString());
         });
 
+        //button listener for moving to saved location list
+        mBinding.buttonWeatherLocationList.setOnClickListener(button -> {
+            Navigation.findNavController(getView()).navigate(
+                    WeatherFragmentDirections
+                            .actionNavWeatherFragmentToLocationFragment());
+        });
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();

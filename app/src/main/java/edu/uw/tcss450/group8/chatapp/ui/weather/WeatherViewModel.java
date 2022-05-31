@@ -292,6 +292,7 @@ public class WeatherViewModel extends AndroidViewModel {
                                 mResponse.getString("city"),
                                 formatter.format(date),
                                 temp.getString("day"),
+                                temp.getString("night"),
                                 setEachWordCap(weather.getString("description")),
                                 weather.getString("icon")
                         ));

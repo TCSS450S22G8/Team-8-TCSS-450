@@ -27,7 +27,26 @@ public class Weather implements Serializable {
     public Weather(String theCity, String theTime, String theTemp, String theCondition, String theIcon) {
         mCity = theCity;
         mTime = theTime;
-        mTemp = (int) Double.parseDouble(theTemp) + "\u00B0";
+        mTemp = (int) Double.parseDouble(theTemp) + "\u00B0" + "F";
+        mCondition = theCondition;
+        mIcon = "https://openweathermap.org/img/wn/" + theIcon + "@2x.png";
+    }
+
+    /**
+     * constructor for weather at specific city and time
+     *
+     * @param theCity String the city
+     * @param theTime String the time
+     * @param theDayTemp String the day temperature
+     * @param theNightTemp String the night temperature
+     * @param theCondition String the condition
+     */
+    public Weather(String theCity, String theTime, String theDayTemp, String theNightTemp, String theCondition, String theIcon) {
+        mCity = theCity;
+        mTime = theTime;
+        String day = (int) Double.parseDouble(theDayTemp) + "\u00B0";
+        String night = (int) Double.parseDouble(theNightTemp) + "\u00B0";
+        mTemp = day + "/" + night + "F";
         mCondition = theCondition;
         mIcon = "https://openweathermap.org/img/wn/" + theIcon + "@2x.png";
     }

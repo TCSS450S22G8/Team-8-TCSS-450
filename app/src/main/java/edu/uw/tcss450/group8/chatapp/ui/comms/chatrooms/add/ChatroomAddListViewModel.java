@@ -30,14 +30,15 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
 
 
 /**
- * View Model for contact list.
+ * View Model for contact list in chatroom add.
  * Adapted from original code by Charles Bryan.
  *
  * @author Charles Bryan
  * @author Rin Pham
  * @author Shilnara Dam
  * @author Sean Logan
- * @version 5/19/22
+ * @author Levi McCoy
+ * @version 5/30/22
  */
 public class ChatroomAddListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
@@ -93,17 +94,16 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
     }
 
     /**
-     * Endpoint call to un-friend someone (delete a contact)
-     *  @param jwt String
-     * @param name String
-     * @param namesToAdd
+     * Endpoint call to do first step of adding chat (create room)
+     *  @param jwt String of jwt
+     * @param name String of chatroom name wanted
+     * @param namesToAdd list of string with emails of who to add
      */
     public void add1(String jwt, String name, List<String> namesToAdd) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats";
         mjwt.setValue(jwt);
         mNames.setValue(namesToAdd);
         JSONObject body = new JSONObject();
-        Log.e("add1", "inadd1:1");
         try {
             body.put("name", name);
         } catch (JSONException e) {
@@ -128,14 +128,13 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
     }
 
     /**
-     * Endpoint call to un-friend someone (delete a contact)
+     * Endpoint call to do second step of adding chat (add yourself)
      *
-     *
+     * @param chatId the chatId you want to add yourself and others to
      */
     public void add2(int chatId) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/addSelf/"+chatId;
         JSONObject body = new JSONObject();
-        Log.e("add2", "inadd2:1");
         try {
             body.put("chatId", chatId);
         } catch (JSONException e) {
@@ -160,17 +159,14 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
     }
 
     /**
-     * Endpoint call to un-friend someone (delete a contact)
+     * Endpoint call to do third step of adding chat (add other users)
      *
-     *
+     * @param namesToAdd list of string with emails of who to add
      */
     public void add3(List<String> namesToAdd) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/addOther/"+mChatid.getValue();
-        Log.e("sizenamesadd", namesToAdd.size()+"" );
         for(int j = 0; j < namesToAdd.size();j++) {
             JSONObject body = new JSONObject();
-            Log.e("add3", "inadd3:1");
-            Log.e("add3", namesToAdd.get(j));
             try {
                 body.put("chatId", mChatid.getValue());
                 body.put("email", namesToAdd.get(j));
@@ -196,45 +192,14 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
         }
     }
 
-    /**
-     * Endpoint call to un-friend someone (delete a contact)
-     *
-     * @param jwt String
-     * @param email String
-     */
-    public void unfriend(String jwt, String email) {
-        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/delete";
-        JSONObject body = new JSONObject();
-        try {
-            body.put("email", email);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Request<JSONObject> request = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                body,
-                this::handleAdd1Success,
-                this::handleAdd1Error) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                // add headers <key,value>
-                headers.put("Authorization", jwt);
-                return headers;
-            }
-        };
-        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
-                .addToRequestQueue(request);
-    }
+
 
     /**
-     * Handles errors for unfriend endpoint calls
+     * Handles errors for first add endpoint calls
      *
      * @param volleyError VolleyError
      */
     private void handleAdd1Error(VolleyError volleyError) {
-        Log.e("error", "handleAdd1Error");
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
         }
@@ -246,12 +211,11 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
     }
 
     /**
-     * Handles errors for unfriend endpoint calls
+     * Handles errors for second add endpoint calls
      *
      * @param volleyError VolleyError
      */
     private void handleAdd2Error(VolleyError volleyError) {
-        Log.e("error", "handleAdd1Error");
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
         }
@@ -263,12 +227,11 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
     }
 
     /**
-     * Handles errors for unfriend endpoint calls
+     * Handles errors for third add endpoint calls
      *
      * @param volleyError VolleyError
      */
     private void handleAdd3Error(VolleyError volleyError) {
-        Log.e("error", "handleAdd1Error");
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
         }
@@ -280,40 +243,37 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
     }
 
     /**
-     * Handles the success for unfriend endpoint calls
+     * Handles the success for first add endpoint calls
      *
      * @param response JSONObject
      */
     private void handleAdd1Success(final JSONObject response) {
-        Log.e("sucess", response.toString());
         try {
             int chatId = response.getInt("chatID");
             mChatid.setValue(chatId);
-            Log.e("ID", chatId+"");
             add2(chatId);
         } catch (JSONException e) {
-           // Log.e("ID", "testhere2");
             e.printStackTrace();
         }
     }
 
     /**
-     * Handles the success for unfriend endpoint calls
+     * Handles the success for second add endpoint calls
      *
      * @param response JSONObject
      */
     private void handleAdd2Success(final JSONObject response) {
-        Log.e("sucess2", response.toString());
+
         add3(mNames.getValue());
     }
 
     /**
-     * Handles the success for unfriend endpoint calls
+     * Handles the success for third add endpoint calls
      *
      * @param response JSONObject
      */
     private void handleAdd3Success(final JSONObject response) {
-        Log.e("sucess3", response.toString());
+
     }
 
     /**
@@ -336,7 +296,7 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
     /**
      * Handles success for getContact endpoint calls
      *
-     * @param obj
+     * @param obj returned json object
      */
     private void handleGetContactSuccess(final JSONArray obj) {
         ArrayList<Contact> list = new ArrayList<>();

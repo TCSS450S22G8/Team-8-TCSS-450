@@ -4,27 +4,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddCardBinding;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
-import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactFragment;
 
 /**
- * Recycler View to show all contacts as a list.
+ * Recycler View to show all contacts as a list in chatroom add.
  *
  * Adapted from original code by Charles Bryan
  *
@@ -32,7 +26,8 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactFragment;
  * @author Rin Pham
  * @author Shilnara Dam
  * @author Sean Logan
- * @version 5/19/22
+ * @author Levi McCoy
+ * @version 5/30/22
  */
 public class ChatroomAddRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomAddRecyclerViewAdapter.ChatroomAddViewHolder> {
     private final List<Contact> mContact;
@@ -76,10 +71,8 @@ public class ChatroomAddRecyclerViewAdapter extends RecyclerView.Adapter<Chatroo
     public class ChatroomAddViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public FragmentChatroomAddCardBinding mBinding;
-        //public FragmentChatroomAddBinding mBinding2;
 
         public CheckBox mAdd;
-        public Button messageFriend;
 
         public TextView email;
         public EditText name;
@@ -93,10 +86,7 @@ public class ChatroomAddRecyclerViewAdapter extends RecyclerView.Adapter<Chatroo
             super(view);
             mView = view;
             mBinding = FragmentChatroomAddCardBinding.bind(view);
-            //mBinding2 = FragmentChatroomAddBinding.bind(view);
             mAdd = view.findViewById(R.id.checkBox_add);
-            //messageFriend = view.findViewById(R.id.button_contact_send_message);
-            //email = view.findViewById(R.id.text_contact_email);
             name = view.findViewById(R.id.edit_chatroom_add_name);
 
 
@@ -108,16 +98,6 @@ public class ChatroomAddRecyclerViewAdapter extends RecyclerView.Adapter<Chatroo
                 }
             });
 
-/*
-
-            messageFriend.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mParent.sendMessage(email.getText().toString());
-                }
-            });
-
-             */
         }
 
 

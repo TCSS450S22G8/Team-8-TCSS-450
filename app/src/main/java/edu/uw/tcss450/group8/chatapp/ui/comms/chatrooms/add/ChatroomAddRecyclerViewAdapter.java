@@ -93,8 +93,14 @@ public class ChatroomAddRecyclerViewAdapter extends RecyclerView.Adapter<Chatroo
             mAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mParent.namesToAdd.add(mBinding.textChatroomAddEmail.getText().toString());
-                    Log.e("emailtoadd", mBinding.textChatroomAddEmail.getText().toString());
+                    if(mParent.namesToAdd.contains(mBinding.textChatroomAddEmail.getText().toString())) {
+                        mParent.namesToAdd.remove(mBinding.textChatroomAddEmail.getText().toString());
+                        Log.e("emailList", mParent.namesToAdd.toString());
+                    }
+                    else{
+                        mParent.namesToAdd.add(mBinding.textChatroomAddEmail.getText().toString());
+                        Log.e("emailList", mParent.namesToAdd.toString());
+                    }
                 }
             });
 

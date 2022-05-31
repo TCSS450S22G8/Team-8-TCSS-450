@@ -66,7 +66,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     /**
      * sends a JSON request for all the chats the user is in
      *
-     * @param jwt String the zipcode of the desired location
+     * @param jwt String the jwt of the user
      */
     public void getChatRoomsForUser(String jwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/get-chats";

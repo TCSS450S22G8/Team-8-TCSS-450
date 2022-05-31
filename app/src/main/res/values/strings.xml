@@ -56,6 +56,11 @@
     <string name="title_map">Map</string>
     <string name="title_locations">Saved Locations</string>
 
+    <string name="user_name">Username:</string>
+    <string name="user_first_name">First Name:</string>
+    <string name="user_last_name">Last Name:</string>
+    <string name="user_email">Email:</string>
+
 
 
 </resources>

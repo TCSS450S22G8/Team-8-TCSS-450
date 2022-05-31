@@ -13,17 +13,21 @@ import androidx.lifecycle.Observer;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
 import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.Chatroom;
 
 /**
  * Class View Model for Login Fragment.
@@ -37,6 +41,10 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
 public class SettingViewModel extends AndroidViewModel {
 
     private MutableLiveData<JSONObject> mResponse;
+    private MutableLiveData<String> mFirstName;
+    private MutableLiveData<String> mLastName;
+    private MutableLiveData<String> mUserName;
+
 
     /**
      * Instantiates Login View Model
@@ -47,6 +55,9 @@ public class SettingViewModel extends AndroidViewModel {
         super(application);
         mResponse = new MutableLiveData<>();
         mResponse.setValue(new JSONObject());
+        mFirstName = new MutableLiveData<>();
+        mLastName = new MutableLiveData<>();
+        mUserName = new MutableLiveData<>();
     }
 
     /**
@@ -58,6 +69,39 @@ public class SettingViewModel extends AndroidViewModel {
     public void addResponseObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super JSONObject> observer) {
         mResponse.observe(owner, observer);
+    }
+
+    /**
+     * Adds response to fragment.
+     *
+     * @param owner    owner
+     * @param observer observer
+     */
+    public void addUserFirstNameObserver(@NonNull LifecycleOwner owner,
+                                    @NonNull Observer<? super String> observer) {
+        mFirstName.observe(owner, observer);
+    }
+
+    /**
+     * Adds response to fragment.
+     *
+     * @param owner    owner
+     * @param observer observer
+     */
+    public void addUserLastNameObserver(@NonNull LifecycleOwner owner,
+                                         @NonNull Observer<? super String> observer) {
+        mLastName.observe(owner, observer);
+    }
+
+    /**
+     * Adds response to fragment.
+     *
+     * @param owner    owner
+     * @param observer observer
+     */
+    public void addUserNameObserver(@NonNull LifecycleOwner owner,
+                                         @NonNull Observer<? super String> observer) {
+        mUserName.observe(owner, observer);
     }
 
     /**
@@ -89,6 +133,22 @@ public class SettingViewModel extends AndroidViewModel {
     }
 
     /**
+     * Handles success for getting user info
+     *
+     * @param userInfo
+     */
+    public void handleSuccess(final JSONObject userInfo) {
+        try {
+            mUserName.setValue(userInfo.getString("username"));
+            mFirstName.setValue(userInfo.getString("firstname"));
+            mLastName.setValue(userInfo.getString("lastname"));
+        } catch (JSONException e){
+            Log.e("JSON PARSE ERROR", "Found in handle Success");
+            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
+        }
+    }
+
+    /**
      * Sends users JWT to delete push_token from database on logout
      *
      * @param jwt    String user JWT
@@ -110,5 +170,33 @@ public class SettingViewModel extends AndroidViewModel {
         RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
                 .addToRequestQueue(request);
     }
+
+
+    /**
+     * sends a JSON request for user information
+     *
+     * @param jwt String the users jwt
+     */
+    public void getUserInfo(String jwt) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/user-info/";
+
+        Request<JSONObject> request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                this::handleSuccess,
+                this::handleError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+    }
+
 
 }

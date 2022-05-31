@@ -19,6 +19,8 @@ import java.util.List;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
+
 /**
  * Create an instance of Chatroom Add List fragment.
  * Adapted from original code by Charles Bryan.
@@ -34,6 +36,7 @@ public class ChatroomAddFragment extends Fragment{
     private ChatroomAddListViewModel mAdd;
     private UserInfoViewModel mUser;
     private FragmentChatroomAddBinding mBinding;
+    private ContactListViewModel mContact;
     List<String> namesToAdd = new ArrayList<String>();
 
 
@@ -42,6 +45,7 @@ public class ChatroomAddFragment extends Fragment{
         super.onCreate(savedInstanceState);
         mAdd = new ViewModelProvider(getActivity()).get(ChatroomAddListViewModel.class);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
+        mContact = new ViewModelProvider(getActivity()).get(ContactListViewModel.class);
     }
 
     @Override
@@ -60,9 +64,16 @@ public class ChatroomAddFragment extends Fragment{
         mBinding.buttonAddChat.setOnClickListener(this::attemptAdd);
 
         // get user contacts
+            mBinding.progressBar.setVisibility(View.GONE);
+            mBinding.swipeChatroomAddRefresh.setRefreshing(false);
+            mBinding.listRoot.setAdapter(
+                    new ChatroomAddRecyclerViewAdapter(mContact.getContacts(), this)
+            );
+
+        // get user contacts
         mBinding.listRoot.setVisibility(View.GONE);
         mBinding.progressBar.setVisibility(View.VISIBLE);
-        mAdd.addChatroomAddListObserver(getViewLifecycleOwner(), contacts -> {
+        mContact.addContactsListObserver(getViewLifecycleOwner(), contacts -> {
             mBinding.listRoot.setVisibility(View.VISIBLE);
             mBinding.progressBar.setVisibility(View.GONE);
             mBinding.swipeChatroomAddRefresh.setRefreshing(false);
@@ -75,7 +86,7 @@ public class ChatroomAddFragment extends Fragment{
         mBinding.swipeChatroomAddRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mAdd.getContacts(mUser.getJwt());
+                mContact.getContacts(mUser.getJwt());
             }
         });
 

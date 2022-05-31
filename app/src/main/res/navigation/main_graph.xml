@@ -33,7 +33,17 @@
         android:id="@+id/nav_weather_fragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.weather.WeatherFragment"
         android:label="@string/title_weather"
-        tools:layout="@layout/fragment_weather" />
+        tools:layout="@layout/fragment_weather" >
+        <action
+            android:id="@+id/action_nav_weather_fragment_to_locationFragment"
+            app:destination="@id/locationFragment" />
+        <argument
+            android:name="lat"
+            app:argType="string" />
+        <argument
+            android:name="lon"
+            app:argType="string" />
+    </fragment>
     <activity
         android:id="@+id/authenticationActivity"
         android:name="edu.uw.tcss450.group8.chatapp.AuthenticationActivity"
@@ -73,5 +83,21 @@
         <argument
             android:name="chatid"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationMapFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.location.LocationMapFragment"
+        android:label="@string/title_map" />
+    <fragment
+        android:id="@+id/locationFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.location.LocationListFragment"
+        android:label="@string/title_locations"
+        tools:layout="@layout/fragment_location">
+        <action
+            android:id="@+id/action_locationFragment_to_locationMapFragment"
+            app:destination="@id/locationMapFragment" />
+        <action
+            android:id="@+id/action_locationFragment_to_nav_weather_fragment"
+            app:destination="@id/nav_weather_fragment" />
     </fragment>
 </navigation>

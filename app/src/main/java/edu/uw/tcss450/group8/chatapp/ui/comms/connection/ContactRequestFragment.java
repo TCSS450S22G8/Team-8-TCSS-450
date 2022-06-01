@@ -43,12 +43,13 @@ public class ContactRequestFragment extends Fragment {
         mBinding = FragmentContactRequestBinding.bind(getView());
 
         // get incoming and outgoing requests
-        //mBinding.listContactIncoming.setVisibility(View.GONE);
+        mBinding.listContactIncoming.setVisibility(View.GONE);
         mBinding.listContactOutgoing.setVisibility(View.GONE);
 
-        //mContact.getIncomingRequestList(mUser.getJwt());
+        mContact.getIncomingRequestList(mUser.getJwt());
         mContact.incomingRequestListObserver(getViewLifecycleOwner(), contacts -> {
-            //mBinding.listContactIncoming.setVisibility(View.VISIBLE);
+            Log.e("incoming", "inside incoming recycler");
+            mBinding.listContactIncoming.setVisibility(View.VISIBLE);
             mAdapterIncoming = new ContactIncomingRecyclerViewAdapter(contacts, this);
             mBinding.listContactIncoming.setAdapter(
                     mAdapterIncoming

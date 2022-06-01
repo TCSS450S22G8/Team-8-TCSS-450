@@ -10,6 +10,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_contact_incoming"
+        app:layoutManager="LinearLayoutManager"
         android:layout_width="413dp"
         android:layout_height="225dp"
         app:layout_constraintBottom_toTopOf="@id/text_contact_outgoing"
@@ -21,6 +22,7 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_contact_outgoing"
+        app:layoutManager="LinearLayoutManager"
         android:layout_width="414dp"
         android:layout_height="206dp"
         app:layout_constraintBottom_toBottomOf="parent"

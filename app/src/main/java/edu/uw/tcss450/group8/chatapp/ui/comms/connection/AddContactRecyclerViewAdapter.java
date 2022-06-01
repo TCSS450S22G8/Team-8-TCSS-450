@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,7 +51,6 @@ public class AddContactRecyclerViewAdapter extends RecyclerView.Adapter<AddConta
 
     public void contactList(ArrayList<Contact> contactList) {
         mContact = contactList;
-        notifyDataSetChanged();
     }
 
 

@@ -200,12 +200,14 @@ public class ContactListViewModel extends AndroidViewModel {
     private void handleGetIncomingRequestListSuccess(JSONObject jsonObject) {
         ArrayList<Contact> list = new ArrayList<>();
         try {
-            JSONArray array = jsonObject.getJSONArray("members");
-            for (int i = 0; i <  array.length(); i++) {
-                JSONObject contact = array.getJSONObject(i);
+            JSONObject incoming = jsonObject.getJSONObject("incoming");
+            JSONArray rows = incoming.getJSONArray("rows");
+            for (int i = 0; i <  rows.length(); i++) {
+                JSONObject contact = rows.getJSONObject(i);
                 list.add(new Contact(
                         contact.getString("username"),
                         contact.getString("email")));
+                Log.e("incoming", contact.getString("username"));
             }
             mIncomingRequest.setValue(list);
         } catch (JSONException e){

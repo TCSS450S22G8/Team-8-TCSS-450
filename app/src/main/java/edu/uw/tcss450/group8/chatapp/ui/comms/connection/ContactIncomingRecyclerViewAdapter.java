@@ -1,5 +1,6 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.connection;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class ContactIncomingRecyclerViewAdapter extends RecyclerView.Adapter<Con
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mContactRequest.size();
     }
 
     /**
@@ -107,6 +108,7 @@ public class ContactIncomingRecyclerViewAdapter extends RecyclerView.Adapter<Con
          * @param contact Contact the contact object
          */
         void setContact(final Contact contact) {
+            Log.e("incoming","check...");
             mBinding.textContactUsername.setText(contact.getUserName());
             mBinding.textContactEmail.setText(contact.getEmail());
         }

@@ -11,13 +11,14 @@
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe_contacts_refresh"
-            android:layout_width="404dp"
-            android:layout_height="577dp"
+            android:layout_width="405dp"
+            android:layout_height="573dp"
             android:layout_marginTop="12dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.428"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_bar">
+            app:layout_constraintTop_toBottomOf="@+id/search_bar"
+            app:layout_constraintVertical_bias="1.0">
 
 
             <androidx.recyclerview.widget.RecyclerView
@@ -34,7 +35,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0"
-                tools:listitem="@layout/fragment_contact_card">
+                tools:listitem="@layout/fragment_contact_add_contact_card">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -76,31 +77,31 @@
             android:inputType="textPersonName"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.487"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="Autofill" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/button_contacts_add"
+            android:id="@+id/button_contacts_requests"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginBottom="20dp"
-            android:text="@string/text_add_contacts"
+            android:text="@string/text_requests"
             app:layout_constraintBottom_toTopOf="@+id/search_bar"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
         <Button
-            android:id="@+id/button_contacts_request"
+            android:id="@+id/button_contacts_contacts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="20dp"
-            android:text="@string/text_requests"
+            android:text="@string/title_connections"
             app:layout_constraintBottom_toTopOf="@+id/search_bar"
             app:layout_constraintEnd_toEndOf="parent" />
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

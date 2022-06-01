@@ -1,5 +1,8 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.connection;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +13,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import edu.uw.tcss450.group8.chatapp.MainActivity;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
 
@@ -28,7 +31,7 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
  * @version 5/19/22
  */
 public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder> {
-    private final List<Contact> mContact;
+    private List<Contact> mContact;
     private final ContactFragment mParent;
 
     /**
@@ -60,6 +63,17 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         return this.mContact.size();
     }
 
+    /**
+     * sets contact list
+     *
+     * @param contactList ArrayList<Contact> the contact list
+     */
+    public void contactList(ArrayList<Contact> contactList) {
+        Log.e("error", "contactList: ");
+        mContact = contactList;
+        notifyDataSetChanged();
+    }
+
 
     /**
      * Objects from this class represent an Individual row View from the List * of rows in the
@@ -71,6 +85,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
         public Button mUnFriend;
         public Button messageFriend;
+
 
         public TextView email;
         public TextView username;
@@ -84,31 +99,38 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             super(view);
             mView = view;
             mBinding = FragmentContactCardBinding.bind(view);
-            mUnFriend = view.findViewById(R.id.button_contact_unfriend);
-            messageFriend = view.findViewById(R.id.button_contact_send_message);
-            email = view.findViewById(R.id.text_contact_email);
-            username = view.findViewById(R.id.text_contact_username);
+            mUnFriend = mBinding.buttonContactUnfriend;
+            messageFriend = mBinding.buttonContactSendMessage;
+            email = mBinding.textContactEmail;
+            username = mBinding.textContactUsername;
 
+            //button to unfriend friend
             mUnFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mParent.unFriend(email.getText().toString());
-                    mContact.remove((getAdapterPosition()));
-                    notifyItemRemoved(getAdapterPosition());
-                    notifyItemRangeChanged(getAdapterPosition(), mContact.size());
-                    Toast.makeText(mParent.getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(mParent.getContext());
+                    dialog.setTitle("Are you sure you want to remove this contact?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mParent.unFriend(email.getText().toString());
+                                    mContact.remove((getAdapterPosition()));
+                                    notifyItemRemoved(getAdapterPosition());
+                                    notifyItemRangeChanged(getAdapterPosition(), mContact.size());
+                                    Toast.makeText(mParent.getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show().setCanceledOnTouchOutside(true);
                 }
             });
 
+            //button to message friend
             messageFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mParent.sendMessage(email.getText().toString());
+                    mParent.sendMessage(email.getText().toString(), username.getText().toString());
                 }
             });
         }
-
-
 
         /**
          * Set contact
@@ -119,6 +141,5 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             mBinding.textContactUsername.setText(contact.getUserName());
             mBinding.textContactEmail.setText(contact.getEmail());
         }
-
     }
 }

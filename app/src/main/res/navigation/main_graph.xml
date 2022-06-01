@@ -56,6 +56,12 @@
         <action
             android:id="@+id/action_nav_connections_fragment_to_messageListFragment"
             app:destination="@id/messageListFragment" />
+        <action
+            android:id="@+id/action_nav_connections_fragment_to_addContactFragment"
+            app:destination="@id/addContactFragment" />
+        <action
+            android:id="@+id/action_nav_connections_fragment_to_contactRequestFragment"
+            app:destination="@id/contactRequestFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_chatroom_fragment"
@@ -99,5 +105,27 @@
         <action
             android:id="@+id/action_locationFragment_to_nav_weather_fragment"
             app:destination="@id/nav_weather_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addContactFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.AddContactFragment"
+        android:label="@string/text_add_contacts">
+        <action
+            android:id="@+id/action_addContactFragment_to_nav_connections_fragment"
+            app:destination="@id/nav_connections_fragment" />
+        <action
+            android:id="@+id/action_addContactFragment_to_contactRequestFragment"
+            app:destination="@id/contactRequestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactRequestFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactRequestFragment"
+        android:label="@string/text_requests">
+        <action
+            android:id="@+id/action_contactRequestFragment_to_addContactFragment"
+            app:destination="@id/addContactFragment" />
+        <action
+            android:id="@+id/action_contactRequestFragment_to_nav_connections_fragment"
+            app:destination="@id/nav_connections_fragment" />
     </fragment>
 </navigation>

@@ -27,7 +27,8 @@
     <string name="hint_retype_new_pass">Retype your new password</string>
     <string name="action_change">Change</string>
     <string name="action_change_pass">Change Password</string>
-    <string name="action_forgot">Forgot Password</string>
+    <string name="action_forgot">Forgot Your Password?</string>
+    <string name="hint_need_account">Need an Account?</string>
 
     <string name="action_search">Search</string>
     <string name="header_daily">Daily</string>
@@ -66,7 +67,6 @@
     <string name="text_outgoing_requests">Outgoing Requests</string>
     <string name="text_requests">Requests</string>
     <string name="text_add_contacts">Add Contacts</string>
-
 
 
 </resources>

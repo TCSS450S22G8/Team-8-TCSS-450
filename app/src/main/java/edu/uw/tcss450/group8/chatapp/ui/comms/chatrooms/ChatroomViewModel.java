@@ -42,6 +42,9 @@ public class ChatroomViewModel extends AndroidViewModel {
     private MutableLiveData<List<Chatroom>> mChatroomList;
     private ChatroomListFragment mParent;
     private ArrayList<Chatroom> mChatrooms;
+    private String mjwt;
+    private String mEmail;
+    private int mChatId;
     //private FragmentChatroomListBinding mBinding;
     //private ChatroomListFragment mBinding2;
 
@@ -203,5 +206,137 @@ public class ChatroomViewModel extends AndroidViewModel {
         //mParent.refreshAdapter();
 
     }
+
+    /**
+     * Endpoint call to do first step of adding chat (create room)
+     *  @param jwt String of jwt
+     *
+     */
+    public void attemptRemoveSelf2(String jwt, int chatId, String email) {
+        //mParent = parent;
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/delete/chatroom/group/"+chatId;
+        JSONObject body = new JSONObject();
+        try {
+            body.put("chatId", chatId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Request<JSONObject> request = new JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                body,
+                this::handleRemoveSelf2Success,
+                this::handleRemoveSelf2Error) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+    }
+
+    /**
+     * Handles errors for third add endpoint calls
+     *
+     * @param volleyError VolleyError
+     */
+    private void handleRemoveSelf2Error(VolleyError volleyError) {
+        if (Objects.isNull(volleyError.networkResponse)) {
+            Log.e("NETWORK ERROR", volleyError.getMessage());
+        }
+        else {
+            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
+            Log.e("CLIENT ERROR",
+                    volleyError.networkResponse.statusCode + " " + data);
+        }
+    }
+
+    /**
+     * Handles the success for first add endpoint calls
+     *
+     * @param response JSONObject
+     */
+    private void handleRemoveSelf2Success(final JSONObject response) {
+
+
+    }
+
+    /**
+     * Endpoint call to do first step of adding chat (create room)
+     *  @param jwt String of jwt
+     *
+     */
+    public void attemptGetUsersRoom(String jwt, int chatId, String email) {
+        //mParent = parent;
+        mjwt = jwt;
+        mChatId = chatId;
+        mEmail = email;
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/"+chatId;
+        JSONObject body = new JSONObject();
+        try {
+            body.put("chatId", chatId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Request<JSONObject> request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                body,
+                this::handleGetUsersRoomSuccess,
+                this::handleGetUsersRoomError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+    }
+
+    /**
+     * Handles errors for third add endpoint calls
+     *
+     * @param volleyError VolleyError
+     */
+    private void handleGetUsersRoomError(VolleyError volleyError) {
+        if (Objects.isNull(volleyError.networkResponse)) {
+            Log.e("NETWORK ERROR", volleyError.getMessage());
+        }
+        else {
+            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
+            Log.e("CLIENT ERROR",
+                    volleyError.networkResponse.statusCode + " " + data);
+        }
+    }
+
+    /**
+     * Handles the success for first add endpoint calls
+     *
+     * @param response JSONObject
+     */
+    private void handleGetUsersRoomSuccess(final JSONObject response) {
+        try {
+            int members = response.getInt("rowCount");
+            Log.e("NumInChat", ": "+members);
+            if(members == 1){
+                attemptRemoveSelf2(mjwt,mChatId,mEmail);
+            }
+            else{
+                attemptRemoveSelf1(mjwt,mChatId,mEmail);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
 
 }

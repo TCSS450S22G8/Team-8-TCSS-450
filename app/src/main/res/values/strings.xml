@@ -54,6 +54,7 @@
     <string name="action_add">Add</string>
     <string name="hint_enter_name">Enter the chat name</string>
     <string name="hint_user_in_chat">User in chat</string>
+    <string name="title_add_chat">Add Chat</string>
 
 
 

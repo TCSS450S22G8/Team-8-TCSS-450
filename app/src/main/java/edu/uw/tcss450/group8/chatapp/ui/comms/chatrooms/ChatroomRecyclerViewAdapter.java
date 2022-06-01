@@ -135,7 +135,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             chatId = mView.findViewById(R.id.text_chatid);
             int chatIdNum = Integer.parseInt(chatId.getText().toString());
             //int chatId = Integer.parseInt(mView.findViewById(R.id.text_chatid));
-            mModel.attemptRemoveSelf1(jwt,chatIdNum,email);
+            mModel.attemptGetUsersRoom(jwt,chatIdNum,email);
             //mBinding = FragmentChatroomListBinding.bind(mParent.getView());
             binding.getRoot().setVisibility(View.GONE);
             //mParent.refreshAdapter();

@@ -14,6 +14,9 @@ import android.view.ViewGroup;
 
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentHomeBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListFragmentArgs;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomRecyclerViewAdapter;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.location.Location;
@@ -40,7 +43,7 @@ public class HomeFragment extends Fragment {
     private ContactListViewModel mContactListModel;
     private UserInfoViewModel mUser;
     private LocationViewModel mLocation;
-
+    private MessageListViewModel mMessageListModel;
 
 
     public HomeFragment() {
@@ -63,6 +66,8 @@ public class HomeFragment extends Fragment {
         mContactListModel.getContacts(mUser.getJwt());
 
         mLocation = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
+
+        mMessageListModel = new ViewModelProvider(requireActivity()).get(MessageListViewModel.class);
 
     }
 
@@ -95,13 +100,18 @@ public class HomeFragment extends Fragment {
                     );
                 });
 
-        mChatroomModel.addChatRoomListObserver(
-                getViewLifecycleOwner(),
-                chatroomList -> {
-                    mBinding.listChatroomHomeFragment.setAdapter(
-                            new HomeChatroomViewRecyclerAdapter(chatroomList, this)
-                    );
-
+        mChatroomModel.addChatRoomListObserver(getViewLifecycleOwner(), chatList -> {
+            if (!chatList.isEmpty()) {
+                chatList.forEach(chatroom -> {
+                    int chatId = Integer.parseInt(chatroom.getChatRoomId());
+                    mMessageListModel.getFirstMessages(chatId, mUser.getJwt());
+                    mMessageListModel.addMessageObserver(chatId, getViewLifecycleOwner(), messages -> {
+                        mBinding.listChatroomHomeFragment.setAdapter(
+                                new HomeChatroomViewRecyclerAdapter(chatList, this)
+                        );
+                    });
+                });
+            }
         });
 
         mLocation.addLocationObserver(getViewLifecycleOwner(), location -> {

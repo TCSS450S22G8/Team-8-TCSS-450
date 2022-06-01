@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.apachat.swipereveallayout.core.ViewBinder;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +23,7 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
 
 /**
  * Recycler View to show all contacts as a list.
- *
+ * <p>
  * Adapted from original code by Charles Bryan
  *
  * @author Charles Bryan
@@ -31,8 +33,10 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
  * @version 5/19/22
  */
 public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder> {
-    private List<Contact> mContact;
     private final ContactFragment mParent;
+    private final ViewBinder viewBinder = new ViewBinder();
+    private List<Contact> mContact;
+    private List<String> swipeIds;
 
     /**
      * Constructor for MessageRecyclerViewAdapter
@@ -40,8 +44,9 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
      * @param items list of message
      */
     public ContactRecyclerViewAdapter(List<Contact> items, ContactFragment parent) {
-        this.mContact= items;
+        this.mContact = items;
         mParent = parent;
+        swipeIds = new ArrayList<>();
     }
 
     @NonNull
@@ -55,7 +60,17 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     @Override
     public void onBindViewHolder(@NonNull ContactRecyclerViewAdapter.ContactViewHolder holder, int position) {
         holder.setContact(mContact.get(position));
+        String swipeId = mContact.get(position).getUserName();
+        viewBinder.bind(holder.mBinding.swipeReveal, swipeId);
+        swipeIds.add(swipeId);
+    }
 
+    public void openAll() {
+        swipeIds.forEach(swipeId -> viewBinder.openLayout(swipeId));
+    }
+
+    public void closeAll() {
+        swipeIds.forEach(swipeId -> viewBinder.closeLayout(swipeId));
     }
 
     @Override
@@ -116,7 +131,8 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                                     mContact.remove((getAdapterPosition()));
                                     notifyItemRemoved(getAdapterPosition());
                                     notifyItemRangeChanged(getAdapterPosition(), mContact.size());
-                                    Toast.makeText(mParent.getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();                                }
+                                    Toast.makeText(mParent.getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();
+                                }
                             })
                             .setNegativeButton("Cancel", null)
                             .show().setCanceledOnTouchOutside(true);

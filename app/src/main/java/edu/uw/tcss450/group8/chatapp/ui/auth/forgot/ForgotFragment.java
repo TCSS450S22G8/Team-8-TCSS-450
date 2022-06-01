@@ -124,7 +124,10 @@ public class ForgotFragment extends Fragment {
                 mPassWordValidator.apply(mBinding.editForgotPassword1.getText().toString()),
                 this::verifyAuthWithServer,
                 result -> {
-                    mBinding.editForgotPassword1.setError("Please enter a valid Password.");
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Please enter a valid password")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }

@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.connection;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -106,11 +108,18 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             mUnFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mParent.unFriend(email.getText().toString());
-                    mContact.remove((getAdapterPosition()));
-                    notifyItemRemoved(getAdapterPosition());
-                    notifyItemRangeChanged(getAdapterPosition(), mContact.size());
-                    Toast.makeText(mParent.getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(mParent.getContext());
+                    dialog.setTitle("Are you sure you want to remove this contact?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mParent.unFriend(email.getText().toString());
+                                    mContact.remove((getAdapterPosition()));
+                                    notifyItemRemoved(getAdapterPosition());
+                                    notifyItemRangeChanged(getAdapterPosition(), mContact.size());
+                                    Toast.makeText(mParent.getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show().setCanceledOnTouchOutside(true);
                 }
             });
 

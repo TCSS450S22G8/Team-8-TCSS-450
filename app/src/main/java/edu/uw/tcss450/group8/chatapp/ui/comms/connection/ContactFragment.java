@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.connection;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -148,9 +150,7 @@ public class ContactFragment extends Fragment {
      *
      * @param email String email of the friend
      */
-    public void unFriend(String email) {
-        mContact.unfriend(mUser.getJwt(), email);
-    }
+    public void unFriend(String email) { mContact.unfriend(mUser.getJwt(), email);}
 
     /**
      * open a private chatroom with the desired contact

@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.connection;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -101,11 +103,18 @@ public class ContactIncomingRecyclerViewAdapter extends RecyclerView.Adapter<Con
             mDeclineFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mParentRequest.deleteFriendRequest(email.getText().toString());
-                    mContactRequest.remove((getAdapterPosition()));
-                    notifyItemRemoved(getAdapterPosition());
-                    notifyItemRangeChanged(getAdapterPosition(), mContactRequest.size());
-                    Toast.makeText(mParentRequest.getActivity(), "Deleted friend request successful!", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(mParentRequest.getContext());
+                    dialog.setTitle("Are you sure you want to decline this request?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mParentRequest.deleteFriendRequest(email.getText().toString());
+                                    mContactRequest.remove((getAdapterPosition()));
+                                    notifyItemRemoved(getAdapterPosition());
+                                    notifyItemRangeChanged(getAdapterPosition(), mContactRequest.size());
+                                    Toast.makeText(mParentRequest.getActivity(), "Deleted friend request successful!", Toast.LENGTH_SHORT).show();                           }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show().setCanceledOnTouchOutside(true);
                 }
             });
         }

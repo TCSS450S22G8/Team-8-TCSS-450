@@ -2,8 +2,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/layout_root"
@@ -28,14 +28,13 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_contact_outgoing"
             android:layout_width="411dp"
-            android:layout_height="286dp"
+            android:layout_height="243dp"
+            android:layout_marginTop="68dp"
             app:layoutManager="LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/list_contact_incoming"
-            app:layout_constraintVertical_bias="0.479"
             tools:listitem="@layout/fragment_contact_outgoing_request_card" />
 
         <TextView
@@ -64,17 +63,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/list_contact_incoming" />
 
-        <ImageView
-            android:id="@+id/button_contacts_request_refresh"
-            android:layout_width="59dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="100dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.943"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/ic_refresh_black_24dp" />
-
         <Button
             android:id="@+id/button_contacts_contacts"
             android:layout_width="wrap_content"
@@ -94,6 +82,19 @@
             android:text="@string/text_add_contacts"
             app:layout_constraintBottom_toTopOf="@+id/text_contact_incoming"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_contacts_request_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="84dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@drawable/ic_refresh_black_24dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.954"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

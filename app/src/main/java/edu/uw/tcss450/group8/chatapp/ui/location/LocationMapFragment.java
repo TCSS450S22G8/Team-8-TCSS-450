@@ -84,7 +84,6 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
         mapFragment.getMapAsync((OnMapReadyCallback) this);
 
         //allows for searching locations
-        Log.e("TAG", "onViewCreated: 1");
         mBinding = FragmentLocationMapBinding.bind(requireView());
         mBinding.searchLocationMap.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

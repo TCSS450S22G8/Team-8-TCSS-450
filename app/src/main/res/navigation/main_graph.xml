@@ -103,6 +103,6 @@
     <fragment
         android:id="@+id/nav_contact_fragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactTabFragment"
-        android:label="fragment_contact_tab"
+        android:label="@string/title_connections"
         tools:layout="@layout/fragment_contact_tab" />
 </navigation>

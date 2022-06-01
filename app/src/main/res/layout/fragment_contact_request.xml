@@ -1,60 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/layout_root"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.comms.connection.ContactRequestFragment" >
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_root"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:context=".ui.comms.connection.ContactRequestFragment" >
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_contact_incoming"
-        android:layout_width="416dp"
-        android:layout_height="236dp"
-        app:layoutManager="LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.333"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.172"
-        tools:listitem="@layout/fragment_contact_incoming_request_card" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_contact_incoming"
+            android:layout_width="416dp"
+            android:layout_height="236dp"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.172"
+            tools:listitem="@layout/fragment_contact_incoming_request_card" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/list_contact_outgoing"
-        android:layout_width="419dp"
-        android:layout_height="318dp"
-        app:layoutManager="LinearLayoutManager"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_contact_incoming"
-        app:layout_constraintVertical_bias="0.725"
-        tools:listitem="@layout/fragment_contact_outgoing_request_card" />
 
-    <TextView
-        android:id="@+id/text_contact_incoming"
-        android:layout_width="281dp"
-        android:layout_height="41dp"
-        android:text="Incoming Contact  Requests"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/list_contact_incoming"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_contact_outgoing"
+            android:layout_width="408dp"
+            android:layout_height="316dp"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/list_contact_incoming"
+            app:layout_constraintVertical_bias="0.725"
+            tools:listitem="@layout/fragment_contact_outgoing_request_card" />
 
-    <TextView
-        android:id="@+id/text_contact_outgoing"
-        android:layout_width="268dp"
-        android:layout_height="48dp"
-        android:text="Outgoing Contact Requests"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/list_contact_outgoing"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_contact_incoming" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <TextView
+            android:id="@+id/text_contact_incoming"
+            android:layout_width="281dp"
+            android:layout_height="41dp"
+            android:text="@string/text_incoming_requests"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/list_contact_incoming"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/text_contact_outgoing"
+            android:layout_width="268dp"
+            android:layout_height="48dp"
+            android:text="@string/text_outgoing_requests"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/list_contact_outgoing"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/list_contact_incoming" />
+
+        <ImageView
+            android:id="@+id/button_contacts_request_refresh"
+            android:layout_width="59dp"
+            android:layout_height="44dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.952"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.974"
+            app:srcCompat="@drawable/ic_refresh_black_24dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

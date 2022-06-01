@@ -30,6 +30,9 @@ public class ContactRequestFragment extends Fragment {
     private ContactIncomingRecyclerViewAdapter mAdapterIncoming;
     private ContactOutgoingRecyclerViewAdapter mAdapterOutgoing;
 
+    public ContactRequestFragment() {
+
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,6 +83,10 @@ public class ContactRequestFragment extends Fragment {
                 mBinding.textContactOutgoing.setVisibility(View.GONE);
             }
         });
+        mBinding.buttonContactsRequestRefresh.setOnClickListener(button -> {
+            mContact.getOutgoingRequestList(mUser.getJwt());
+            mContact.getIncomingRequestList(mUser.getJwt());
+        });
 
         //refreshing chat list swipe
         //mBinding.swipeContactsRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -89,6 +96,11 @@ public class ContactRequestFragment extends Fragment {
             //    mContact.getOutgoingRequestList(mUser.getJwt());
             //}
        // });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     /**

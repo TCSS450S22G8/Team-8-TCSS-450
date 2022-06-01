@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,12 +36,16 @@ public class AddContactFragment extends Fragment {
     private FragmentContactAddContactBinding mBinding;
     private AddContactRecyclerViewAdapter mAdapter;
 
+    public AddContactFragment() {
+
+    }
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContact = new ViewModelProvider(getActivity()).get(ContactListViewModel.class);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
-
     }
 
     @Override
@@ -86,16 +91,23 @@ public class AddContactFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable editable) {
-                filter(editable.toString());
+                if (mAdapter != null) {
+                    filter(editable.toString());
+                }
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     /**
      * filters through list of non friends by regex
      * @param text
      */
-    private  void filter(String text) {
+    private void filter(String text) {
         ArrayList<Contact> contactList = new ArrayList<>();
         for (Contact contact: mContact.getNonContactList()) {
             if(contact.getUserName().toLowerCase().contains(text.toLowerCase()) ||
@@ -104,6 +116,7 @@ public class AddContactFragment extends Fragment {
             }
         }
         mAdapter.contactList(contactList);
+
     }
 
     /**

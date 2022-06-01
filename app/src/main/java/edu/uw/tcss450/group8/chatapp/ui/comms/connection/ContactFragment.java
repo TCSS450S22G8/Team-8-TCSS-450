@@ -10,6 +10,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,20 +31,22 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
  * @author Shilnara Dam
  * @version 5/31/22
  */
-public class ContactFragment extends Fragment{
+public class ContactFragment extends Fragment {
 
     private ContactListViewModel mContact;
     private UserInfoViewModel mUser;
     private FragmentContactBinding mBinding;
     private ContactRecyclerViewAdapter mAdapter;
 
+    public ContactFragment() {
+
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mContact = new ViewModelProvider(getActivity()).get(ContactListViewModel.class);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
-
     }
 
 
@@ -60,6 +63,7 @@ public class ContactFragment extends Fragment{
         mBinding = FragmentContactBinding.bind(getView());
 
         // get user contacts
+        mContact.getContacts(mUser.getJwt());
         mBinding.listRoot.setVisibility(View.GONE);
         mBinding.progressBar.setVisibility(View.VISIBLE);
         mContact.addContactsListObserver(getViewLifecycleOwner(), contacts -> {
@@ -96,9 +100,16 @@ public class ContactFragment extends Fragment{
 
             @Override
             public void afterTextChanged(Editable editable) {
-                filter(editable.toString());
+                if (mAdapter != null) {
+                    filter(editable.toString());
+                }
             }
         });
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 
     /**

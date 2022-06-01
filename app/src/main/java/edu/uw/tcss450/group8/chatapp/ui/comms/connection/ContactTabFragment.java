@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 
 import android.view.LayoutInflater;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
+import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 /**
  * top level fragment for contacts. contains a pageview of friends, adding friends, and viewing
@@ -37,6 +39,11 @@ public class ContactTabFragment extends Fragment {
      * Required empty constructor
      */
     public ContactTabFragment() {
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override
@@ -60,20 +67,29 @@ public class ContactTabFragment extends Fragment {
         mViewPager2 = getActivity().findViewById(R.id.contact_viewpage);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         mAdapter = new ContactTabsAdapter(fragmentManager, getActivity().getLifecycle(), contactFragments);
-        mViewPager2.setAdapter(mAdapter);
+        if (mViewPager2 != null ) {
+            mViewPager2.setAdapter(mAdapter);
+            new TabLayoutMediator(mTabLayout, mViewPager2, (tab, position) -> {
+                switch (position) {
+                    case 0:
+                        tab.setText("All friends");
+                        break;
+                    case 1:
+                        tab.setText("Add friends");
+                        break;
+                    case 2:
+                        tab.setText("view Requests");
+                        break;
+                }
+            }).attach();
+        }
 
-        new TabLayoutMediator(mTabLayout, mViewPager2, (tab, position) -> {
-            switch (position) {
-                case 0:
-                    tab.setText("All friends");
-                    break;
-                case 1:
-                    tab.setText("Add friends");
-                    break;
-                case 2:
-                    tab.setText("view Requests");
-                    break;
-            }
-        }).attach();
+
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
     }
 }

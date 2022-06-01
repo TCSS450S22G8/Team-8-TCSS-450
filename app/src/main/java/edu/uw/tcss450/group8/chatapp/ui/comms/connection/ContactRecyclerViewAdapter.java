@@ -1,5 +1,6 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.connection;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,6 +67,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
      * @param contactList ArrayList<Contact> the contact list
      */
     public void contactList(ArrayList<Contact> contactList) {
+        Log.e("error", "contactList: ");
         mContact = contactList;
         notifyDataSetChanged();
     }

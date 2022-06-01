@@ -10,7 +10,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,28 +18,27 @@ import android.widget.EditText;
 import java.util.ArrayList;
 
 import edu.uw.tcss450.group8.chatapp.R;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactBinding;
+import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactAddContactBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 /**
- * Create an instance of Contact List fragment.
- * Adapted from original code by Charles Bryan.
+ * fragment to request to add new users as friends.
  *
- * @author Charles Bryan
- * @author Rin Pham
- * @author Shilnara Dam
+ * @author shilnara dam
+ * @author rin pham
  * @version 5/31/22
  */
-public class ContactFragment extends Fragment {
+public class AddContactFragment extends Fragment {
 
     private ContactListViewModel mContact;
     private UserInfoViewModel mUser;
-    private FragmentContactBinding mBinding;
-    private ContactRecyclerViewAdapter mAdapter;
+    private FragmentContactAddContactBinding mBinding;
+    private AddContactRecyclerViewAdapter mAdapter;
 
-    public ContactFragment() {
+    public AddContactFragment() {
 
     }
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,28 +47,20 @@ public class ContactFragment extends Fragment {
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
     }
 
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contact, container, false);
-    }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mBinding = FragmentContactBinding.bind(getView());
+        mBinding = FragmentContactAddContactBinding.bind(getView());
 
-        // get user contacts
-        mContact.getContacts(mUser.getJwt());
+        // get non user contacts
         mBinding.listRoot.setVisibility(View.GONE);
         mBinding.progressBar.setVisibility(View.VISIBLE);
-        mContact.addContactsListObserver(getViewLifecycleOwner(), contacts -> {
+        mContact.getNonFriendList(mUser.getJwt());
+        mContact.addNonContactsListObserver(getViewLifecycleOwner(), contacts -> {
             mBinding.listRoot.setVisibility(View.VISIBLE);
             mBinding.progressBar.setVisibility(View.GONE);
             mBinding.swipeContactsRefresh.setRefreshing(false);
-            mAdapter = new ContactRecyclerViewAdapter(contacts, this);
+            mAdapter = new AddContactRecyclerViewAdapter(contacts, this);
 
             mBinding.listRoot.setAdapter(
                     mAdapter
@@ -81,7 +71,7 @@ public class ContactFragment extends Fragment {
         mBinding.swipeContactsRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mContact.getContacts(mUser.getJwt());
+                mContact.getNonFriendList(mUser.getJwt());
             }
         });
 
@@ -113,37 +103,33 @@ public class ContactFragment extends Fragment {
     }
 
     /**
-     * filter list of contacts for search
-     *
-     * @param text String the string to check
+     * filters through list of non friends by regex
+     * @param text
      */
     private void filter(String text) {
         ArrayList<Contact> contactList = new ArrayList<>();
-        for (Contact contact: mContact.getContactList()) {
+        for (Contact contact: mContact.getNonContactList()) {
             if(contact.getUserName().toLowerCase().contains(text.toLowerCase()) ||
                     contact.getEmail().toLowerCase().contains(text.toLowerCase())) {
                 contactList.add(contact);
             }
         }
         mAdapter.contactList(contactList);
+
     }
 
     /**
-     * unfriend a contact
-     *
-     * @param email String email of the friend
+     * calls view model to send request to add a user as a friend
+     * @param email String the user's email
      */
-    public void unFriend(String email) {
-        mContact.unfriend(mUser.getJwt(), email);
+    public void addFriend(String email) {
+        mContact.addFriend(mUser.getJwt(), email);
     }
 
-    /**
-     * open chatroom with the desired contact
-     *
-     * @param email String email of the friend
-     */
-    public void sendMessage(String email) {
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_contact_add_contact, container, false);
     }
 }

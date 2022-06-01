@@ -10,17 +10,16 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.auth0.android.jwt.JWT;
 
@@ -31,6 +30,7 @@ import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentLoginBinding;
 import edu.uw.tcss450.group8.chatapp.model.PushyTokenViewModel;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
@@ -151,7 +151,7 @@ public class LoginFragment extends Fragment {
                 this::validatePassword,
                 result -> {
                     // These don't actually do anything we get the response from the server
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
                     dialog.setTitle("Please enter a valid Email address.")
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);
@@ -201,7 +201,7 @@ public class LoginFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 //this error cannot be fixed by the user changing credentials...
-                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
                 dialog.setTitle("Error Authenticating on Push Token. Please contact support")
                         .setNegativeButton("Okay", null)
                         .show().setCanceledOnTouchOutside(true);
@@ -248,7 +248,7 @@ public class LoginFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
                     dialog.setTitle("Error Authenticating: " + response.getJSONObject("data").getString("message"))
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);

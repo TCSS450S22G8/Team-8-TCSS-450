@@ -20,6 +20,7 @@ import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 
 /**
  * Recycler View to show all contacts as a list.
@@ -123,7 +124,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             mUnFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(mParent.getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(mParent.getContext());
                     dialog.setTitle("Are you sure you want to remove this contact?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {

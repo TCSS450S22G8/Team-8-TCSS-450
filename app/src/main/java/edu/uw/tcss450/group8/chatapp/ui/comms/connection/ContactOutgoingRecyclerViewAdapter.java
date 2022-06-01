@@ -18,6 +18,7 @@ import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactOutgoingRequestCardBinding;
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 
 /**
  * Recycler View to show all outgoing requests.
@@ -101,7 +102,7 @@ public class ContactOutgoingRecyclerViewAdapter extends RecyclerView.Adapter<Con
             mDeclineFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(mParentRequest.getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(mParentRequest.getContext());
                     dialog.setTitle("Are you sure you want to remove this request?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {

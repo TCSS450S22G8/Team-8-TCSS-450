@@ -70,6 +70,7 @@ public class ForgotConfirmFragment extends Fragment {
 
         mModel.addEmailSuccessObserver(getViewLifecycleOwner(), success -> {
             if(success) {
+                mModel.resetSuccessResponse();
                 Navigation.findNavController(getView()).navigate(
                         ForgotConfirmFragmentDirections.actionForgotConfirmFragmentToForgotFragment(email));
 

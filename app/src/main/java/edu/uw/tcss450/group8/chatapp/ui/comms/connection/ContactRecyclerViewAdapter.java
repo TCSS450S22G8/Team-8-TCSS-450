@@ -156,6 +156,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         void setContact(final Contact contact) {
             mBinding.textContactUsername.setText(contact.getUserName());
             mBinding.textContactEmail.setText(contact.getEmail());
+            mBinding.textContactUsernameDelete.setText(contact.getUserName());
         }
     }
 }

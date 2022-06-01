@@ -4,23 +4,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/layout_root"
         tools:context=".ui.auth.login.LoginFragment">
 
         <Switch
             android:id="@+id/switch_signin"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_height="27dp"
+            android:layout_marginTop="4dp"
             android:checked="true"
             android:text="@string/switch_log_in"
+            android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.941"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/button_login_forgot"
-            tools:text="@string/switch_log_in" />
+            app:layout_constraintTop_toBottomOf="@+id/button_login_login"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
 
         <EditText
             android:id="@+id/edit_register_email"
@@ -40,18 +43,18 @@
 
         <Button
             android:id="@+id/button_login_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_width="374dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="35dp"
             android:text="@string/action_login"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.941"
+            app:layout_constraintHorizontal_bias="0.567"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_password" />
+            app:layout_constraintTop_toBottomOf="@+id/button_login_forgot" />
 
         <EditText
             android:id="@+id/edit_password"
-            android:layout_width="0dp"
+            android:layout_width="374dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:ems="10"
@@ -63,26 +66,37 @@
             app:layout_constraintStart_toStartOf="@id/edit_register_email"
             app:layout_constraintTop_toBottomOf="@+id/edit_register_email" />
 
-        <Button
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="12dp"
+            android:text="@string/hint_need_account"
+            android:textColor="@color/gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_login_login" />
+
+        <TextView
             android:id="@+id/button_login_register"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="4dp"
             android:text="@string/action_register"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.052"
+            android:textColor="@color/blue"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edit_password" />
+            app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-
-        <Button
+        <TextView
             android:id="@+id/button_login_forgot"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="76dp"
+            android:layout_marginTop="4dp"
             android:text="@string/action_forgot"
+            android:textColor="@color/blue"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.532"
+            app:layout_constraintHorizontal_bias="0.105"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/edit_password" />
 
@@ -117,11 +131,11 @@
             android:layout_width="66dp"
             android:layout_height="61dp"
             android:background="@android:color/transparent"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@+id/button_login_forgot"
             app:layout_constraintEnd_toStartOf="@+id/button_login_login"
             app:layout_constraintHorizontal_bias="0.534"
             app:layout_constraintStart_toEndOf="@+id/button_login_register"
-            app:layout_constraintTop_toBottomOf="@+id/edit_password"
-            android:visibility="gone"/>
+            app:layout_constraintTop_toBottomOf="@+id/edit_password" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

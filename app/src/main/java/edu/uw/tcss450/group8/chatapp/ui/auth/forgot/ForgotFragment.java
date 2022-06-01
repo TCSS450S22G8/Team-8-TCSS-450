@@ -23,6 +23,7 @@ import androidx.navigation.Navigation;
 
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotBinding;
 
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
@@ -106,7 +107,7 @@ public class ForgotFragment extends Fragment {
                 matchValidator.apply(mBinding.editForgotPassword1.getText().toString().trim()),
                 this::validatePassword,
                 result -> {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
                     dialog.setTitle("Both passwords must match!")
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);
@@ -125,7 +126,7 @@ public class ForgotFragment extends Fragment {
                 this::verifyAuthWithServer,
                 result -> {
                     mResetPassword.resetFailedResponse();
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
                     dialog.setTitle("Please enter a valid Password.")
                             .setNegativeButton("Okay", null)
                             .setMessage("Password Requirements:\n\n-Minimum length of 7\n-At least one of these characters @#$%&*!?\n-No spaces\n-Contain at least one number\n-At least one letter")

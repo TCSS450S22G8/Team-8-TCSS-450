@@ -35,6 +35,7 @@ import java.util.List;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentLocationMapBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 
 /**
  * Fragment to display map for user to view and add locations
@@ -152,7 +153,7 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
         marker = mMap.addMarker(new MarkerOptions()
                 .position(latLng)
                 .title("New Marker"));
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+        AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
         dialog.setTitle("Do you want to add this location?")
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {

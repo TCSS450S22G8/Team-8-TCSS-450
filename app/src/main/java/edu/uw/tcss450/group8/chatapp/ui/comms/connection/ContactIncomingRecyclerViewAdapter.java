@@ -2,7 +2,6 @@ package edu.uw.tcss450.group8.chatapp.ui.comms.connection;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +16,7 @@ import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactIncomingRequestCardBinding;
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 
 /**
  * recycler for incoming requests
@@ -27,14 +27,14 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactIncomingRequestC
  * @version 5/31/22
  */
 public class ContactIncomingRecyclerViewAdapter extends RecyclerView.Adapter<ContactIncomingRecyclerViewAdapter.IncomingContactViewHolder> {
-    private List<Contact> mContactRequest;
     private final ContactRequestFragment mParentRequest;
+    private List<Contact> mContactRequest;
 
 
     /**
      * Constructor for ContactIncomingRecyclerViewAdapter
      *
-     * @param items List<Contact> list of contacts
+     * @param items  List<Contact> list of contacts
      * @param parent ContactRequestFragment the parent class
      */
     public ContactIncomingRecyclerViewAdapter(List<Contact> items, ContactRequestFragment parent) {
@@ -103,7 +103,7 @@ public class ContactIncomingRecyclerViewAdapter extends RecyclerView.Adapter<Con
             mDeclineFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(mParentRequest.getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(mParentRequest.getContext());
                     dialog.setTitle("Are you sure you want to decline this request?")
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
@@ -111,7 +111,8 @@ public class ContactIncomingRecyclerViewAdapter extends RecyclerView.Adapter<Con
                                     mContactRequest.remove((getAdapterPosition()));
                                     notifyItemRemoved(getAdapterPosition());
                                     notifyItemRangeChanged(getAdapterPosition(), mContactRequest.size());
-                                    Toast.makeText(mParentRequest.getActivity(), "Deleted friend request successful!", Toast.LENGTH_SHORT).show();                           }
+                                    Toast.makeText(mParentRequest.getActivity(), "Deleted friend request successful!", Toast.LENGTH_SHORT).show();
+                                }
                             })
                             .setNegativeButton("Cancel", null)
                             .show().setCanceledOnTouchOutside(true);

@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentRegisterBinding;
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.*;
@@ -110,7 +111,7 @@ public class RegisterFragment extends Fragment {
                 mNameValidator.apply(mBinding.editRegisterNickname.getText().toString().trim()),
                 this::validateFirst,
                 result -> {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
                     dialog.setTitle("Please enter a username.")
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);
@@ -127,7 +128,7 @@ public class RegisterFragment extends Fragment {
                 mNameValidator.apply(mBinding.editRegisterFirst.getText().toString().trim()),
                 this::validateLast,
                 result -> {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
                     dialog.setTitle("Please enter a first name.")
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);
@@ -144,7 +145,7 @@ public class RegisterFragment extends Fragment {
                 mNameValidator.apply(mBinding.editRegisterLast.getText().toString().trim()),
                 this::validateEmail,
                 result -> {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
                     dialog.setTitle("Please enter a last name.")
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);
@@ -161,7 +162,7 @@ public class RegisterFragment extends Fragment {
                 mEmailValidator.apply(mBinding.editRegisterEmail.getText().toString().trim()),
                 this::validatePasswordsMatch,
                 result -> {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
                     dialog.setTitle("Please enter a valid email address.")
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);
@@ -182,7 +183,7 @@ public class RegisterFragment extends Fragment {
                 matchValidator.apply(mBinding.editRegisterPassword1.getText().toString().trim()),
                 this::validatePassword,
                 result -> {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
                     dialog.setTitle("Both passwords must match.")
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);
@@ -199,7 +200,7 @@ public class RegisterFragment extends Fragment {
                 mPassWordValidator.apply(mBinding.editRegisterPassword1.getText().toString()),
                 this::verifyAuthWithServer,
                 result -> {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
                     dialog.setTitle("Please enter a valid Password.")
                             .setNegativeButton("Okay", null)
                             .setMessage("Password Requirements:\n\n-Minimum length of 7\n-At least one of these characters @#$%&*!?\n-No spaces\n-Contain at least one number\n-At least one letter")
@@ -252,7 +253,7 @@ public class RegisterFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
                     dialog.setTitle("Error Authenticating: " + response.getJSONObject("data").getString("message"))
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);

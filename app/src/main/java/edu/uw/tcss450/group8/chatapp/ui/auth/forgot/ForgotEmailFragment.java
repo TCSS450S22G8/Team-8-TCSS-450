@@ -18,6 +18,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotEmailBinding;
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
@@ -74,7 +75,7 @@ public class ForgotEmailFragment extends Fragment {
         mForgotModel.addFailedResponseObserver(getViewLifecycleOwner(), email -> {
             mForgotModel.resetFailedResponse();
             mBinding.layoutWait.setVisibility(View.GONE);
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
             dialog.setTitle("This email does not have an account registered.")
                     .setNegativeButton("Okay", null)
                     .show().setCanceledOnTouchOutside(true);
@@ -106,7 +107,7 @@ public class ForgotEmailFragment extends Fragment {
                 mEmailValidator.apply(mBinding.editForgotEmail.getText().toString().trim()),
                 this::verifyAuthWithServer,
                 result -> {
-                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
                     dialog.setTitle("Please enter a valid Email address.")
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);

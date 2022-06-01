@@ -140,9 +140,14 @@ public class HomeFragment extends Fragment {
      *
      * @param email String email of the friend
      */
-    public void homeSendMessage(String email) {
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
+    public void homeSendMessage(String email, String chatName) {
+        mContactListModel.getChatId(mUser.getJwt(), email);
+        mContactListModel.addChatIdObserver(getViewLifecycleOwner(), chatId -> {
+            mContactListModel.resetChatId();
+            Navigation.findNavController(getView()).
+                    navigate(HomeFragmentDirections.
+                            actionNavHomeFragmentToMessageListFragment(chatName, chatId));
+        });
     }
 
     /**
@@ -155,9 +160,9 @@ public class HomeFragment extends Fragment {
     }
 
     /**
-     * Enters a chat room with a contact.
+     * Enter a chat room.
      *
-     * @param chatId int
+     * @param chatId int the chat id
      */
     public void homeStartChat(int chatId, String chatName) {
         Navigation.findNavController(getView()).

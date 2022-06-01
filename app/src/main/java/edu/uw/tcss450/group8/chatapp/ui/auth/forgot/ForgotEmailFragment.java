@@ -96,6 +96,7 @@ public class ForgotEmailFragment extends Fragment {
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
+
                 });
     }
 

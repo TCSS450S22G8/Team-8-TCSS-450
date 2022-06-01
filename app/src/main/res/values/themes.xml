@@ -15,7 +15,7 @@
         <!-- Customize your theme here. -->
         <item name="actionBarTheme">@style/AppBaseTheme.Toolbar.black</item>
         <item name="android:textColor">@color/black</item>
-        <item name="messageCard">@color/orange</item>
+        <item name="messageCard">@color/orange_light</item>
     </style>
 
     <style name="Theme.Red" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -33,7 +33,7 @@
         <!-- Customize your theme here. -->
         <item name="actionBarTheme">@style/AppBaseTheme.Toolbar.white</item>
         <item name="android:textColor">@color/black</item>
-        <item name="messageCard">@color/red</item>
+        <item name="messageCard">@color/red_light</item>
     </style>
 
     <style name="Theme.Blue" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
@@ -68,7 +68,7 @@
         <item name="android:windowLightStatusBar">true</item>
         <!-- Customize your theme here. -->
         <item name="actionBarTheme">@style/AppBaseTheme.Toolbar.black</item>
-        <item name="messageCard">@color/green</item>
+        <item name="messageCard">@color/green_light</item>
     </style>
 
     <style name="Theme.UW" parent="Theme.MaterialComponents.DayNight.DarkActionBar">

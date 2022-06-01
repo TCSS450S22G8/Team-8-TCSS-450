@@ -151,7 +151,6 @@ public class LoginFragment extends Fragment {
                 this::validatePassword,
                 result -> {
                     // These don't actually do anything we get the response from the server
-                    mBinding.editRegisterEmail.setError("Please enter a valid Email address.");
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                     dialog.setTitle("Please enter a valid Email address.")
                             .setNegativeButton("Okay", null)

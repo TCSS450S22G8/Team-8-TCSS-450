@@ -4,6 +4,7 @@ import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkExclude
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdLength;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdSpecialChar;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -90,7 +91,10 @@ public class ForgotEmailFragment extends Fragment {
                 mEmailValidator.apply(mBinding.editForgotEmail.getText().toString().trim()),
                 this::verifyAuthWithServer,
                 result -> {
-                    mBinding.editForgotEmail.setError("Please enter a valid Email address.");
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Please enter a valid Email address.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }

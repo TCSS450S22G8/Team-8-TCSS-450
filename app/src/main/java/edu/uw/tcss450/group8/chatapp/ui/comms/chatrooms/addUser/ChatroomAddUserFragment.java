@@ -1,7 +1,6 @@
-package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add;
+package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,10 +19,11 @@ import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddBinding;
+import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddUserBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.Chatroom;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomRecyclerViewAdapter;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add.ChatroomAddFragmentDirections;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add.ChatroomAddListViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add.ChatroomAddRecyclerViewAdapter;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
 
 /**
@@ -36,23 +36,22 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
  * @author Levi McCoy
  * @version 5/30/22
  */
-public class ChatroomAddFragment extends Fragment{
+/*
+public class ChatroomAddUserFragment extends Fragment{
 
-    private ChatroomAddListViewModel mAdd;
+    private ChatroomAddUserListViewModel mAdd;
     private UserInfoViewModel mUser;
-    private FragmentChatroomAddBinding mBinding;
+    private FragmentChatroomAddUserBinding mBinding;
     private ContactListViewModel mContact;
-    private ChatroomViewModel mForChats;
     List<String> namesToAdd = new ArrayList<String>();
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdd = new ViewModelProvider(getActivity()).get(ChatroomAddListViewModel.class);
+        mAdd = new ViewModelProvider(getActivity()).get(ChatroomAddUserListViewModel.class);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
         mContact = new ViewModelProvider(getActivity()).get(ContactListViewModel.class);
-        mForChats = new ViewModelProvider(getActivity()).get(ChatroomViewModel.class);
     }
 
     @Override
@@ -65,7 +64,8 @@ public class ChatroomAddFragment extends Fragment{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mBinding = FragmentChatroomAddBinding.bind(getView());
+        mBinding = FragmentChatroomAddUserBinding.bind(getView());
+
 
         mBinding.buttonAddChat.setOnClickListener(this::attemptAdd);
 
@@ -99,11 +99,9 @@ public class ChatroomAddFragment extends Fragment{
     }
 
 
-    /**
-     * attempt to start adding process
-     *
-     * @param view curent view
-     */
+
+
+
     public void attemptAdd(View view) {
         mBinding.progressBar.setVisibility(View.VISIBLE);
         Log.e("JWT", mUser.getJwt());
@@ -118,7 +116,7 @@ public class ChatroomAddFragment extends Fragment{
             return;
         }
         else {
-            mAdd.add1(mUser.getJwt(), mBinding.editChatroomAddName.getText().toString().trim(), namesToAdd, mUser.getEmail(), mForChats.getChatRooms(), mForChats.getChatRoomsList());
+            mAdd.add1(mUser.getJwt(), mBinding.editChatroomAddName.getText().toString().trim(), namesToAdd);
             mBinding.progressBar.setVisibility(View.GONE);
             Navigation.findNavController(getView()).navigate(
                     ChatroomAddFragmentDirections.actionChatroomAddFragmentToNavChatroomFragment());
@@ -126,3 +124,6 @@ public class ChatroomAddFragment extends Fragment{
     }
 
 }
+
+
+     */

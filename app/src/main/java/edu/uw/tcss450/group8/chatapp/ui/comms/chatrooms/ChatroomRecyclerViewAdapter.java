@@ -5,19 +5,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.badge.BadgeUtils;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomCardBinding;
+import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomListBinding;
+import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
 import edu.uw.tcss450.group8.chatapp.model.NewMessageCountViewModel;
+import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
 
@@ -32,13 +43,17 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
 public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRecyclerViewAdapter.ChatroomViewHolder> {
 
     //Store all of the blogs to present
-    private final List<Chatroom> mChatroom;
+    private List<Chatroom> mChatroom;
 
     private final ChatroomListFragment mParent;
 
     private MessageListViewModel mMessageModel;
 
     private NewMessageCountViewModel mNewMessageModel;
+
+    private ChatroomViewModel mModel;
+
+    FragmentChatroomListBinding mBinding;
 
     /**
      * Constructor for MessageRecyclerViewAdapter
@@ -50,6 +65,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         this.mParent = parent;
         this.mMessageModel = new ViewModelProvider(mParent.getActivity()).get(MessageListViewModel.class);
         this.mNewMessageModel = new ViewModelProvider(mParent.getActivity()).get(NewMessageCountViewModel.class);
+        this.mModel = new ViewModelProvider(mParent.getActivity()).get(ChatroomViewModel.class);
     }
 
     @NonNull
@@ -70,6 +86,10 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         return this.mChatroom.size();
     }
 
+    public List<Chatroom> getChatrooms() {
+        return this.mChatroom;
+    }
+
     /**
      * Objects from this class represent an Individual row View from the List * of rows in the
      * Message Recycler View.
@@ -77,10 +97,11 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
     public class ChatroomViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public FragmentChatroomCardBinding binding;
-        private Chatroom mChatroom;
+        private Chatroom mChatroomSingle;
         private Button openChat;
         private TextView chatId;
         private TextView chatName;
+        private UserInfoViewModel mUser;
 
         /**
          * Constructor for View Holder
@@ -91,7 +112,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             super(view);
             mView = view;
             binding = FragmentChatroomCardBinding.bind(view);
-
+            mUser = new ViewModelProvider(mParent.getActivity()).get(UserInfoViewModel.class);
             chatId = mView.findViewById(R.id.text_chatid);
             chatId.setVisibility(View.INVISIBLE);
             chatName = mView.findViewById(R.id.text_title);
@@ -101,8 +122,28 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
                     mParent.startChat(Integer.parseInt(chatId.getText().toString()), chatName.getText().toString());
                     NewMessageCountViewModel mNewMessageModel = new ViewModelProvider(mParent.getActivity()).get(NewMessageCountViewModel.class);
                     mNewMessageModel.clear(Integer.parseInt(chatId.getText().toString()));
+
                 }
             });
+            binding.buttonChatroomRemoveself.setOnClickListener(this::attemptRemoveSelf);
+        }
+
+        private void attemptRemoveSelf(View view) {
+            TextView chatId;
+            String jwt = mUser.getJwt();
+            String email = mUser.getEmail();
+            chatId = mView.findViewById(R.id.text_chatid);
+            int chatIdNum = Integer.parseInt(chatId.getText().toString());
+            //int chatId = Integer.parseInt(mView.findViewById(R.id.text_chatid));
+            mModel.attemptRemoveSelf1(jwt,chatIdNum,email);
+            //mBinding = FragmentChatroomListBinding.bind(mParent.getView());
+            binding.getRoot().setVisibility(View.GONE);
+            //mParent.refreshAdapter();
+            mChatroom.remove((getAdapterPosition()));
+            notifyItemRemoved(getAdapterPosition());
+            notifyItemRangeChanged(getAdapterPosition(), mChatroom.size());
+            Toast.makeText(mParent.getActivity(), "Chat Deleted!", Toast.LENGTH_SHORT).show();
+
         }
 
         /**
@@ -111,7 +152,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
          * @param chatroom Chatroom
          */
         void setChatroom(final Chatroom chatroom) {
-            mChatroom = chatroom;
+            mChatroomSingle = chatroom;
             binding.textTitle.setText(chatroom.getChatRoomName());
             binding.textChatid.setText(chatroom.getChatRoomId());
             int chatId = Integer.parseInt(chatroom.getChatRoomId());

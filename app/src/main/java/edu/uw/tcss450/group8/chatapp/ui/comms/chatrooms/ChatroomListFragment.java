@@ -40,6 +40,8 @@ public class ChatroomListFragment extends Fragment {
 
     private FragmentChatroomListBinding mBinding;
 
+    ChatroomRecyclerViewAdapter myAdapter;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +71,7 @@ public class ChatroomListFragment extends Fragment {
                     mMessage.getFirstMessages(chatId, mUser.getJwt());
                     mMessage.addMessageObserver(chatId, getViewLifecycleOwner(), messages -> {
                         mBinding.listRoot.setAdapter(
-                                new ChatroomRecyclerViewAdapter(chatList, this)
+                                myAdapter = new ChatroomRecyclerViewAdapter(chatList, this)
                         );
                     });
                 });
@@ -89,6 +91,8 @@ public class ChatroomListFragment extends Fragment {
                 Navigation.findNavController(getView()).navigate(
                         ChatroomListFragmentDirections.actionNavChatroomFragmentToChatroomAddFragment()
                 ));
+
+
     }
 
     /**
@@ -100,6 +104,41 @@ public class ChatroomListFragment extends Fragment {
         Navigation.findNavController(getView()).
                 navigate(ChatroomListFragmentDirections.
                         actionNavChatroomFragmentToMessageListFragment(chatName, chatId));
+
+    }
+
+    /**
+     * Enters a chat room with a contact.
+     *
+     *
+     */
+    public void refreshAdapter() {
+        /*
+        mBinding = FragmentChatroomListBinding.bind(getView());
+
+        ChatroomRecyclerViewAdapter myAdapter;
+        mModel.addChatRoomListObserver(getViewLifecycleOwner(), chatList -> {
+            if (!chatList.isEmpty()) {
+                chatList.forEach(chatroom -> {
+                    int chatId = Integer.parseInt(chatroom.getChatRoomId());
+                    mMessage.getFirstMessages(chatId, mUser.getJwt());
+                    mMessage.addMessageObserver(chatId, getViewLifecycleOwner(), messages -> {
+                        mBinding.listRoot.setAdapter(
+                               myAdapter = new ChatroomRecyclerViewAdapter(chatList, this)
+                        );
+                    });
+                });
+                mBinding.swipeContactsRefresh.setRefreshing(false);
+            }
+        });
+
+         */
+
+        mBinding.swipeContactsRefresh.setRefreshing(true);
+        mBinding.listRoot.setAdapter(myAdapter);
+        myAdapter.notifyDataSetChanged();
+        mBinding.swipeContactsRefresh.refreshDrawableState();
+        mBinding.swipeContactsRefresh.setRefreshing(false);
 
     }
 

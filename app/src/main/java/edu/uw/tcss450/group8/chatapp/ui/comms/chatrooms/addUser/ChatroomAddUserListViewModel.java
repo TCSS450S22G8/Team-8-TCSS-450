@@ -1,4 +1,4 @@
-package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add;
+package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser;
 
 import android.app.Application;
 import android.util.Log;
@@ -26,7 +26,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.Chatroom;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
 
 
@@ -41,22 +40,17 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
  * @author Levi McCoy
  * @version 5/30/22
  */
-public class ChatroomAddListViewModel extends AndroidViewModel {
+public class ChatroomAddUserListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
     private MutableLiveData<Integer> mChatid;
     private MutableLiveData<String> mjwt;
     private MutableLiveData<List<String>> mNames;
-    private String mName;
-    private String mEmail;
-    private MutableLiveData<List<Chatroom>> mChatroomsList;
-    private ArrayList<Chatroom> mChatrooms;
-
 
     /**
      * Constructor for Contact List ViewModel
      * @param application app
      */
-    public ChatroomAddListViewModel(@NonNull Application application) {
+    public ChatroomAddUserListViewModel(@NonNull Application application) {
         super(application);
         mContact = new MutableLiveData<>();
         mChatid = new MutableLiveData<>();
@@ -105,14 +99,10 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
      * @param name String of chatroom name wanted
      * @param namesToAdd list of string with emails of who to add
      */
-    public void add1(String jwt, String name, List<String> namesToAdd, String email, MutableLiveData<List<Chatroom>> chatrooms, ArrayList<Chatroom> chatroomlist) {
+    public void add1(String jwt, String name, List<String> namesToAdd) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats";
         mjwt.setValue(jwt);
         mNames.setValue(namesToAdd);
-        mName = name;
-        mEmail = email;
-        mChatroomsList = chatrooms;
-        mChatrooms = chatroomlist;
         JSONObject body = new JSONObject();
         try {
             body.put("name", name);
@@ -273,9 +263,7 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
      * @param response JSONObject
      */
     private void handleAdd2Success(final JSONObject response) {
-        mChatrooms.add(new Chatroom(mChatid.getValue().toString(),mName,mEmail));
-        Log.e("Are they here", mChatrooms.toString());
-        mChatroomsList.setValue(mChatrooms);
+
         add3(mNames.getValue());
     }
 
@@ -285,7 +273,6 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
      * @param response JSONObject
      */
     private void handleAdd3Success(final JSONObject response) {
-        //ArrayList<Chatroom> listChatRooms = mChatrooms;
 
     }
 

@@ -15,9 +15,14 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
+import com.apachat.swipereveallayout.core.ViewBinder;
 
 import java.util.ArrayList;
 
@@ -41,6 +46,8 @@ public class ContactFragment extends Fragment {
     private UserInfoViewModel mUser;
     private FragmentContactBinding mBinding;
     private ContactRecyclerViewAdapter mAdapter;
+    private final ViewBinder viewBinder = new ViewBinder();
+    private boolean openFlag = false;
 
     public ContactFragment() {
 
@@ -51,8 +58,28 @@ public class ContactFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mContact = new ViewModelProvider(getActivity()).get(ContactListViewModel.class);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
+        setHasOptionsMenu(true);
     }
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.botton_open_swipe_layout, menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.open_swipe) {
+            if (openFlag == false) {
+                openFlag = true;
+                mAdapter.openAll();
+            } else {
+                openFlag = false;
+                mAdapter.closeAll();
+            }
+            return true;
+        }
 
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

@@ -35,6 +35,8 @@ public class ForgotViewModel extends AndroidViewModel {
 
     private MutableLiveData<JSONObject> mResponse;
 
+    private MutableLiveData<Boolean> mFailedResponse;
+
     private MutableLiveData<Boolean> mSuccessfulResponse;
 
     /**
@@ -47,7 +49,7 @@ public class ForgotViewModel extends AndroidViewModel {
         mResponse = new MutableLiveData<>();
         mResponse.setValue(new JSONObject());
         mSuccessfulResponse = new MutableLiveData<>();
-        mSuccessfulResponse.setValue(false);
+        mFailedResponse = new MutableLiveData<>();
     }
 
     /**
@@ -59,6 +61,31 @@ public class ForgotViewModel extends AndroidViewModel {
     public void addEmailSuccessObserver(@NonNull LifecycleOwner owner,
                                     @NonNull Observer<? super Boolean> observer) {
         mSuccessfulResponse.observe(owner, observer);
+    }
+
+    /**
+     * Adds response observer to the forgot email fragment.
+     *
+     * @param owner    current lifecycle
+     * @param observer observes live data
+     */
+    public void addFailedResponseObserver(@NonNull LifecycleOwner owner,
+                                        @NonNull Observer<? super Boolean> observer) {
+        mFailedResponse.observe(owner, observer);
+    }
+
+    /**
+     * Resets failed response
+     */
+    public void resetFailedResponse() {
+        mFailedResponse = new MutableLiveData<>();
+    }
+
+    /**
+     * Resets success response
+     */
+    public void resetSuccessResponse() {
+        mSuccessfulResponse = new MutableLiveData<>();
     }
 
     /**
@@ -77,6 +104,7 @@ public class ForgotViewModel extends AndroidViewModel {
     *
     */
     private void handleError(final VolleyError error) {
+        mFailedResponse.setValue(true);
         if (Objects.isNull(error.networkResponse)) {
             try {
                 mResponse.setValue(new JSONObject("{" +
@@ -108,6 +136,15 @@ public class ForgotViewModel extends AndroidViewModel {
     }
 
     /**
+     * Handles successful email sent for forgot password
+     *
+     * @param success
+     */
+    private void successfulSendForgotPasswordEmail(JSONObject success) {
+        mSuccessfulResponse.setValue(true);
+    }
+
+    /**
      * Sends JSON Request to the server for the forgot password verification process.
      *
      * @param userEmail    users email
@@ -119,7 +156,7 @@ public class ForgotViewModel extends AndroidViewModel {
                 Request.Method.POST,
                 url,
                 null,
-                mResponse::setValue,
+                this::successfulSendForgotPasswordEmail,
                 this::handleError);
 
         request.setRetryPolicy(new DefaultRetryPolicy(

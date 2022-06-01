@@ -6,6 +6,7 @@ import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkExclude
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdLength;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdSpecialChar;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -149,7 +150,12 @@ public class LoginFragment extends Fragment {
                 mEmailValidator.apply(mBinding.editRegisterEmail.getText().toString().trim()),
                 this::validatePassword,
                 result -> {
+                    // These don't actually do anything we get the response from the server
                     mBinding.editRegisterEmail.setError("Please enter a valid Email address.");
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Please enter a valid Email address.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.progressBar.setVisibility(View.GONE);
                 });
     }
@@ -163,7 +169,12 @@ public class LoginFragment extends Fragment {
                 mPassWordValidator.apply(mBinding.editPassword.getText().toString()),
                 this::verifyAuthWithServer,
                 result -> {
-                    mBinding.editPassword.setError("Please enter a valid Password.");
+                    // These don't actually do anything, the  response from the server takes over
+//                    mBinding.editPassword.setError("Please enter a valid Password.");
+//                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+//                    dialog.setTitle("Please enter a valid Password.")
+//                            .setNegativeButton("Okay", null)
+//                            .show().setCanceledOnTouchOutside(true);
                     mBinding.progressBar.setVisibility(View.GONE);
                 });
 
@@ -197,8 +208,13 @@ public class LoginFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 //this error cannot be fixed by the user changing credentials...
-                mBinding.editRegisterEmail.setError(
-                        "Error Authenticating on Push Token. Please contact support");
+//                mBinding.editRegisterEmail.setError(
+//                        "Error Authenticating on Push Token. Please contact support");
+                AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                dialog.setTitle("Error Authenticating on Push Token. Please contact support")
+                        .setNegativeButton("Okay", null)
+                        .show().setCanceledOnTouchOutside(true);
+
             } else {
                 navigateToSuccess(
                         mBinding.editRegisterEmail.getText().toString(),
@@ -241,9 +257,10 @@ public class LoginFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    mBinding.editRegisterEmail.setError(
-                            "Error Authenticating: " +
-                                    response.getJSONObject("data").getString("message"));
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Error Authenticating: " + response.getJSONObject("data").getString("message"))
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.progressBar.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());

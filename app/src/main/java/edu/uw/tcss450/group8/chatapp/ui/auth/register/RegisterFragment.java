@@ -1,5 +1,6 @@
 package edu.uw.tcss450.group8.chatapp.ui.auth.register;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -109,7 +110,10 @@ public class RegisterFragment extends Fragment {
                 mNameValidator.apply(mBinding.editRegisterNickname.getText().toString().trim()),
                 this::validateFirst,
                 result -> {
-                    mBinding.editRegisterNickname.setError("Please enter a Nickname.");
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Please enter a username.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -123,7 +127,10 @@ public class RegisterFragment extends Fragment {
                 mNameValidator.apply(mBinding.editRegisterFirst.getText().toString().trim()),
                 this::validateLast,
                 result -> {
-                    mBinding.editRegisterFirst.setError("Please enter a first name.");
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Please enter a first name.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -137,7 +144,10 @@ public class RegisterFragment extends Fragment {
                 mNameValidator.apply(mBinding.editRegisterLast.getText().toString().trim()),
                 this::validateEmail,
                 result -> {
-                    mBinding.editRegisterLast.setError("Please enter a last name.");
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Please enter a last name.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -151,7 +161,10 @@ public class RegisterFragment extends Fragment {
                 mEmailValidator.apply(mBinding.editRegisterEmail.getText().toString().trim()),
                 this::validatePasswordsMatch,
                 result -> {
-                    mBinding.editRegisterEmail.setError("Please enter a valid Email address.");
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Please enter a valid Email address.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -169,7 +182,10 @@ public class RegisterFragment extends Fragment {
                 matchValidator.apply(mBinding.editRegisterPassword1.getText().toString().trim()),
                 this::validatePassword,
                 result -> {
-                    mBinding.editRegisterPassword1.setError("Passwords must match.");
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Both passwords must match.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -183,7 +199,10 @@ public class RegisterFragment extends Fragment {
                 mPassWordValidator.apply(mBinding.editRegisterPassword1.getText().toString()),
                 this::verifyAuthWithServer,
                 result -> {
-                    mBinding.editRegisterPassword1.setError("Please enter a valid Password.");
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Please enter a valid Password.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -232,9 +251,10 @@ public class RegisterFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    mBinding.editRegisterEmail.setError(
-                            "Error Authenticating: " +
-                                    response.getJSONObject("data").getString("message"));
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Error Authenticating: " + response.getJSONObject("data").getString("message"))
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());

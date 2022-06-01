@@ -8,6 +8,7 @@ import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdLowe
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdSpecialChar;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdUpperCase;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -105,7 +106,11 @@ public class ForgotFragment extends Fragment {
                 matchValidator.apply(mBinding.editForgotPassword1.getText().toString().trim()),
                 this::validatePassword,
                 result -> {
-                    mBinding.editForgotPassword2.setError("Passwords must match.");
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+                    dialog.setTitle("Both passwords must match!")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
+//                    mBinding.editForgotPassword2.setError("Passwords must match.");
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }

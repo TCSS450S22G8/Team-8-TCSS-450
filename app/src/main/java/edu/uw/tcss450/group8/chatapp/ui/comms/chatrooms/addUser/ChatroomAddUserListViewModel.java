@@ -63,7 +63,7 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
      * @param owner owner of lifecycle
      * @param observer contact list
      */
-    public void addChatroomAddListObserver(@NonNull LifecycleOwner owner,
+    public void addChatroomAddUserListObserver(@NonNull LifecycleOwner owner,
                                         @NonNull Observer<? super List<Contact>> observer) {
         mContact.observe(owner, observer);
     }
@@ -96,35 +96,45 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
     /**
      * Endpoint call to do first step of adding chat (create room)
      *  @param jwt String of jwt
-     * @param name String of chatroom name wanted
+     * @param
      * @param namesToAdd list of string with emails of who to add
      */
-    public void add1(String jwt, String name, List<String> namesToAdd) {
-        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats";
-        mjwt.setValue(jwt);
-        mNames.setValue(namesToAdd);
-        JSONObject body = new JSONObject();
-        try {
-            body.put("name", name);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Request<JSONObject> request = new JsonObjectRequest(
-                Request.Method.POST,
-                url,
-                body,
-                this::handleAdd1Success,
-                this::handleAdd1Error) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                // add headers <key,value>
-                headers.put("Authorization", jwt);
-                return headers;
+    public void add1(String jwt, List<String> namesToAdd, int chatId) {
+        //String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats";
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/addOther/"+mChatid.getValue();
+        for(int j = 0; j < namesToAdd.size();j++) {
+            mjwt.setValue(jwt);
+            mNames.setValue(namesToAdd);
+            mChatid.setValue(chatId);
+            JSONObject body = new JSONObject();
+            try {
+                body.put("chatId", mChatid.getValue());
+                body.put("email", namesToAdd.get(j));
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
-        };
-        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
-                .addToRequestQueue(request);
+            //try {
+            //body.put("name", name);
+            //} catch (JSONException e) {
+            //e.printStackTrace();
+            // }
+            Request<JSONObject> request = new JsonObjectRequest(
+                    Request.Method.PUT,
+                    url,
+                    body,
+                    this::handleAdd1Success,
+                    this::handleAdd1Error) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> headers = new HashMap<>();
+                    // add headers <key,value>
+                    headers.put("Authorization", jwt);
+                    return headers;
+                }
+            };
+            RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                    .addToRequestQueue(request);
+        }
     }
 
     /**
@@ -132,7 +142,7 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
      *
      * @param chatId the chatId you want to add yourself and others to
      */
-    public void add2(int chatId) {
+    /*public void add2(int chatId) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/addSelf/"+chatId;
         JSONObject body = new JSONObject();
         try {
@@ -156,14 +166,14 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
         };
         RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
                 .addToRequestQueue(request);
-    }
+    }*/
 
     /**
      * Endpoint call to do third step of adding chat (add other users)
      *
      * @param namesToAdd list of string with emails of who to add
      */
-    public void add3(List<String> namesToAdd) {
+    /*public void add3(List<String> namesToAdd) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/addOther/"+mChatid.getValue();
         for(int j = 0; j < namesToAdd.size();j++) {
             JSONObject body = new JSONObject();
@@ -190,7 +200,7 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
             RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
                     .addToRequestQueue(request);
         }
-    }
+    }*/
 
 
 
@@ -215,7 +225,7 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
      *
      * @param volleyError VolleyError
      */
-    private void handleAdd2Error(VolleyError volleyError) {
+    /*private void handleAdd2Error(VolleyError volleyError) {
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
         }
@@ -224,14 +234,14 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
             Log.e("CLIENT ERROR",
                     volleyError.networkResponse.statusCode + " " + data);
         }
-    }
+    }*/
 
     /**
      * Handles errors for third add endpoint calls
      *
      * @param volleyError VolleyError
      */
-    private void handleAdd3Error(VolleyError volleyError) {
+    /*private void handleAdd3Error(VolleyError volleyError) {
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
         }
@@ -240,7 +250,7 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
             Log.e("CLIENT ERROR",
                     volleyError.networkResponse.statusCode + " " + data);
         }
-    }
+    }*/
 
     /**
      * Handles the success for first add endpoint calls
@@ -248,13 +258,13 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
      * @param response JSONObject
      */
     private void handleAdd1Success(final JSONObject response) {
-        try {
+        /*try {
             int chatId = response.getInt("chatID");
             mChatid.setValue(chatId);
             add2(chatId);
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
     }
 
     /**
@@ -262,19 +272,19 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
      *
      * @param response JSONObject
      */
-    private void handleAdd2Success(final JSONObject response) {
+   /* private void handleAdd2Success(final JSONObject response) {
 
         add3(mNames.getValue());
-    }
+    }*/
 
     /**
      * Handles the success for third add endpoint calls
      *
      * @param response JSONObject
      */
-    private void handleAdd3Success(final JSONObject response) {
+    /*private void handleAdd3Success(final JSONObject response) {
 
-    }
+    }*/
 
     /**
      * Handles errors for the getContact endpoint calls

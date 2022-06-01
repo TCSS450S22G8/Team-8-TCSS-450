@@ -44,7 +44,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     private ArrayList<Chatroom> mChatrooms;
     private String mjwt;
     private String mEmail;
-    private int mChatId;
+    private MutableLiveData<Integer> mChatId;
     //private FragmentChatroomListBinding mBinding;
     //private ChatroomListFragment mBinding2;
 
@@ -56,6 +56,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     public ChatroomViewModel(@NonNull Application application) {
         super(application);
         mChatroomList = new MutableLiveData<>();
+        mChatId = new MutableLiveData<>();
         //mBinding = application;
         //mParent =
 //        mChatroomList.setValue(ChatroomGenerator.getChatroomList());
@@ -73,6 +74,17 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     public ArrayList<Chatroom> getChatRoomsList() {
         return mChatrooms;
+    }
+
+    public MutableLiveData<Integer> getmChatId() {
+        Log.e("GETTER", "getmChatId: "+mChatId.getValue());
+        return mChatId;
+    }
+
+    public MutableLiveData<Integer> setmChatId(int id) {
+        Log.e("SETTER", "getmChatId: "+mChatId.getValue());
+        mChatId.setValue(id);
+        return mChatId;
     }
 
     /**
@@ -273,7 +285,8 @@ public class ChatroomViewModel extends AndroidViewModel {
     public void attemptGetUsersRoom(String jwt, int chatId, String email) {
         //mParent = parent;
         mjwt = jwt;
-        mChatId = chatId;
+        Log.e("chatID", ": "+chatId );
+        mChatId.setValue(chatId);
         mEmail = email;
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/"+chatId;
         JSONObject body = new JSONObject();
@@ -326,10 +339,10 @@ public class ChatroomViewModel extends AndroidViewModel {
             int members = response.getInt("rowCount");
             Log.e("NumInChat", ": "+members);
             if(members == 1){
-                attemptRemoveSelf2(mjwt,mChatId,mEmail);
+                attemptRemoveSelf2(mjwt,mChatId.getValue(),mEmail);
             }
             else{
-                attemptRemoveSelf1(mjwt,mChatId,mEmail);
+                attemptRemoveSelf1(mjwt,mChatId.getValue(),mEmail);
             }
         } catch (JSONException e) {
             e.printStackTrace();

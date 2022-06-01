@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms;
 
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
@@ -22,7 +25,9 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
+import edu.uw.tcss450.group8.chatapp.MainActivity;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomCardBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomListBinding;
@@ -31,6 +36,7 @@ import edu.uw.tcss450.group8.chatapp.model.NewMessageCountViewModel;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserFragment;
 
 /**
  * RecyclerViewAdapter for message.
@@ -53,6 +59,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
 
     private ChatroomViewModel mModel;
 
+    private int chatIdReturn;
     FragmentChatroomListBinding mBinding;
 
     /**
@@ -90,6 +97,10 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         return this.mChatroom;
     }
 
+    public int getChatId() {
+        return chatIdReturn;
+    }
+
     /**
      * Objects from this class represent an Individual row View from the List * of rows in the
      * Message Recycler View.
@@ -97,6 +108,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
     public class ChatroomViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public FragmentChatroomCardBinding binding;
+       // public FragmentChatroomListBinding mBinding;
         private Chatroom mChatroomSingle;
         private Button openChat;
         private TextView chatId;
@@ -126,6 +138,22 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
                 }
             });
             binding.buttonChatroomRemoveself.setOnClickListener(this::attemptRemoveSelf);
+            binding.buttonChatroomAdd.setOnClickListener(this::attemptAddUser);
+        }
+
+        private void attemptAddUser(View view) {
+            //mBinding = FragmentChatroomListBinding.bind(mParent.getView());
+            Intent intent = new Intent();
+            Bundle bundle = new Bundle();
+            bundle.putInt("chatId", Integer.parseInt(chatId.getText().toString()));
+            intent.putExtras(bundle);
+            chatIdReturn = Integer.parseInt(chatId.getText().toString());
+            //ChatroomAddUserFragment(intent);
+            mParent.setArguments(bundle);
+            mModel.setmChatId(Integer.parseInt(chatId.getText().toString()));
+            Navigation.findNavController(mParent.requireView()).navigate(
+                    ChatroomListFragmentDirections.actionNavChatroomFragmentToChatroomAddUserFragment());
+
         }
 
         private void attemptRemoveSelf(View view) {

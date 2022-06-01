@@ -54,6 +54,9 @@
         <action
             android:id="@+id/action_nav_chatroom_fragment_to_chatroomAddFragment"
             app:destination="@id/chatroomAddFragment" />
+        <action
+            android:id="@+id/action_nav_chatroom_fragment_to_chatroomAddUserFragment"
+            app:destination="@id/chatroomAddUserFragment" />
     </fragment>
     <fragment
         android:id="@+id/changeFragment"
@@ -80,6 +83,14 @@
         android:label="@string/title_add_chat">
         <action
             android:id="@+id/action_chatroomAddFragment_to_nav_chatroom_fragment"
+            app:destination="@id/nav_chatroom_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatroomAddUserFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserFragment"
+        android:label="ChatroomAddUserFragment" >
+        <action
+            android:id="@+id/action_chatroomAddUserFragment_to_nav_chatroom_fragment"
             app:destination="@id/nav_chatroom_fragment" />
     </fragment>
 </navigation>

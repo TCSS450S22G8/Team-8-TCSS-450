@@ -18,12 +18,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddUserBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add.ChatroomAddFragmentDirections;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add.ChatroomAddListViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add.ChatroomAddRecyclerViewAdapter;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomRecyclerViewAdapter;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserFragmentDirections;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserListViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserRecyclerViewAdapter;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
 
 /**
@@ -36,13 +37,15 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
  * @author Levi McCoy
  * @version 5/30/22
  */
-/*
+
 public class ChatroomAddUserFragment extends Fragment{
 
     private ChatroomAddUserListViewModel mAdd;
     private UserInfoViewModel mUser;
     private FragmentChatroomAddUserBinding mBinding;
     private ContactListViewModel mContact;
+    private ChatroomViewModel mView;
+    private int chatId;
     List<String> namesToAdd = new ArrayList<String>();
 
 
@@ -52,13 +55,14 @@ public class ChatroomAddUserFragment extends Fragment{
         mAdd = new ViewModelProvider(getActivity()).get(ChatroomAddUserListViewModel.class);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
         mContact = new ViewModelProvider(getActivity()).get(ContactListViewModel.class);
+        mView = new ViewModelProvider(getActivity()).get(ChatroomViewModel.class);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chatroom_add, container, false);
+        return inflater.inflate(R.layout.fragment_chatroom_add_user, container, false);
     }
 
     @Override
@@ -67,13 +71,13 @@ public class ChatroomAddUserFragment extends Fragment{
         mBinding = FragmentChatroomAddUserBinding.bind(getView());
 
 
-        mBinding.buttonAddChat.setOnClickListener(this::attemptAdd);
+        mBinding.buttonAdduserChat.setOnClickListener(this::attemptAdd);
 
         // get user contacts
             mBinding.progressBar.setVisibility(View.GONE);
-            mBinding.swipeChatroomAddRefresh.setRefreshing(false);
+            mBinding.swipeChatroomAddUserRefresh.setRefreshing(false);
             mBinding.listRoot.setAdapter(
-                    new ChatroomAddRecyclerViewAdapter(mContact.getContacts(), this)
+                    new ChatroomAddUserRecyclerViewAdapter(mContact.getContacts(), this)
             );
 
         // get user contacts
@@ -82,14 +86,14 @@ public class ChatroomAddUserFragment extends Fragment{
         mContact.addContactsListObserver(getViewLifecycleOwner(), contacts -> {
             mBinding.listRoot.setVisibility(View.VISIBLE);
             mBinding.progressBar.setVisibility(View.GONE);
-            mBinding.swipeChatroomAddRefresh.setRefreshing(false);
+            mBinding.swipeChatroomAddUserRefresh.setRefreshing(false);
             mBinding.listRoot.setAdapter(
-                    new ChatroomAddRecyclerViewAdapter(contacts, this)
+                    new ChatroomAddUserRecyclerViewAdapter(contacts, this)
             );
         });
 
         //refreshing chat list swipe
-        mBinding.swipeChatroomAddRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mBinding.swipeChatroomAddUserRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mContact.getContacts(mUser.getJwt());
@@ -106,24 +110,30 @@ public class ChatroomAddUserFragment extends Fragment{
         mBinding.progressBar.setVisibility(View.VISIBLE);
         Log.e("JWT", mUser.getJwt());
         Log.e("mynames", namesToAdd.toString() );
-        if (mBinding.editChatroomAddName.getText().toString().trim().equals("")) {
-//            mBinding.editChatroomAddName.setError("Must have a name for the chat room!");
-            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-            dialog.setTitle("Make sure you are naming your chat room!")
-                    .setNegativeButton("Okay", null)
-                    .show().setCanceledOnTouchOutside(true);
-            mBinding.progressBar.setVisibility(View.GONE);
-            return;
-        }
-        else {
-            mAdd.add1(mUser.getJwt(), mBinding.editChatroomAddName.getText().toString().trim(), namesToAdd);
+        //if (mBinding.editChatroomAddUserName.getText().toString().trim().equals("")) {
+//            //mBinding.editChatroomAddUserName.setError("Must have a name for the chat room!");
+            //AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            //dialog.setTitle("Make sure you are naming your chat room!")
+                    //.setNegativeButton("Okay", null)
+                   // .show().setCanceledOnTouchOutside(true);
+            //mBinding.progressBar.setVisibility(View.GONE);
+           // return;
+       // }
+        //else {
+            //Bundle bundle = this.getArguments();
+            //int myInt = bundle.getInt("chatId");
+        //int myInt = mView.ch;
+       // Log.e("THEBUNDLENUM", ": "+myInt );
+        Log.e("THENUM", ": "+mView.getmChatId().getValue());
+            chatId = mView.getmChatId().getValue();
+            Log.e("THENUM", ": "+chatId);
+            mAdd.add1(mUser.getJwt(), namesToAdd, chatId);
             mBinding.progressBar.setVisibility(View.GONE);
             Navigation.findNavController(getView()).navigate(
-                    ChatroomAddFragmentDirections.actionChatroomAddFragmentToNavChatroomFragment());
-        }
+                    ChatroomAddUserFragmentDirections.actionChatroomAddUserFragmentToNavChatroomFragment());
+        //}
     }
 
 }
 
 
-     */

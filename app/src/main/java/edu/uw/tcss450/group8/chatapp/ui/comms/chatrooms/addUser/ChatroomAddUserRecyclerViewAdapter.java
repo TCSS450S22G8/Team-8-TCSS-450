@@ -14,8 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddCardBinding;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add.ChatroomAddFragment;
+import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddUserCardBinding;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserFragment;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
 
 /**
@@ -30,20 +30,20 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
  * @author Levi McCoy
  * @version 5/30/22
  */
-/*
-public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomAddUserRecyclerViewAdapter.ChatroomAddViewHolder> {
-    private final List<Contact> mContact;
-    private final ChatroomAddFragment mParent;
 
- */
+public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomAddUserRecyclerViewAdapter.ChatroomAddUserViewHolder> {
+    private final List<Contact> mContact;
+    private final ChatroomAddUserFragment mParent;
+
+
 
     /**
      * Constructor for MessageRecyclerViewAdapter
      *
      * @param items list of message
      */
-    /*
-    public ChatroomAddUserRecyclerViewAdapter(List<Contact> items, ChatroomAddFragment parent) {
+
+    public ChatroomAddUserRecyclerViewAdapter(List<Contact> items, ChatroomAddUserFragment parent) {
         this.mContact= items;
         mParent = parent;
     }
@@ -51,14 +51,14 @@ public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<Cha
 
     @NonNull
     @Override
-    public ChatroomAddUserRecyclerViewAdapter.ChatroomAddViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ChatroomAddViewHolder(LayoutInflater
+    public ChatroomAddUserRecyclerViewAdapter.ChatroomAddUserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new ChatroomAddUserViewHolder(LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.fragment_chatroom_add_card, parent, false));
+                .inflate(R.layout.fragment_chatroom_add_user_card, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ChatroomAddUserRecyclerViewAdapter.ChatroomAddViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ChatroomAddUserRecyclerViewAdapter.ChatroomAddUserViewHolder holder, int position) {
         holder.setContact(mContact.get(position));
 
     }
@@ -67,7 +67,6 @@ public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<Cha
     public int getItemCount() {
         return this.mContact.size();
     }
-    */
 
 
 
@@ -75,10 +74,10 @@ public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<Cha
      * Objects from this class represent an Individual row View from the List * of rows in the
      * Message Recycler View.
      */
-    /*
-    public class ChatroomAddViewHolder extends RecyclerView.ViewHolder {
+
+    public class ChatroomAddUserViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public FragmentChatroomAddCardBinding mBinding;
+        public FragmentChatroomAddUserCardBinding mBinding;
 
         public CheckBox mAdd;
 
@@ -90,31 +89,31 @@ public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<Cha
          *
          * @param view View
          */
-        /*
-        public ChatroomAddViewHolder(View view) {
+
+        public ChatroomAddUserViewHolder(View view) {
             super(view);
             mView = view;
-            mBinding = FragmentChatroomAddCardBinding.bind(view);
-            mAdd = view.findViewById(R.id.checkBox_add);
-            name = view.findViewById(R.id.edit_chatroom_add_name);
+            mBinding = FragmentChatroomAddUserCardBinding.bind(view);
+            mAdd = view.findViewById(R.id.checkBox_add_user);
+            //name = view.findViewById(R.id.edit_chatroom_add_name);
 
 
             mAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mParent.namesToAdd.contains(mBinding.textChatroomAddEmail.getText().toString())) {
-                        mParent.namesToAdd.remove(mBinding.textChatroomAddEmail.getText().toString());
+                    if(mParent.namesToAdd.contains(mBinding.textChatroomAddUserEmail.getText().toString())) {
+                        mParent.namesToAdd.remove(mBinding.textChatroomAddUserEmail.getText().toString());
                         Log.e("emailList", mParent.namesToAdd.toString());
                     }
                     else{
-                        mParent.namesToAdd.add(mBinding.textChatroomAddEmail.getText().toString());
+                        mParent.namesToAdd.add(mBinding.textChatroomAddUserEmail.getText().toString());
                         Log.e("emailList", mParent.namesToAdd.toString());
                     }
                 }
             });
 
         }
-        */
+
 
 
 
@@ -123,12 +122,12 @@ public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<Cha
          *
          * @param contact Contact the contact object
          */
-        /*
+
         void setContact(final Contact contact) {
-            mBinding.textChatroomAddUsername.setText(contact.getUserName());
-            mBinding.textChatroomAddEmail.setText(contact.getEmail());
+            mBinding.textChatroomAddUserUsername.setText(contact.getUserName());
+            mBinding.textChatroomAddUserEmail.setText(contact.getEmail());
         }
 
     }
 }
-*/
+

@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -83,6 +84,20 @@ public class ContactRequestFragment extends Fragment {
                 mBinding.textContactOutgoing.setVisibility(View.GONE);
             }
         });
+
+        //adding button listeners for navigation
+        mBinding.buttonContactsContacts.setOnClickListener(button -> {
+            Navigation.findNavController(getView()).navigate(
+                    ContactRequestFragmentDirections
+                            .actionContactRequestFragmentToNavConnectionsFragment());
+        });
+
+        mBinding.buttonContactsAdd.setOnClickListener(button -> {
+            Navigation.findNavController(getView()).navigate(
+                    ContactRequestFragmentDirections
+                            .actionContactRequestFragmentToAddContactFragment());
+        });
+
         mBinding.buttonContactsRequestRefresh.setOnClickListener(button -> {
             mContact.getOutgoingRequestList(mUser.getJwt());
             mContact.getIncomingRequestList(mUser.getJwt());

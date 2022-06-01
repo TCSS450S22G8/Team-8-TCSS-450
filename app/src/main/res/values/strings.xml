@@ -64,8 +64,9 @@
 
     <string name="text_incoming_requests">Incoming Requests</string>
     <string name="text_outgoing_requests">Outgoing Requests</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="text_requests">Requests</string>
+    <string name="text_add_contacts">Add Contacts</string>
+
 
 
 </resources>

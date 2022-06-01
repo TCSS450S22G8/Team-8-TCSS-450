@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.text.Editable;
@@ -65,6 +66,19 @@ public class AddContactFragment extends Fragment {
             mBinding.listRoot.setAdapter(
                     mAdapter
             );
+        });
+
+        //adding button listeners for navigation
+        mBinding.buttonContactsContacts.setOnClickListener(button -> {
+            Navigation.findNavController(getView()).navigate(
+                    AddContactFragmentDirections
+                            .actionAddContactFragmentToNavConnectionsFragment());
+        });
+
+        mBinding.buttonContactsRequests.setOnClickListener(button -> {
+            Navigation.findNavController(getView()).navigate(
+                    AddContactFragmentDirections
+                            .actionAddContactFragmentToContactRequestFragment());
         });
 
         //refreshing chat list swipe

@@ -100,4 +100,18 @@
             android:id="@+id/action_locationFragment_to_nav_weather_fragment"
             app:destination="@id/nav_weather_fragment" />
     </fragment>
+    <fragment
+        android:id="@+id/addContactFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.AddContactFragment"
+        android:label="AddContactFragment" />
+    <fragment
+        android:id="@+id/contactRequestFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactRequestFragment"
+        android:label="fragment_contact_request"
+        tools:layout="@layout/fragment_contact_request" />
+    <fragment
+        android:id="@+id/nav_contact_fragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactTabFragment"
+        android:label="fragment_contact_tab"
+        tools:layout="@layout/fragment_contact_tab" />
 </navigation>

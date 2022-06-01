@@ -14,43 +14,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactCardBinding;
+import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactAddContactCardBinding;
 
-/**
- * Recycler View to show all contacts as a list.
- *
- * Adapted from original code by Charles Bryan
- *
- * @author Charles Bryan
- * @author Rin Pham
- * @author Shilnara Dam
- * @author Sean Logan
- * @version 5/19/22
- */
-public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecyclerViewAdapter.ContactViewHolder> {
+
+public class AddContactRecyclerViewAdapter extends RecyclerView.Adapter<AddContactRecyclerViewAdapter.AddContactViewHolder> {
     private List<Contact> mContact;
-    private final ContactFragment mParent;
+    private final AddContactFragment mParent;
 
     /**
-     * Constructor for MessageRecyclerViewAdapter
+     * Constructor for AddContactRecyclerViewAdapter
      *
      * @param items list of message
      */
-    public ContactRecyclerViewAdapter(List<Contact> items, ContactFragment parent) {
+    public AddContactRecyclerViewAdapter(List<Contact> items, AddContactFragment parent) {
         this.mContact= items;
         mParent = parent;
     }
 
     @NonNull
     @Override
-    public ContactRecyclerViewAdapter.ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ContactViewHolder(LayoutInflater
+    public AddContactRecyclerViewAdapter.AddContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        return new AddContactViewHolder(LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.fragment_contact_card, parent, false));
+                .inflate(R.layout.fragment_contact_add_contact_card, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ContactRecyclerViewAdapter.ContactViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AddContactRecyclerViewAdapter.AddContactViewHolder holder, int position) {
         holder.setContact(mContact.get(position));
 
     }
@@ -70,14 +60,10 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
      * Objects from this class represent an Individual row View from the List * of rows in the
      * Message Recycler View.
      */
-    public class ContactViewHolder extends RecyclerView.ViewHolder {
+    public class AddContactViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
-        public FragmentContactCardBinding mBinding;
-
-        public Button mUnFriend;
-        public Button messageFriend;
-
-
+        public FragmentContactAddContactCardBinding mBinding;
+        public Button mAddFriend;
         public TextView email;
         public TextView username;
 
@@ -86,35 +72,26 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
          *
          * @param view View
          */
-        public ContactViewHolder(View view) {
+        public AddContactViewHolder(View view) {
             super(view);
             mView = view;
-            mBinding = FragmentContactCardBinding.bind(view);
-            mUnFriend = mBinding.buttonContactUnfriend;
-            messageFriend = mBinding.buttonContactSendMessage;
-            email = mBinding.textContactEmail;
-            username = mBinding.textContactUsername;
+            mBinding = FragmentContactAddContactCardBinding.bind(view);
+            mAddFriend = view.findViewById(R.id.button_contact_accept_friend);
+            email = view.findViewById(R.id.text_contact_email);
+            username = view.findViewById(R.id.text_contact_username);
 
-            mUnFriend.setOnClickListener(new View.OnClickListener() {
+            mAddFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mParent.unFriend(email.getText().toString());
+                    mParent.addFriend(email.getText().toString());
                     mContact.remove((getAdapterPosition()));
                     notifyItemRemoved(getAdapterPosition());
                     notifyItemRangeChanged(getAdapterPosition(), mContact.size());
-                    Toast.makeText(mParent.getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mParent.getActivity(), "Sent request successful!", Toast.LENGTH_SHORT).show();
                 }
             });
 
-            messageFriend.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    mParent.sendMessage(email.getText().toString());
-                }
-            });
         }
-
-
 
         /**
          * Set contact

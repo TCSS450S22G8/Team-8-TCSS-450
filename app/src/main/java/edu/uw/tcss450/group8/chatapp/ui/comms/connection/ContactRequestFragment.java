@@ -66,10 +66,10 @@ public class ContactRequestFragment extends Fragment {
             mBinding.listContactIncoming.setAdapter(
                     mAdapterIncoming
             );
-            if (contacts.isEmpty()) {
-                mBinding.listContactIncoming.setVisibility(View.GONE);
-                mBinding.textContactIncoming.setVisibility(View.GONE);
-            }
+//            if (contacts.isEmpty()) {
+//                mBinding.listContactIncoming.setVisibility(View.GONE);
+//                mBinding.textContactIncoming.setVisibility(View.GONE);
+//            }
 
         });
         mContact.getOutgoingRequestList(mUser.getJwt());
@@ -79,10 +79,10 @@ public class ContactRequestFragment extends Fragment {
             mBinding.listContactOutgoing.setAdapter(
                     mAdapterOutgoing
             );
-            if (contacts.isEmpty()) {
-                mBinding.listContactOutgoing.setVisibility(View.GONE);
-                mBinding.textContactOutgoing.setVisibility(View.GONE);
-            }
+//            if (contacts.isEmpty()) {
+//                mBinding.listContactOutgoing.setVisibility(View.GONE);
+//                mBinding.textContactOutgoing.setVisibility(View.GONE);
+//            }
         });
 
         //adding button listeners for navigation

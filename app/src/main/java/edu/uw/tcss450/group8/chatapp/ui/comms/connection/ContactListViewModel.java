@@ -43,6 +43,7 @@ public class ContactListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mNonContact;
     private MutableLiveData<List<Contact>> mIncomingRequest;
     private MutableLiveData<List<Contact>> mOutgoingRequest;
+    private MutableLiveData<Integer> mChatId;
 
 
     /**
@@ -55,7 +56,7 @@ public class ContactListViewModel extends AndroidViewModel {
         mNonContact = new MutableLiveData<>();
         mIncomingRequest = new MutableLiveData<>();
         mOutgoingRequest = new MutableLiveData<>();
-
+        mChatId = new MutableLiveData<>();
     }
 
     public List<Contact> getContactList() {
@@ -103,6 +104,16 @@ public class ContactListViewModel extends AndroidViewModel {
     public void outgoingRequestListObserver(@NonNull LifecycleOwner owner,
                                             @NonNull Observer<? super List<Contact>> observer) {
         mOutgoingRequest.observe(owner, observer);
+    }
+
+    /**
+     * Helper method for observer
+     * @param owner owner of lifecycle
+     * @param observer contact list
+     */
+    public void addChatIdObserver(@NonNull LifecycleOwner owner,
+                                  @NonNull Observer<? super Integer> observer) {
+        mChatId.observe(owner, observer);
     }
 
 
@@ -332,6 +343,60 @@ public class ContactListViewModel extends AndroidViewModel {
         };
         RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
                 .addToRequestQueue(request);
+    }
+
+    /**
+     * Endpoint to get the chatid of a private chat between user and friend
+     *
+     * @param jwt String user jwt
+     * @param email String friend email
+     */
+    public void getChatId(String jwt, String email) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/private/" + email;
+        /*
+        //would prefer using body but endpoint thinks it is undefined for some reason
+        JSONObject body = new JSONObject();
+        try {
+            body.put("email", email);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+         */
+        Request<JSONObject> request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                this::handChatSuccess,
+                this::handleError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+    }
+
+    /**
+     * sets chat id of private chat with friend
+     * @param response JSONObject the response object
+     */
+    private void handChatSuccess(final JSONObject response) {
+        try {
+            mChatId.setValue(response.getInt("chatID"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * reset chatid value
+     */
+    public void resetChatId() {
+        mChatId = new MutableLiveData<>();
     }
 
 

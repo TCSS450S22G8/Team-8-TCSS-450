@@ -118,7 +118,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             messageFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mParent.sendMessage(email.getText().toString());
+                    mParent.sendMessage(email.getText().toString(), username.getText().toString());
                 }
             });
         }

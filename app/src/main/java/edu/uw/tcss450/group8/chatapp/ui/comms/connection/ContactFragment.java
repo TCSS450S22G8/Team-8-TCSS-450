@@ -153,12 +153,19 @@ public class ContactFragment extends Fragment {
     }
 
     /**
-     * open chatroom with the desired contact
+     * open a private chatroom with the desired contact
      *
      * @param email String email of the friend
      */
-    public void sendMessage(String email) {
-        Bundle bundle = new Bundle();
-        bundle.putString("email", email);
+    public void sendMessage(String email, String username) {
+        mBinding.progressBar.setVisibility(View.VISIBLE);
+        mContact.getChatId(mUser.getJwt(), email);
+        mContact.addChatIdObserver(getViewLifecycleOwner(), contactid -> {
+            mBinding.progressBar.setVisibility(View.GONE);
+            mContact.resetChatId();
+            Navigation.findNavController(getView()).
+                    navigate(ContactFragmentDirections
+                            .actionNavConnectionsFragmentToMessageListFragment(username, contactid));
+        });
     }
 }

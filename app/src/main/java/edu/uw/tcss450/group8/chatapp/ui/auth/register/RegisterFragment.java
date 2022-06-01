@@ -162,7 +162,7 @@ public class RegisterFragment extends Fragment {
                 this::validatePasswordsMatch,
                 result -> {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                    dialog.setTitle("Please enter a valid Email address.")
+                    dialog.setTitle("Please enter a valid email address.")
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
@@ -202,6 +202,7 @@ public class RegisterFragment extends Fragment {
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                     dialog.setTitle("Please enter a valid Password.")
                             .setNegativeButton("Okay", null)
+                            .setMessage("Password Requirements:\n\n-Minimum length of 7\n-At least one of these characters @#$%&*!?\n-No spaces\n-Contain at least one number\n-At least one letter")
                             .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });

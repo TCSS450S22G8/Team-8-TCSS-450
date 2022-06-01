@@ -168,12 +168,6 @@ public class LoginFragment extends Fragment {
                 mPassWordValidator.apply(mBinding.editPassword.getText().toString()),
                 this::verifyAuthWithServer,
                 result -> {
-                    // These don't actually do anything, the  response from the server takes over
-//                    mBinding.editPassword.setError("Please enter a valid Password.");
-//                    AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-//                    dialog.setTitle("Please enter a valid Password.")
-//                            .setNegativeButton("Okay", null)
-//                            .show().setCanceledOnTouchOutside(true);
                     mBinding.progressBar.setVisibility(View.GONE);
                 });
 
@@ -207,8 +201,6 @@ public class LoginFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 //this error cannot be fixed by the user changing credentials...
-//                mBinding.editRegisterEmail.setError(
-//                        "Error Authenticating on Push Token. Please contact support");
                 AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
                 dialog.setTitle("Error Authenticating on Push Token. Please contact support")
                         .setNegativeButton("Okay", null)

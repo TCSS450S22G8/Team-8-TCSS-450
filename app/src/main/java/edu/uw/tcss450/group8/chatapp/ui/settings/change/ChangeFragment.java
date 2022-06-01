@@ -145,10 +145,10 @@ public class ChangeFragment extends Fragment {
                 mPassWordValidator.apply(mBinding.editChangePassword1.getText().toString()),
                 this::validatePassword2,
                 result -> {
-                    // What is password 1?
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                    dialog.setTitle("Please enter a valid Password 1.")
+                    dialog.setTitle("Please enter a valid Password.")
                             .setNegativeButton("Okay", null)
+                            .setMessage("Password Requirements:\n\n-Minimum length of 7\n-At least one of these characters @#$%&*!?\n-No spaces\n-Contain at least one number\n-At least one letter")
                             .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });

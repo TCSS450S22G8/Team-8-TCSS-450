@@ -124,9 +124,11 @@ public class ForgotFragment extends Fragment {
                 mPassWordValidator.apply(mBinding.editForgotPassword1.getText().toString()),
                 this::verifyAuthWithServer,
                 result -> {
+                    mResetPassword.resetFailedResponse();
                     AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-                    dialog.setTitle("Please enter a valid password")
+                    dialog.setTitle("Please enter a valid Password.")
                             .setNegativeButton("Okay", null)
+                            .setMessage("Password Requirements:\n\n-Minimum length of 7\n-At least one of these characters @#$%&*!?\n-No spaces\n-Contain at least one number\n-At least one letter")
                             .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
@@ -157,6 +159,7 @@ public class ForgotFragment extends Fragment {
 //
 //        directions.setEmail(binding.editEmail.getText().toString());
 //        directions.setPassword(binding.editPassword1.getText().toString());
+        mResetPassword.resetSuccessResponse();
 
         //send toast message stating password was reset
         Toast.makeText(getActivity(), "Password Updated!", Toast.LENGTH_SHORT).show();

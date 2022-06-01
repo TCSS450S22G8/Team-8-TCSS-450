@@ -6,6 +6,7 @@ import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdSpec
 
 import android.app.AlertDialog;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,20 @@ public class ForgotEmailFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        mForgotModel.addEmailSuccessObserver(getViewLifecycleOwner(), email -> {
+            Log.e("TAG", "inside addEmailSuccessObserver");
+            mForgotModel.resetSuccessResponse();
+            navigateToEmailCheck();
+        });
+
+        mForgotModel.addFailedResponseObserver(getViewLifecycleOwner(), email -> {
+            mForgotModel.resetFailedResponse();
+            mBinding.layoutWait.setVisibility(View.GONE);
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            dialog.setTitle("This email does not have an account registered.")
+                    .setNegativeButton("Okay", null)
+                    .show().setCanceledOnTouchOutside(true);
+        });
 
         mBinding.buttonChange.setOnClickListener(button -> {
             attemptSubmit(button);
@@ -106,7 +121,7 @@ public class ForgotEmailFragment extends Fragment {
      * information validation.
      */
     private void verifyAuthWithServer() {
-        navigateToEmailCheck();
+//        navigateToEmailCheck();
         mForgotModel.sendForgotPasswordEmail(
                 mBinding.editForgotEmail.getText().toString());
 

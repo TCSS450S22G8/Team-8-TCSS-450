@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -145,11 +146,12 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home_fragment, R.id.nav_contact_fragment, R.id.nav_chatroom_fragment, R.id.nav_weather_fragment)
+                R.id.nav_home_fragment, R.id.nav_connections_fragment, R.id.nav_chatroom_fragment, R.id.nav_weather_fragment)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+
         mNewMessageModel = new ViewModelProvider(this).get(NewMessageCountViewModel.class);
         mNewFriendRequestModel = new ViewModelProvider(this).get(NewFriendRequestCountViewModel.class);
 

@@ -16,17 +16,24 @@ import java.util.List;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactIncomingRequestCardBinding;
 
+/**
+ * recycler for incoming requests
+ *
+ * @author Charles Bryan
+ * @author Rin Pham
+ * @author Shilnara Dam
+ * @version 5/31/22
+ */
 public class ContactIncomingRecyclerViewAdapter extends RecyclerView.Adapter<ContactIncomingRecyclerViewAdapter.IncomingContactViewHolder> {
     private List<Contact> mContactRequest;
     private final ContactRequestFragment mParentRequest;
 
 
     /**
-     * Contructor for ContactIncomingRecyclerViewAdapter
+     * Constructor for ContactIncomingRecyclerViewAdapter
      *
-     * @param items
-     *  @param parent
-     * @return
+     * @param items List<Contact> list of contacts
+     * @param parent ContactRequestFragment the parent class
      */
     public ContactIncomingRecyclerViewAdapter(List<Contact> items, ContactRequestFragment parent) {
         this.mContactRequest = items;
@@ -78,6 +85,7 @@ public class ContactIncomingRecyclerViewAdapter extends RecyclerView.Adapter<Con
             email = mBinding.textContactEmail;
             username = mBinding.textContactUsername;
 
+            //button to accept friend request
             mAcceptFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -89,6 +97,7 @@ public class ContactIncomingRecyclerViewAdapter extends RecyclerView.Adapter<Con
                 }
             });
 
+            //button to decline friend request
             mDeclineFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -99,7 +108,6 @@ public class ContactIncomingRecyclerViewAdapter extends RecyclerView.Adapter<Con
                     Toast.makeText(mParentRequest.getActivity(), "Deleted friend request successful!", Toast.LENGTH_SHORT).show();
                 }
             });
-
         }
 
         /**
@@ -108,11 +116,8 @@ public class ContactIncomingRecyclerViewAdapter extends RecyclerView.Adapter<Con
          * @param contact Contact the contact object
          */
         void setContact(final Contact contact) {
-            Log.e("incoming","check...");
             mBinding.textContactUsername.setText(contact.getUserName());
             mBinding.textContactEmail.setText(contact.getEmail());
         }
-
-
     }
 }

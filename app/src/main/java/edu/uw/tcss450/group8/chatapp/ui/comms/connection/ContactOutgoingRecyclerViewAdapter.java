@@ -15,9 +15,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactIncomingRequestCardBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactOutgoingRequestCardBinding;
 
+/**
+ * Recycler View to show all outgoing requests.
+ * Adapted from original code by Charles Bryan.
+ *
+ * @author Charles Bryan
+ * @author Rin Pham
+ * @author Shilnara Dam
+ * @version 5/31/22
+ */
 public class ContactOutgoingRecyclerViewAdapter extends RecyclerView.Adapter<ContactOutgoingRecyclerViewAdapter.OutgoingContactViewHolder>{
     private List<Contact> mContactRequest;
     private final ContactRequestFragment mParentRequest;
@@ -26,8 +34,8 @@ public class ContactOutgoingRecyclerViewAdapter extends RecyclerView.Adapter<Con
     /**
      * Contructor for ContactIncomingRecyclerViewAdapter
      *
-     * @param items
-     * @param parent
+     * @param items List<Contact> list of contacts
+     * @param parent ContactRequestFragment the parent fragment
      * @return
      */
     public ContactOutgoingRecyclerViewAdapter(List<Contact> items, ContactRequestFragment parent) {
@@ -54,6 +62,11 @@ public class ContactOutgoingRecyclerViewAdapter extends RecyclerView.Adapter<Con
         return this.mContactRequest.size();
     }
 
+    /**
+     * setting contact list
+     *
+     * @param contactList ArrayList<Contact> list of contacts
+     */
     public void contactList(ArrayList<Contact> contactList) {
         mContactRequest = contactList;
         notifyDataSetChanged();
@@ -102,7 +115,6 @@ public class ContactOutgoingRecyclerViewAdapter extends RecyclerView.Adapter<Con
          * @param contact Contact the contact object
          */
         void setContact(final Contact contact) {
-            Log.e("outgoing", "seting individual card" );
             mBinding.textContactUsername.setText(contact.getUserName());
             mBinding.textContactEmail.setText(contact.getEmail());
         }

@@ -6,38 +6,42 @@ import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-/**
+import java.util.List;
 
- * create an instance of this fragment.
+/**
+ * tab adapter for 3 tab contacts page
+ *
+ * @author shilnara dam
+ * @author rin pham
+ * @version 5/31/22
  */
 public class ContactTabsAdapter extends FragmentStateAdapter {
 
-    private String[] titles = new String[]{"All Contacts", "Add contact", "Request"};
+    private List<Fragment> mFragments;
 
 
-
-    public ContactTabsAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+    /**
+     * constructor for contact labs adaptor
+     *
+     * @param fragmentManager FragmentManager the fragment manager
+     * @param lifecycle Lifecycle the lifecycle
+     * @param theFrags List<Fragment> the list of contact fragments
+     */
+    public ContactTabsAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, List<Fragment> theFrags) {
         super(fragmentManager, lifecycle);
+        mFragments = theFrags;
     }
 
 
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch(position) {
-            case 0:
-                return new ContactFragment();
-            case 1:
-                return new AddContactFragment();
-            case 2:
-                return new ContactRequestFragment();
-        }
-        return new ContactFragment();
+        return mFragments.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return titles.length;
+        return mFragments.size();
     }
 
 

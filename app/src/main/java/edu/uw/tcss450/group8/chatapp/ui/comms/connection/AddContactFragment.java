@@ -22,7 +22,11 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactAddContactBindin
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 /**
- * create an instance of this fragment.
+ * fragment to request to add new users as friends.
+ *
+ * @author shilnara dam
+ * @author rin pham
+ * @version 5/31/22
  */
 public class AddContactFragment extends Fragment {
 
@@ -30,7 +34,6 @@ public class AddContactFragment extends Fragment {
     private UserInfoViewModel mUser;
     private FragmentContactAddContactBinding mBinding;
     private AddContactRecyclerViewAdapter mAdapter;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +48,7 @@ public class AddContactFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         mBinding = FragmentContactAddContactBinding.bind(getView());
 
-        // get user contacts
+        // get non user contacts
         mBinding.listRoot.setVisibility(View.GONE);
         mBinding.progressBar.setVisibility(View.VISIBLE);
         mContact.getNonFriendList(mUser.getJwt());
@@ -64,9 +67,10 @@ public class AddContactFragment extends Fragment {
         mBinding.swipeContactsRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mContact.getContacts(mUser.getJwt());
+                mContact.getNonFriendList(mUser.getJwt());
             }
         });
+
         EditText editText = mBinding.searchBar;
 
         editText.addTextChangedListener(new TextWatcher() {
@@ -87,6 +91,10 @@ public class AddContactFragment extends Fragment {
         });
     }
 
+    /**
+     * filters through list of non friends by regex
+     * @param text
+     */
     private  void filter(String text) {
         ArrayList<Contact> contactList = new ArrayList<>();
         for (Contact contact: mContact.getNonContactList()) {
@@ -95,12 +103,14 @@ public class AddContactFragment extends Fragment {
                 contactList.add(contact);
             }
         }
-
         mAdapter.contactList(contactList);
     }
 
+    /**
+     * calls view model to send request to add a user as a friend
+     * @param email String the user's email
+     */
     public void addFriend(String email) {
-
         mContact.addFriend(mUser.getJwt(), email);
     }
 

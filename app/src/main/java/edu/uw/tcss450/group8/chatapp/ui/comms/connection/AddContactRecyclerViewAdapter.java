@@ -15,7 +15,13 @@ import java.util.List;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactAddContactCardBinding;
 
-
+/**
+ * recycler for non friends
+ *
+ * @author shilnara dam
+ * @author rin pham
+ * @version 5/31/22
+ */
 public class AddContactRecyclerViewAdapter extends RecyclerView.Adapter<AddContactRecyclerViewAdapter.AddContactViewHolder> {
     private List<Contact> mContact;
     private final AddContactFragment mParent;
@@ -23,7 +29,8 @@ public class AddContactRecyclerViewAdapter extends RecyclerView.Adapter<AddConta
     /**
      * Constructor for AddContactRecyclerViewAdapter
      *
-     * @param items list of message
+     * @param items List<Contact> list of contacts
+     * @param parent AddContactFragment parent fragment
      */
     public AddContactRecyclerViewAdapter(List<Contact> items, AddContactFragment parent) {
         this.mContact= items;
@@ -49,8 +56,13 @@ public class AddContactRecyclerViewAdapter extends RecyclerView.Adapter<AddConta
         return this.mContact.size();
     }
 
+    /**
+     * setting the list of contacts
+     * @param contactList ArrayList<Contact> the list of contacts
+     */
     public void contactList(ArrayList<Contact> contactList) {
         mContact = contactList;
+        notifyDataSetChanged();
     }
 
 
@@ -78,6 +90,7 @@ public class AddContactRecyclerViewAdapter extends RecyclerView.Adapter<AddConta
             email = view.findViewById(R.id.text_contact_email);
             username = view.findViewById(R.id.text_contact_username);
 
+            //button to send request to add friend
             mAddFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

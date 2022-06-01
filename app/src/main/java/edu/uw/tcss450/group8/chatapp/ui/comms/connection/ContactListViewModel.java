@@ -36,7 +36,7 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
  * @author Rin Pham
  * @author Shilnara Dam
  * @author Sean Logan
- * @version 5/19/22
+ * @version 5/31/22
  */
 public class ContactListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
@@ -64,11 +64,9 @@ public class ContactListViewModel extends AndroidViewModel {
     public List<Contact> getNonContactList() {
         return mNonContact.getValue();
     }
-    public List<Contact> getIncomingRequestSList() {return  mIncomingRequest.getValue();}
-    public List<Contact> getOutgoingRequestSList() {return  mOutgoingRequest.getValue();}
 
     /**
-     * Helper method for observe
+     * Helper method for observe mContact
      * @param owner owner of lifecycle
      * @param observer contact list
      */
@@ -77,16 +75,31 @@ public class ContactListViewModel extends AndroidViewModel {
         mContact.observe(owner, observer);
     }
 
+    /**
+     * Helper method for observe mNonContact
+     * @param owner owner of lifecycle
+     * @param observer contact list
+     */
     public void addNonContactsListObserver(@NonNull LifecycleOwner owner,
                                            @NonNull Observer<? super List<Contact>> observer) {
         mNonContact.observe(owner, observer);
     }
 
+    /**
+     * Helper method for observe mIncomingRequest
+     * @param owner owner of lifecycle
+     * @param observer contact list
+     */
     public void incomingRequestListObserver(@NonNull LifecycleOwner owner,
                                             @NonNull Observer<? super List<Contact>> observer) {
         mIncomingRequest.observe(owner, observer);
     }
 
+    /**
+     * Helper method for observe mOutgoingRequest
+     * @param owner owner of lifecycle
+     * @param observer contact list
+     */
     public void outgoingRequestListObserver(@NonNull LifecycleOwner owner,
                                             @NonNull Observer<? super List<Contact>> observer) {
         mOutgoingRequest.observe(owner, observer);
@@ -96,7 +109,7 @@ public class ContactListViewModel extends AndroidViewModel {
     /**
      * Endpoint to retrieve contacts of the user
      *
-     * @param jwt String
+     * @param jwt String the users jwt
      */
     public void getContacts(String jwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve";
@@ -118,6 +131,11 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    /**
+     * sends a request to get the users non friends
+     *
+     * @param jwt String the user's jwt
+     */
     public void getNonFriendList(String jwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve/nonfriends";
         Request request = new JsonObjectRequest(
@@ -138,6 +156,11 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    /**
+     * sends a request to get the user's incoming requests
+     *
+     * @param jwt String the users jwt
+     */
     public void getIncomingRequestList(String jwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve/incoming";
         Request request = new JsonObjectRequest(
@@ -158,87 +181,11 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
-    public void getOutgoingRequestList(String jwt) {
-        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve/outgoing";
-        Request request = new JsonObjectRequest(
-                Request.Method.GET,
-                url,
-                null,
-                this::handleGetOutgoingRequestListSuccess,
-                this::handleError) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                // add headers <key,value>
-                headers.put("Authorization", jwt);
-                return headers;
-            }
-        };
-        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
-                .addToRequestQueue(request);
-    }
-
-    private void handleGetOutgoingRequestListSuccess(JSONObject jsonObject) {
-        ArrayList<Contact> list = new ArrayList<>();
-        try {
-            JSONObject outgoing = jsonObject.getJSONObject("outgoing");
-            JSONArray rows = outgoing.getJSONArray("rows");
-            for (int i = 0; i <  rows.length(); i++) {
-                JSONObject contact = rows.getJSONObject(i);
-                list.add(new Contact(
-                        contact.getString("username"),
-                        contact.getString("email")));
-                Log.e("outgoing", contact.getString("username"));
-            }
-            mOutgoingRequest.setValue(list);
-        } catch (JSONException e){
-            Log.e("JSON PARSE ERROR", "Found in handle Success");
-            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
-        }
-    }
-
-    private void handleGetIncomingRequestListSuccess(JSONObject jsonObject) {
-        ArrayList<Contact> list = new ArrayList<>();
-        try {
-            JSONObject incoming = jsonObject.getJSONObject("incoming");
-            JSONArray rows = incoming.getJSONArray("rows");
-            for (int i = 0; i <  rows.length(); i++) {
-                JSONObject contact = rows.getJSONObject(i);
-                list.add(new Contact(
-                        contact.getString("username"),
-                        contact.getString("email")));
-                Log.e("incoming", contact.getString("username"));
-            }
-            mIncomingRequest.setValue(list);
-        } catch (JSONException e){
-            Log.e("JSON PARSE ERROR", "Found in handle Success");
-            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
-        }
-    }
-
-    private void handleGetNonFriendListSuccess(JSONObject obj) {
-        ArrayList<Contact> list = new ArrayList<>();
-        try {
-            JSONArray array = obj.getJSONArray("members");
-            for (int i = 0; i <  array.length(); i++) {
-                JSONObject contact = array.getJSONObject(i);
-                list.add(new Contact(
-                        contact.getString("username"),
-                        contact.getString("email")));
-            }
-            mNonContact.setValue(list);
-        } catch (JSONException e){
-            Log.e("JSON PARSE ERROR", "Found in handle Success");
-            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
-        }
-    }
-
-
     /**
      * Endpoint call to un-friend someone (delete a contact)
      *
-     * @param jwt String
-     * @param email String
+     * @param jwt String the user's jwt
+     * @param email String the email of the user to unfriend
      */
     public void unfriend(String jwt, String email) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/delete";
@@ -265,6 +212,13 @@ public class ContactListViewModel extends AndroidViewModel {
         RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
                 .addToRequestQueue(request);
     }
+
+    /**
+     * Endpoint call to add someone as a friend (friend request)
+     *
+     * @param jwt String the user's jwt
+     * @param email String the email of the user to send a request to
+     */
     public void addFriend(String jwt, String email) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/add";
         JSONObject body = new JSONObject();
@@ -291,6 +245,12 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    /**
+     * Endpoint call to accept a friend request
+     *
+     * @param jwt String the user's jwt
+     * @param email String the email of the user to accept
+     */
     public void acceptFriendRequest(String jwt, String email) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/accept";
         JSONObject body = new JSONObject();
@@ -317,6 +277,12 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
+    /**
+     * Endpoint call to delete a friend request
+     *
+     * @param jwt String the user's jwt
+     * @param email String the email of the user to delete
+     */
     public void deleteFriendRequest(String jwt, String email) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/delete";
         JSONObject body = new JSONObject();
@@ -343,62 +309,31 @@ public class ContactListViewModel extends AndroidViewModel {
                 .addToRequestQueue(request);
     }
 
-    private void handleDeleteFriendRequestSuccess(JSONObject jsonObject) {
-    }
-
-
-    private void handleAcceptFriendRequestSuccess(JSONObject jsonObject) {
-    }
-
-
-    private void handleAddFriendSuccess(JSONObject jsonObject) {
-
-    }
-
-
-
     /**
-     * Handles errors for unfriend endpoint calls
+     * sends a request to get the user's outgoing requests
      *
-     * @param volleyError VolleyError
+     * @param jwt String the users jwt
      */
-    private void handleError(VolleyError volleyError) {
-        Log.e("ERR","4");
-        if (Objects.isNull(volleyError.networkResponse)) {
-            Log.e("NETWORK ERROR", volleyError.getMessage());
-        }
-        else {
-            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
-            Log.e("CLIENT ERROR",
-                    volleyError.networkResponse.statusCode + " " + data);
-        }
+    public void getOutgoingRequestList(String jwt) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve/outgoing";
+        Request request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                this::handleGetOutgoingRequestListSuccess,
+                this::handleError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
     }
 
-    /**
-     * Handles the success for unfriend endpoint calls
-     *
-     * @param response JSONObject
-     */
-    private void handleUnfriendSuccess(final JSONObject response) {
-
-    }
-
-    /**
-     * Handles errors for the getContact endpoint calls
-     *
-     * @param volleyError VolleyError
-     */
-    private void handleGetContactError(VolleyError volleyError) {
-        if (Objects.isNull(volleyError.networkResponse)) {
-            Log.e("NETWORK ERROR", volleyError.getMessage());
-        }
-        else {
-            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
-            mContact.setValue(new ArrayList<>());
-            Log.e("CLIENT ERROR",
-                    volleyError.networkResponse.statusCode + " " + data);
-        }
-    }
 
     /**
      * Handles success for getContact endpoint calls
@@ -418,6 +353,142 @@ public class ContactListViewModel extends AndroidViewModel {
         } catch (JSONException e){
             Log.e("JSON PARSE ERROR", "Found in handle Success");
             Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * handles successful response and gets the list of outgoing requests
+     *
+     * @param jsonObject JSONObject the response object
+     */
+    private void handleGetOutgoingRequestListSuccess(JSONObject jsonObject) {
+        ArrayList<Contact> list = new ArrayList<>();
+        try {
+            JSONObject outgoing = jsonObject.getJSONObject("outgoing");
+            JSONArray rows = outgoing.getJSONArray("rows");
+            for (int i = 0; i <  rows.length(); i++) {
+                JSONObject contact = rows.getJSONObject(i);
+                list.add(new Contact(
+                        contact.getString("username"),
+                        contact.getString("email")));
+            }
+            mOutgoingRequest.setValue(list);
+        } catch (JSONException e){
+            Log.e("JSON PARSE ERROR", "Found in handle Success");
+            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * handles successful response and gets the list of incoming requests
+     *
+     * @param jsonObject JSONObject the response object
+     */
+    private void handleGetIncomingRequestListSuccess(JSONObject jsonObject) {
+        ArrayList<Contact> list = new ArrayList<>();
+        try {
+            JSONObject incoming = jsonObject.getJSONObject("incoming");
+            JSONArray rows = incoming.getJSONArray("rows");
+            for (int i = 0; i <  rows.length(); i++) {
+                JSONObject contact = rows.getJSONObject(i);
+                list.add(new Contact(
+                        contact.getString("username"),
+                        contact.getString("email")));
+            }
+            mIncomingRequest.setValue(list);
+        } catch (JSONException e){
+            Log.e("JSON PARSE ERROR", "Found in handle Success");
+            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * handles successful response and gets the list of non-friends
+     *
+     * @param obj JSONObject the response object
+     */
+    private void handleGetNonFriendListSuccess(JSONObject obj) {
+        ArrayList<Contact> list = new ArrayList<>();
+        try {
+            JSONArray array = obj.getJSONArray("members");
+            for (int i = 0; i <  array.length(); i++) {
+                JSONObject contact = array.getJSONObject(i);
+                list.add(new Contact(
+                        contact.getString("username"),
+                        contact.getString("email")));
+            }
+            mNonContact.setValue(list);
+        } catch (JSONException e){
+            Log.e("JSON PARSE ERROR", "Found in handle Success");
+            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
+        }
+    }
+
+    /**
+     * handle successful deleting friend request
+     *
+     * @param jsonObject JSONObject the response object
+     */
+    private void handleDeleteFriendRequestSuccess(JSONObject jsonObject) {
+    }
+
+    /**
+     * handle successful accepting friend request
+     *
+     * @param jsonObject JSONObject the response object
+     */
+    private void handleAcceptFriendRequestSuccess(JSONObject jsonObject) {
+    }
+
+    /**
+     * handle successful sending a friend request
+     *
+     * @param jsonObject JSONObject the response object
+     */
+    private void handleAddFriendSuccess(JSONObject jsonObject) {
+
+    }
+
+    /**
+     * Handles the success for unfriend endpoint calls
+     *
+     * @param response JSONObject
+     */
+    private void handleUnfriendSuccess(final JSONObject response) {
+
+    }
+
+    /**
+     * Handles errors for endpoint calls
+     *
+     * @param volleyError VolleyError
+     */
+    private void handleError(VolleyError volleyError) {
+        Log.e("ERR","4");
+        if (Objects.isNull(volleyError.networkResponse)) {
+            Log.e("NETWORK ERROR", volleyError.getMessage());
+        }
+        else {
+            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
+            Log.e("CLIENT ERROR",
+                    volleyError.networkResponse.statusCode + " " + data);
+        }
+    }
+
+    /**
+     * Handles errors for the getContact endpoint calls
+     *
+     * @param volleyError VolleyError
+     */
+    private void handleGetContactError(VolleyError volleyError) {
+        if (Objects.isNull(volleyError.networkResponse)) {
+            Log.e("NETWORK ERROR", volleyError.getMessage());
+        }
+        else {
+            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
+            mContact.setValue(new ArrayList<>());
+            Log.e("CLIENT ERROR",
+                    volleyError.networkResponse.statusCode + " " + data);
         }
     }
 }

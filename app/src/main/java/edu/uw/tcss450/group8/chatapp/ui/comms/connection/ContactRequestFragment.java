@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,11 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactRequestBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 
 /**
- * create an instance of this fragment.
+ * fragment to display all incoming and outgoing requests
+ *
+ * @author Rin Pham
+ * @author Shilnara Dam
+ * @version 5/31/22
  */
 public class ContactRequestFragment extends Fragment {
 
@@ -36,6 +39,12 @@ public class ContactRequestFragment extends Fragment {
 
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_contact_request, container, false);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -48,26 +57,38 @@ public class ContactRequestFragment extends Fragment {
 
         mContact.getIncomingRequestList(mUser.getJwt());
         mContact.incomingRequestListObserver(getViewLifecycleOwner(), contacts -> {
-            Log.e("incoming", "inside incoming recycler");
             mBinding.listContactIncoming.setVisibility(View.VISIBLE);
             mAdapterIncoming = new ContactIncomingRecyclerViewAdapter(contacts, this);
             mBinding.listContactIncoming.setAdapter(
                     mAdapterIncoming
             );
+            if (contacts.isEmpty()) {
+                mBinding.listContactIncoming.setVisibility(View.GONE);
+                mBinding.textContactIncoming.setVisibility(View.GONE);
+            }
 
         });
         mContact.getOutgoingRequestList(mUser.getJwt());
         mContact.outgoingRequestListObserver(getViewLifecycleOwner(), contacts -> {
-            Log.e("outgoing", "inside outgoing recycler");
             mBinding.listContactOutgoing.setVisibility(View.VISIBLE);
             mAdapterOutgoing = new ContactOutgoingRecyclerViewAdapter(contacts, this);
             mBinding.listContactOutgoing.setAdapter(
                     mAdapterOutgoing
             );
-
+            if (contacts.isEmpty()) {
+                mBinding.listContactOutgoing.setVisibility(View.GONE);
+                mBinding.textContactOutgoing.setVisibility(View.GONE);
+            }
         });
 
-
+        //refreshing chat list swipe
+        //mBinding.swipeContactsRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            //@Override
+            //public void onRefresh() {
+            //    mContact.getIncomingRequestList(mUser.getJwt());
+            //    mContact.getOutgoingRequestList(mUser.getJwt());
+            //}
+       // });
     }
 
     /**
@@ -87,13 +108,5 @@ public class ContactRequestFragment extends Fragment {
      */
     public void deleteFriendRequest(String email) {
         mContact.deleteFriendRequest(mUser.getJwt(), email);
-    }
-
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_contact_request, container, false);
     }
 }

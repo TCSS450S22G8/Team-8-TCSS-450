@@ -60,6 +60,11 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         return this.mContact.size();
     }
 
+    /**
+     * sets contact list
+     *
+     * @param contactList ArrayList<Contact> the contact list
+     */
     public void contactList(ArrayList<Contact> contactList) {
         mContact = contactList;
         notifyDataSetChanged();
@@ -95,6 +100,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             email = mBinding.textContactEmail;
             username = mBinding.textContactUsername;
 
+            //button to unfriend friend
             mUnFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -106,6 +112,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 }
             });
 
+            //button to message friend
             messageFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -113,8 +120,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
                 }
             });
         }
-
-
 
         /**
          * Set contact
@@ -125,6 +130,5 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             mBinding.textContactUsername.setText(contact.getUserName());
             mBinding.textContactEmail.setText(contact.getEmail());
         }
-
     }
 }

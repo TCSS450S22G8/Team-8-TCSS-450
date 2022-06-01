@@ -14,10 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentContactBinding;
@@ -30,7 +28,7 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
  * @author Charles Bryan
  * @author Rin Pham
  * @author Shilnara Dam
- * @version 5/19/22
+ * @version 5/31/22
  */
 public class ContactFragment extends Fragment{
 
@@ -82,6 +80,7 @@ public class ContactFragment extends Fragment{
                 mContact.getContacts(mUser.getJwt());
             }
         });
+
         EditText editText = mBinding.searchBar;
 
         editText.addTextChangedListener(new TextWatcher() {
@@ -102,7 +101,12 @@ public class ContactFragment extends Fragment{
         });
     }
 
-    private  void filter(String text) {
+    /**
+     * filter list of contacts for search
+     *
+     * @param text String the string to check
+     */
+    private void filter(String text) {
         ArrayList<Contact> contactList = new ArrayList<>();
         for (Contact contact: mContact.getContactList()) {
             if(contact.getUserName().toLowerCase().contains(text.toLowerCase()) ||
@@ -110,7 +114,6 @@ public class ContactFragment extends Fragment{
                 contactList.add(contact);
             }
         }
-
         mAdapter.contactList(contactList);
     }
 
@@ -132,7 +135,4 @@ public class ContactFragment extends Fragment{
         Bundle bundle = new Bundle();
         bundle.putString("email", email);
     }
-
-
-
 }

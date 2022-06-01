@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.home;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -92,23 +94,28 @@ public class HomeContactViewRecyclerAdapter extends RecyclerView.Adapter<HomeCon
             mUnFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mParent.homeUnFriend(email.getText().toString());
-                    mContact.remove((getAdapterPosition()));
-                    notifyItemRemoved(getAdapterPosition());
-                    notifyItemRangeChanged(getAdapterPosition(), mContact.size());
-                    Toast.makeText(mParent.getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder dialog = new AlertDialog.Builder(mParent.getContext());
+                    dialog.setTitle("Are you sure you want to remove this contact?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    mParent.homeUnFriend(email.getText().toString());
+                                    mContact.remove((getAdapterPosition()));
+                                    notifyItemRemoved(getAdapterPosition());
+                                    notifyItemRangeChanged(getAdapterPosition(), mContact.size());
+                                    Toast.makeText(mParent.getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show().setCanceledOnTouchOutside(true);
                 }
             });
 
             messageFriend.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mParent.homeSendMessage(email.getText().toString());
+                    mParent.homeSendMessage(email.getText().toString(), username.getText().toString());
                 }
             });
         }
-
-
 
         /**
          * Set contact

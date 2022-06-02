@@ -57,11 +57,12 @@
             android:layout_width="268dp"
             android:layout_height="48dp"
             android:text="@string/text_outgoing_requests"
+            android:textAlignment="center"
             android:textSize="20sp"
             android:textStyle="bold|italic"
             app:layout_constraintBottom_toTopOf="@+id/list_contact_outgoing"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.888"
+            app:layout_constraintHorizontal_bias="0.496"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/list_contact_incoming"
             app:layout_constraintVertical_bias="0.476" />

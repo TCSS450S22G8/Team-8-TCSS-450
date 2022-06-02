@@ -45,6 +45,7 @@ public class ChatroomAddUserFragment extends Fragment{
     private FragmentChatroomAddUserBinding mBinding;
     private ContactListViewModel mContact;
     private ChatroomViewModel mView;
+    private ChatroomRecyclerViewAdapter mView2;
     private int chatId;
     List<String> namesToAdd = new ArrayList<String>();
 
@@ -126,7 +127,7 @@ public class ChatroomAddUserFragment extends Fragment{
        // Log.e("THEBUNDLENUM", ": "+myInt );
         Log.e("THENUM", ": "+mView.getmChatId().getValue());
             chatId = mView.getmChatId().getValue();
-            Log.e("THENUM", ": "+chatId);
+            Log.e("THENUM2", ": "+chatId);
             mAdd.add1(mUser.getJwt(), namesToAdd, chatId);
             mBinding.progressBar.setVisibility(View.GONE);
             Navigation.findNavController(getView()).navigate(

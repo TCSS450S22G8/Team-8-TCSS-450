@@ -101,14 +101,15 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
      */
     public void add1(String jwt, List<String> namesToAdd, int chatId) {
         //String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats";
-        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/addOther/"+mChatid.getValue();
+        Log.e("ADD1ChatId", ": "+chatId );
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/addOther/"+chatId;
         for(int j = 0; j < namesToAdd.size();j++) {
             mjwt.setValue(jwt);
             mNames.setValue(namesToAdd);
             mChatid.setValue(chatId);
             JSONObject body = new JSONObject();
             try {
-                body.put("chatId", mChatid.getValue());
+                body.put("chatId", chatId);
                 body.put("email", namesToAdd.get(j));
             } catch (JSONException e) {
                 e.printStackTrace();

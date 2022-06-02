@@ -2,6 +2,7 @@ package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -143,6 +144,8 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
 
         private void attemptAddUser(View view) {
             //mBinding = FragmentChatroomListBinding.bind(mParent.getView());
+            Log.e("ChatIDBundle", ": "+Integer.parseInt(chatId.getText().toString()) );
+            chatIdReturn = Integer.parseInt(chatId.getText().toString());
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
             bundle.putInt("chatId", Integer.parseInt(chatId.getText().toString()));

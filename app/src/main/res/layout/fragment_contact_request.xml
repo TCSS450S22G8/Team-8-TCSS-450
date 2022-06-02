@@ -9,7 +9,7 @@
         android:id="@+id/layout_root"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context=".ui.comms.connection.ContactRequestFragment" >
+        tools:context=".ui.comms.connection.ContactRequestFragment">
 
 
         <androidx.recyclerview.widget.RecyclerView
@@ -41,7 +41,7 @@
             android:id="@+id/text_contact_incoming"
             android:layout_width="281dp"
             android:layout_height="41dp"
-            android:layout_marginTop="84dp"
+
             android:text="@string/text_incoming_requests"
             android:textAlignment="center"
             android:textSize="20sp"
@@ -66,25 +66,18 @@
             app:layout_constraintTop_toBottomOf="@+id/list_contact_incoming"
             app:layout_constraintVertical_bias="0.476" />
 
-        <Button
-            android:id="@+id/button_contacts_contacts"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginBottom="20dp"
-            android:text="@string/title_connections"
-            app:layout_constraintBottom_toTopOf="@+id/text_contact_incoming"
-            app:layout_constraintStart_toStartOf="parent" />
 
-        <Button
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_contacts_add"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            android:text="@string/text_add_contacts"
-            app:layout_constraintBottom_toTopOf="@+id/text_contact_incoming"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:clickable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/ic_person_add_24" />
+
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/button_contacts_request_refresh"

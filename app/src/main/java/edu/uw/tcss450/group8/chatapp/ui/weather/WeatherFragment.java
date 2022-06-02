@@ -28,7 +28,7 @@ import edu.uw.tcss450.group8.chatapp.ui.location.LocationViewModel;
  * Class for Weather Fragment to display weather
  *
  * @author Shilnara Dam
- * @version 5/15/22
+ * @version 6/1/22
  */
 public class WeatherFragment extends Fragment {
     private WeatherViewModel mWeatherModel;
@@ -37,7 +37,6 @@ public class WeatherFragment extends Fragment {
     private FragmentWeatherBinding mBinding;
     private UserInfoViewModel mUserModel;
 
-    private Activity mActivity;
 
 
     @Override
@@ -218,6 +217,7 @@ public class WeatherFragment extends Fragment {
                 //send toast message stating bad lat long
                 Toast.makeText(getActivity(), "Invalid Lat/Lon!", Toast.LENGTH_SHORT).show();
         }
+        mWeatherModel.resetError();
     }
 
     /**

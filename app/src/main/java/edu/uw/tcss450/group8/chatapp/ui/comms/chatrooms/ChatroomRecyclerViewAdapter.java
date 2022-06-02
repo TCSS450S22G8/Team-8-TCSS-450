@@ -15,29 +15,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.Request;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.google.android.material.badge.BadgeDrawable;
-import com.google.android.material.badge.BadgeUtils;
+import com.apachat.swipereveallayout.core.ViewBinder;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
-import edu.uw.tcss450.group8.chatapp.MainActivity;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomCardBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomListBinding;
-import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
 import edu.uw.tcss450.group8.chatapp.model.NewMessageCountViewModel;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserFragment;
 
 /**
  * RecyclerViewAdapter for message.
@@ -49,19 +38,17 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserF
  */
 public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRecyclerViewAdapter.ChatroomViewHolder> {
 
+    private final ChatroomListFragment mParent;
+    private final ViewBinder viewBinder = new ViewBinder();
+    FragmentChatroomListBinding mBinding;
+    private List<String> swipeIds;
     //Store all of the blogs to present
     private List<Chatroom> mChatroom;
-
-    private final ChatroomListFragment mParent;
-
     private MessageListViewModel mMessageModel;
-
     private NewMessageCountViewModel mNewMessageModel;
-
     private ChatroomViewModel mModel;
-
     private int chatIdReturn;
-    FragmentChatroomListBinding mBinding;
+    private boolean mFlag = false;
 
     /**
      * Constructor for MessageRecyclerViewAdapter
@@ -74,7 +61,19 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         this.mMessageModel = new ViewModelProvider(mParent.getActivity()).get(MessageListViewModel.class);
         this.mNewMessageModel = new ViewModelProvider(mParent.getActivity()).get(NewMessageCountViewModel.class);
         this.mModel = new ViewModelProvider(mParent.getActivity()).get(ChatroomViewModel.class);
+        swipeIds = new ArrayList<>();
     }
+
+    public void openAll() {
+        swipeIds.forEach(swipeId -> viewBinder.openLayout(swipeId));
+        mFlag = true;
+    }
+
+    public void closeAll() {
+        swipeIds.forEach(swipeId -> viewBinder.closeLayout(swipeId));
+        mFlag = false;
+    }
+
 
     @NonNull
     @Override
@@ -87,6 +86,10 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
     @Override
     public void onBindViewHolder(@NonNull ChatroomViewHolder holder, int position) {
         holder.setChatroom(mChatroom.get(position));
+        String swipeId = mChatroom.get(position).getChatRoomId();
+        viewBinder.bind(holder.binding.swipeLayout, swipeId);
+        if (mFlag == true) viewBinder.openLayout(swipeId);
+        swipeIds.add(swipeId);
     }
 
     @Override
@@ -109,7 +112,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
     public class ChatroomViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public FragmentChatroomCardBinding binding;
-       // public FragmentChatroomListBinding mBinding;
+        // public FragmentChatroomListBinding mBinding;
         private Chatroom mChatroomSingle;
         private Button openChat;
         private TextView chatId;
@@ -129,7 +132,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             chatId = mView.findViewById(R.id.text_chatid);
             chatId.setVisibility(View.INVISIBLE);
             chatName = mView.findViewById(R.id.text_title);
-            binding.cardRoot.setOnClickListener(new View.OnClickListener() {
+            binding.layoutInner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mParent.startChat(Integer.parseInt(chatId.getText().toString()), chatName.getText().toString());
@@ -144,7 +147,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
 
         private void attemptAddUser(View view) {
             //mBinding = FragmentChatroomListBinding.bind(mParent.getView());
-            Log.e("ChatIDBundle", ": "+Integer.parseInt(chatId.getText().toString()) );
+            Log.e("ChatIDBundle", ": " + Integer.parseInt(chatId.getText().toString()));
             chatIdReturn = Integer.parseInt(chatId.getText().toString());
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
@@ -166,7 +169,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             chatId = mView.findViewById(R.id.text_chatid);
             int chatIdNum = Integer.parseInt(chatId.getText().toString());
             //int chatId = Integer.parseInt(mView.findViewById(R.id.text_chatid));
-            mModel.attemptGetUsersRoom(jwt,chatIdNum,email);
+            mModel.attemptGetUsersRoom(jwt, chatIdNum, email);
             //mBinding = FragmentChatroomListBinding.bind(mParent.getView());
             binding.getRoot().setVisibility(View.GONE);
             //mParent.refreshAdapter();
@@ -185,6 +188,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         void setChatroom(final Chatroom chatroom) {
             mChatroomSingle = chatroom;
             binding.textTitle.setText(chatroom.getChatRoomName());
+            binding.textTitleSwipe.setText(chatroom.getChatRoomName());
             binding.textChatid.setText(chatroom.getChatRoomId());
             int chatId = Integer.parseInt(chatroom.getChatRoomId());
             mMessageModel.addMessageObserver(chatId, mParent.getViewLifecycleOwner(), messages -> {

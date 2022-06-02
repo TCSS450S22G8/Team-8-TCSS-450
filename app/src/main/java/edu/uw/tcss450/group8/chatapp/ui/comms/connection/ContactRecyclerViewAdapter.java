@@ -38,6 +38,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     private final ViewBinder viewBinder = new ViewBinder();
     private List<Contact> mContact;
     private List<String> swipeIds;
+    private boolean mFlag = false;
 
     /**
      * Constructor for MessageRecyclerViewAdapter
@@ -52,31 +53,35 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
 
     @NonNull
     @Override
-    public ContactRecyclerViewAdapter.ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ContactViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ContactViewHolder(LayoutInflater
                 .from(parent.getContext())
                 .inflate(R.layout.fragment_contact_card, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ContactRecyclerViewAdapter.ContactViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ContactViewHolder holder, int position) {
         holder.setContact(mContact.get(position));
         String swipeId = mContact.get(position).getUserName();
         viewBinder.bind(holder.mBinding.swipeLayout, swipeId);
+        if (mFlag == true) viewBinder.openLayout(swipeId);
         swipeIds.add(swipeId);
     }
 
     public void openAll() {
         swipeIds.forEach(swipeId -> viewBinder.openLayout(swipeId));
+        mFlag = true;
     }
 
     public void closeAll() {
         swipeIds.forEach(swipeId -> viewBinder.closeLayout(swipeId));
+        mFlag = false;
     }
 
     @Override
     public int getItemCount() {
         return this.mContact.size();
+
     }
 
     /**

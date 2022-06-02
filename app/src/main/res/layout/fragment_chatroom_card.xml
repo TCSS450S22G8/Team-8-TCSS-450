@@ -30,17 +30,7 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <Button
-                android:id="@+id/button_chatroom_removeothers"
-                android:layout_width="80dp"
-                android:layout_height="45dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:drawableTop="@drawable/ic_baseline_group_remove_24"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button_chatroom_add"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+
 
 
             <Button
@@ -52,7 +42,7 @@
                 android:drawableTop="@drawable/ic_baseline_group_add_24"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/button_chatroom_removeself"
-                app:layout_constraintStart_toEndOf="@+id/button_chatroom_removeothers"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Button
@@ -123,7 +113,8 @@
                 android:id="@+id/text_unread"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="4dp"
+                android:layout_marginBottom="4dp"
                 android:background="@drawable/badge_background"
                 android:gravity="center"
                 android:textColor="@color/white"
@@ -131,6 +122,16 @@
                 app:layout_constraintBottom_toBottomOf="@+id/text_title"
                 app:layout_constraintEnd_toEndOf="parent" />
 
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="24dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.908"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_baseline_double_arrow_24" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.apachat.swipereveallayout.core.SwipeLayout>

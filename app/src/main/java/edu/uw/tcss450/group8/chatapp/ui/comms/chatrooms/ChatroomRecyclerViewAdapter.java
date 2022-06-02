@@ -21,6 +21,7 @@ import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomCardBinding;
+import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomListBinding;
 import edu.uw.tcss450.group8.chatapp.model.NewMessageCountViewModel;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
@@ -38,7 +39,6 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
 
     private final ChatroomListFragment mParent;
     private final ViewBinder viewBinder = new ViewBinder();
-    FragmentChatroomListBinding mBinding;
     private List<String> swipeIds;
     //Store all of the blogs to present
     private List<Chatroom> mChatroom;

@@ -88,7 +88,7 @@
     <fragment
         android:id="@+id/chatroomAddUserFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserFragment"
-        android:label="ChatroomAddUserFragment" >
+        android:label="@string/title_add_user">
         <action
             android:id="@+id/action_chatroomAddUserFragment_to_nav_chatroom_fragment"
             app:destination="@id/nav_chatroom_fragment" />

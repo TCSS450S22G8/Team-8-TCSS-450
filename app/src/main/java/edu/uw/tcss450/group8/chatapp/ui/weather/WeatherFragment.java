@@ -5,6 +5,9 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
@@ -47,7 +50,7 @@ public class WeatherFragment extends Fragment {
         mLocationModel = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
         mLocationListModel = new ViewModelProvider(requireActivity()).get(LocationListViewModel.class);
         mUserModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
-
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -55,6 +58,47 @@ public class WeatherFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_weather, container, false);
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.botton_saved_location, menu);
+        inflater.inflate(R.menu.botton_map, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.open_saved_location) {
+
+
+            mLocationListModel.addLocationsObserver(getViewLifecycleOwner(), locations -> {
+                if (mLocationListModel.getLocationCount() == 0) {
+                    Navigation.findNavController(getView()).navigate(
+                            WeatherFragmentDirections
+                                    .actionNavWeatherFragmentToLocationMapFragment());
+                } else {
+                    Navigation.findNavController(getView()).navigate(
+                            WeatherFragmentDirections
+                                    .actionNavWeatherFragmentToLocationFragment());
+                }
+            });
+
+            mLocationListModel.resetLocation();
+            mLocationListModel.getLocations(mUserModel.getJwt());
+
+
+        }
+        if (id == R.id.open_map) {
+
+            Navigation.findNavController(getView()).navigate(
+                    WeatherFragmentDirections
+                            .actionNavWeatherFragmentToLocationMapFragment());
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -142,21 +186,6 @@ public class WeatherFragment extends Fragment {
 //            });
 //        });
         //button listener for moving to saved location list
-        mBinding.buttonWeatherLocationList.setOnClickListener(button -> {
-            mLocationListModel.resetLocation();
-            mLocationListModel.getLocations(mUserModel.getJwt());
-            mLocationListModel.addLocationsObserver(getViewLifecycleOwner(), locations -> {
-                if (mLocationListModel.getLocationCount() == 0) {
-                    Navigation.findNavController(getView()).navigate(
-                            WeatherFragmentDirections
-                                    .actionNavWeatherFragmentToLocationMapFragment());
-                } else {
-                    Navigation.findNavController(getView()).navigate(
-                            WeatherFragmentDirections
-                                    .actionNavWeatherFragmentToLocationFragment());
-                }
-            });
-        });
     }
 
     @Override

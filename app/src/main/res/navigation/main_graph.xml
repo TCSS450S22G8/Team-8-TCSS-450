@@ -96,7 +96,11 @@
     <fragment
         android:id="@+id/locationMapFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.location.LocationMapFragment"
-        android:label="@string/title_map" />
+        android:label="@string/title_map" >
+        <action
+            android:id="@+id/action_locationMapFragment_to_nav_weather_fragment"
+            app:destination="@id/nav_weather_fragment" />
+    </fragment>
     <fragment
         android:id="@+id/locationFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.location.LocationListFragment"

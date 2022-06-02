@@ -44,7 +44,9 @@
         <entry key="app/src/main/res/layout/fragment_weather.xml" value="0.37273550724637683" />
         <entry key="app/src/main/res/layout/fragment_weather_card.xml" value="0.21808510638297873" />
         <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.31333333333333335" />
+        <entry key="app/src/main/res/menu/botton_map.xml" value="0.2015625" />
         <entry key="app/src/main/res/menu/botton_open_swipe_layout.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/botton_saved_location.xml" value="0.2015625" />
         <entry key="app/src/main/res/menu/toolbar.xml" value="0.16614583333333333" />
       </map>
     </option>

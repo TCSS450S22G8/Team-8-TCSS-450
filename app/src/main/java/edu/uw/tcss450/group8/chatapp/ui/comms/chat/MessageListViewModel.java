@@ -203,7 +203,7 @@ public class MessageListViewModel extends AndroidViewModel {
                 Message cMessage = new Message(
                         message.getInt("messageid"),
                         message.getString("message"),
-                        message.getString("username"),
+                        message.getString("email"),
                         message.getString("timestamp")
                 );
                 if (!list.contains(cMessage)) {

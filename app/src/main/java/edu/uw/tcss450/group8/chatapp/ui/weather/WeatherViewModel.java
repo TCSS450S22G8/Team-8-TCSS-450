@@ -45,7 +45,8 @@ public class WeatherViewModel extends AndroidViewModel {
     private final MutableLiveData<Weather> mCurrentWeather;
     private final MutableLiveData<ArrayList<Weather>> mHourlyWeather;
     private final MutableLiveData<ArrayList<Weather>> mDailyWeather;
-    private MutableLiveData<String> mError;
+    private MutableLiveData<String> mZipError;
+    private MutableLiveData<String> mLatLonError;
     private JSONObject mResponse;
 
 
@@ -59,11 +60,22 @@ public class WeatherViewModel extends AndroidViewModel {
         mCurrentWeather = new MutableLiveData<>();
         mHourlyWeather = new MutableLiveData<>();
         mDailyWeather = new MutableLiveData<>();
-        mError = new MutableLiveData<>();
+        mZipError = new MutableLiveData<>();
+        mLatLonError = new MutableLiveData<>();
     }
 
-    public void resetError() {
-        mError = new MutableLiveData<>();
+    /**
+     * resets the mutable live data
+     */
+    public void resetZipcodeError() {
+        mZipError = new MutableLiveData<>();
+    }
+
+    /**
+     * resets the mutable live data
+     */
+    public void resetLatLonError() {
+        mLatLonError = new MutableLiveData<>();
     }
 
     /**
@@ -90,15 +102,27 @@ public class WeatherViewModel extends AndroidViewModel {
 
 
     /**
-     * adds an observer to this live data for the variable mError.
+     * adds an observer to this live data for the variable mZipError.
      * Value gets updated if error from api call has some failure.
      *
      * @param owner LifecycleOwner lifecycle owner that controls the observer
      * @param observer Observer the observer that receives events
      */
-    public void addErrorObserver(@NonNull LifecycleOwner owner,
+    public void addZipErrorObserver(@NonNull LifecycleOwner owner,
                                        @NonNull Observer<? super String> observer) {
-        mError.observe(owner, observer);
+        mZipError.observe(owner, observer);
+    }
+
+    /**
+     * adds an observer to this live data for the variable mError.
+     * Value gets updated if error from api call has some mLatLonError.
+     *
+     * @param owner LifecycleOwner lifecycle owner that controls the observer
+     * @param observer Observer the observer that receives events
+     */
+    public void addLatLonErrorObserver(@NonNull LifecycleOwner owner,
+                                 @NonNull Observer<? super String> observer) {
+        mLatLonError.observe(owner, observer);
     }
 
     /**
@@ -197,7 +221,7 @@ public class WeatherViewModel extends AndroidViewModel {
                             " " +
                             data);
         }
-        mError.setValue("zipcode");
+        mZipError.setValue("zipcode");
     }
 
     /**
@@ -216,7 +240,7 @@ public class WeatherViewModel extends AndroidViewModel {
                             " " +
                             data);
         }
-        mError.setValue("lat/lon");
+        mLatLonError.setValue("lat/lon");
     }
 
 

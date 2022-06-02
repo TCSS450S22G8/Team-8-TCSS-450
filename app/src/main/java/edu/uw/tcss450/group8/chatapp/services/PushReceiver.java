@@ -1,5 +1,8 @@
 package edu.uw.tcss450.group8.chatapp.services;
 
+import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
+import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
+
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -7,20 +10,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.widget.Switch;
 
 import androidx.core.app.NotificationCompat;
 
 import org.json.JSONException;
 
-import edu.uw.tcss450.group8.chatapp.AuthenticationActivity;
 import edu.uw.tcss450.group8.chatapp.MainActivity;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import me.pushy.sdk.Pushy;
-
-import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_FOREGROUND;
-import static android.app.ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE;
 
 /**
  * Class to notify users of new massages.
@@ -85,6 +83,7 @@ public class PushReceiver extends BroadcastReceiver {
 
             Intent i = new Intent(RECEIVED_NEW_MESSAGE);
             i.putExtra("message", message);
+
             i.putExtra("friendRequest", "request");
             i.putExtras(intent.getExtras());
 
@@ -133,11 +132,16 @@ public class PushReceiver extends BroadcastReceiver {
         ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
         ActivityManager.getMyMemoryState(appProcessInfo);
 
+
+        String chatId = intent.getStringExtra("chatid");
+        Log.d("TAG", "addFriendToChatNotification: " + chatId);
+
         if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
             Log.d("PUSHY", "Message received in foreground: " + message);
 
             Intent i = new Intent(RECEIVED_NEW_MESSAGE);
             i.putExtra("addedToChat", message);
+            i.putExtra("chatid", chatId);
             i.putExtras(intent.getExtras());
 
             context.sendBroadcast(i);
@@ -290,6 +294,7 @@ public class PushReceiver extends BroadcastReceiver {
         try {
             message = Message.createFromJsonString(intent.getStringExtra("message"));
             chatId = intent.getIntExtra("chatid", -1);
+            Log.d("TAG", "messagePushNotification: " + chatId);
         } catch (JSONException e) {
             //Web service sent us something unexpected...I can't deal with this.
             throw new IllegalStateException("Error from Web Service. Contact Dev Support");

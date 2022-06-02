@@ -191,7 +191,6 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
         void setChatroom(final Chatroom chatroom) {
             mChatroomSingle = chatroom;
             binding.textTitle.setText(chatroom.getChatRoomName());
-            binding.textTitleSwipe.setText(chatroom.getChatRoomName());
             binding.textChatid.setText(chatroom.getChatRoomId());
             int chatId = Integer.parseInt(chatroom.getChatRoomId());
             mMessageModel.addMessageObserver(chatId, mParent.getViewLifecycleOwner(), messages -> {

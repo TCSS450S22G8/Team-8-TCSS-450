@@ -25,8 +25,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 import java.util.TimeZone;
 
@@ -116,8 +118,9 @@ public class WeatherViewModel extends AndroidViewModel {
      * the zipcode is sent through the url
      *
      * @param theZipcode String the zipcode of the desired location
+     * @param theJwt String the user's jwt
      */
-    public void getWeatherZipCode(final String theZipcode) {
+    public void getWeatherZipCode(final String theZipcode, String theJwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/weather/zipcode/" + theZipcode;
         //String url = "http://10.0.2.2:5000/weather/zipcode";
         //create request
@@ -126,7 +129,15 @@ public class WeatherViewModel extends AndroidViewModel {
                 url,
                 null,
                 this::handleResult,
-                this::handleErrorZipcode);
+                this::handleErrorZipcode) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", theJwt);
+                return headers;
+            }
+        };
         request.setRetryPolicy(new DefaultRetryPolicy(
                 10_000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -142,8 +153,9 @@ public class WeatherViewModel extends AndroidViewModel {
      *
      * @param theLat String latitude of desired location
      * @param theLon String longitude of desired location
+     * @param theJwt String the user's jwt
      */
-    public void getWeatherLatLon(String theLat, String theLon) {
+    public void getWeatherLatLon(String theLat, String theLon, String theJwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/weather/lat-lon/" + theLat + "/" + theLon;
         //creating request GET
         Request<JSONObject> request = new JsonObjectRequest(
@@ -151,9 +163,15 @@ public class WeatherViewModel extends AndroidViewModel {
                 url,
                 null,
                 this::handleResult,
-                this::handleErrorLatLon); {
-
-        }
+                this::handleErrorLatLon) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", theJwt);
+                return headers;
+            }
+        };
         request.setRetryPolicy(new DefaultRetryPolicy(
                 10_000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,

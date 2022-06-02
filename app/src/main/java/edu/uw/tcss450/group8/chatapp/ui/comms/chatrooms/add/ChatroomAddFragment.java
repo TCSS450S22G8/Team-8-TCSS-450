@@ -103,12 +103,17 @@ public class ChatroomAddFragment extends Fragment{
      */
     public void attemptAdd(View view) {
         mBinding.progressBar.setVisibility(View.VISIBLE);
-        Log.e("JWT", mUser.getJwt());
-        Log.e("mynames", namesToAdd.toString() );
         if (mBinding.editChatroomAddName.getText().toString().trim().equals("")) {
-//            mBinding.editChatroomAddName.setError("Must have a name for the chat room!");
             AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
             dialog.setTitle("Make sure you are naming your chat room!")
+                    .setNegativeButton("Okay", null)
+                    .show().setCanceledOnTouchOutside(true);
+            mBinding.progressBar.setVisibility(View.GONE);
+            return;
+        }
+        else if (mBinding.editChatroomAddName.getText().toString().trim().length() > 12) {
+            AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
+            dialog.setTitle("Chatroom name needs to be less than 12 characters.")
                     .setNegativeButton("Okay", null)
                     .show().setCanceledOnTouchOutside(true);
             mBinding.progressBar.setVisibility(View.GONE);

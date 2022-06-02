@@ -3,13 +3,6 @@ package edu.uw.tcss450.group8.chatapp.ui.weather;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,27 +10,34 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.squareup.picasso.Picasso;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentWeatherBinding;
+import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.location.LocationListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.location.LocationViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.settings.SettingFragmentDirections;
 
 /**
  * Class for Weather Fragment to display weather
  *
- *  @author Shilnara Dam
- *  @version 5/15/22
+ * @author Shilnara Dam
+ * @version 5/15/22
  */
 public class WeatherFragment extends Fragment {
     private WeatherViewModel mWeatherModel;
+    private LocationListViewModel mLocationListModel;
     private LocationViewModel mLocationModel;
     private FragmentWeatherBinding mBinding;
+    private UserInfoViewModel mUserModel;
 
     private Activity mActivity;
-
 
 
     @Override
@@ -45,8 +45,8 @@ public class WeatherFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mWeatherModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
         mLocationModel = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
-        mLocationModel = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
-
+        mLocationListModel = new ViewModelProvider(requireActivity()).get(LocationListViewModel.class);
+        mUserModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
 
     }
 
@@ -80,7 +80,6 @@ public class WeatherFragment extends Fragment {
         mBinding.progressBar.setVisibility(View.VISIBLE);
 
 
-
         //adding weather observers
         mWeatherModel.addCurrentWeatherObserver(
                 getViewLifecycleOwner(),
@@ -89,11 +88,11 @@ public class WeatherFragment extends Fragment {
                 this::observeErrorResponse);
         mWeatherModel.addHourlyWeatherObserver(getViewLifecycleOwner(),
                 weatherList ->
-                    mBinding.listWeatherHourly.setAdapter(new WeatherHourlyRecyclerViewAdapter(weatherList)));
+                        mBinding.listWeatherHourly.setAdapter(new WeatherHourlyRecyclerViewAdapter(weatherList)));
         mWeatherModel.addDailyWeatherObserver(getViewLifecycleOwner(),
                 weatherList -> {
                     mBinding.listWeatherDaily.setAdapter(new WeatherDailyRecyclerViewAdapter(weatherList));
-        });
+                });
 
         //button listener for zipcode
         mBinding.buttonWeatherZipcodeEnter.setOnClickListener(button -> {
@@ -101,7 +100,7 @@ public class WeatherFragment extends Fragment {
                 //remove text focus
                 mBinding.editWeatherZipcode.clearFocus();
                 //close keyboard
-                InputMethodManager imm = (InputMethodManager)getActivity().
+                InputMethodManager imm = (InputMethodManager) getActivity().
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
             } catch (Exception e) {
@@ -117,7 +116,7 @@ public class WeatherFragment extends Fragment {
                 mBinding.editWeatherLat.clearFocus();
                 mBinding.editWeatherLon.clearFocus();
                 //close keyboard
-                InputMethodManager imm = (InputMethodManager)getActivity().
+                InputMethodManager imm = (InputMethodManager) getActivity().
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
             } catch (Exception e) {
@@ -128,11 +127,35 @@ public class WeatherFragment extends Fragment {
                     mBinding.editWeatherLon.getText().toString());
         });
 
+//        mLocationListModel.addLocationsObserver(getViewLifecycleOwner(), locations -> {
+//            mBinding.buttonWeatherLocationList.setOnClickListener(button -> {
+//                if (mLocationListModel.getLocationCount() == 0) {
+//                    Navigation.findNavController(getView()).navigate(
+//                            WeatherFragmentDirections
+//                                    .actionNavWeatherFragmentToLocationMapFragment());
+//                } else {
+//                    Navigation.findNavController(getView()).navigate(
+//                            WeatherFragmentDirections
+//                                    .actionNavWeatherFragmentToLocationFragment());
+//                }
+//
+//            });
+//        });
         //button listener for moving to saved location list
         mBinding.buttonWeatherLocationList.setOnClickListener(button -> {
-            Navigation.findNavController(getView()).navigate(
-                    WeatherFragmentDirections
-                            .actionNavWeatherFragmentToLocationFragment());
+            mLocationListModel.resetLocation();
+            mLocationListModel.getLocations(mUserModel.getJwt());
+            mLocationListModel.addLocationsObserver(getViewLifecycleOwner(), locations -> {
+                if (mLocationListModel.getLocationCount() == 0) {
+                    Navigation.findNavController(getView()).navigate(
+                            WeatherFragmentDirections
+                                    .actionNavWeatherFragmentToLocationMapFragment());
+                } else {
+                    Navigation.findNavController(getView()).navigate(
+                            WeatherFragmentDirections
+                                    .actionNavWeatherFragmentToLocationFragment());
+                }
+            });
         });
     }
 

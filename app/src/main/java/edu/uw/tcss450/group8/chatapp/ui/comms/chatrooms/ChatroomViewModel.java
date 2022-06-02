@@ -9,13 +9,9 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-import com.auth0.android.jwt.JWT;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +42,7 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     /**
      * Constructor for Message List ViewModel
+     *
      * @param application
      */
     public ChatroomViewModel(@NonNull Application application) {
@@ -56,7 +53,8 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     /**
      * Helper method for observe
-     * @param owner owner of lifecycle
+     *
+     * @param owner    owner of lifecycle
      * @param observer message list
      */
     public void addChatRoomListObserver(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<Chatroom>> observer) {
@@ -91,6 +89,7 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     /**
      * do it
+     *
      * @param chatRooms
      */
     public void handleGetChatRoomSuccess(final JSONArray chatRooms) {
@@ -98,10 +97,11 @@ public class ChatroomViewModel extends AndroidViewModel {
         try {
             for (int i = 0; i < chatRooms.length(); i++) {
                 JSONObject temp = chatRooms.getJSONObject(i);
-                listChatRooms.add(new Chatroom(temp.getString("chatid"),temp.getString("name")));
+                Log.d("TAG", "handleGetChatRoomSuccess: " + temp);
+                listChatRooms.add(new Chatroom(temp.getString("chatid"), temp.getString("name")));
             }
             mChatroomList.setValue(listChatRooms);
-        } catch (JSONException e){
+        } catch (JSONException e) {
             Log.e("JSON PARSE ERROR", "Found in handle Success");
             Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
         }
@@ -109,13 +109,13 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     /**
      * do it
+     *
      * @param volleyError
      */
     public void handlesGetChatRoomError(VolleyError volleyError) {
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
-        }
-        else {
+        } else {
             String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
             mChatroomList.setValue(new ArrayList<>());
             Log.e("CLIENT ERROR",

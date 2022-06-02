@@ -32,7 +32,8 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 5/19/22
+ * @author shilnara dam
+ * @version 6/1/22
  */
 public class ForgotFragment extends Fragment {
 
@@ -111,7 +112,6 @@ public class ForgotFragment extends Fragment {
                     dialog.setTitle("Both passwords must match!")
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);
-//                    mBinding.editForgotPassword2.setError("Passwords must match.");
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -154,16 +154,19 @@ public class ForgotFragment extends Fragment {
      * Navigates to the verify fragment to continue registration by verifying email.
      */
     private void navigateToLogin() {
-        // ToDO: Register to Verification to autofill login
-//        RegisterFragmentDirections.ActionRegisterFragmentToLoginFragment directions =
-//                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
-//
-//        directions.setEmail(binding.editEmail.getText().toString());
-//        directions.setPassword(binding.editPassword1.getText().toString());
         mResetPassword.resetSuccessResponse();
 
         //send toast message stating password was reset
         Toast.makeText(getActivity(), "Password Updated!", Toast.LENGTH_SHORT).show();
-        Navigation.findNavController(getView()).navigate(ForgotFragmentDirections.actionForgotFragmentToLoginFragment());
+
+        //send email and password for autofill then navigate to log in
+        ForgotFragmentArgs args = ForgotFragmentArgs.fromBundle(getArguments());
+        ForgotFragmentDirections
+                .ActionForgotFragmentToLoginFragment directions =
+                ForgotFragmentDirections
+                        .actionForgotFragmentToLoginFragment();
+        directions.setEmail(args.getEmail());
+        directions.setPassword(mBinding.editForgotPassword1.getText().toString());
+        Navigation.findNavController(getView()).navigate(directions);
     }
 }

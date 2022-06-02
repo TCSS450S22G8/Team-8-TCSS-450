@@ -32,7 +32,7 @@ import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkClientP
  * @author Levi McCoy
  * @author Shilnara Dam
  * @author Sean Logan
- * @version 5/19/22
+ * @version 6/1/22
  */
 public class RegisterFragment extends Fragment {
 
@@ -230,18 +230,12 @@ public class RegisterFragment extends Fragment {
      * Navigates to the verify fragment to continue registration by verifying email.
      */
     private void navigateToLogin() {
-        // ToDO: Register to Verification to autofill login
-//        RegisterFragmentDirections.ActionRegisterFragmentToLoginFragment directions =
-//                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
-//
-//        directions.setEmail(binding.editEmail.getText().toString());
-//        directions.setPassword(binding.editPassword1.getText().toString());
-
         Navigation.findNavController(getView()).
                 navigate(RegisterFragmentDirections.
-                        actionRegisterFragmentToVerifyFragment());
+                        actionRegisterFragmentToVerifyFragment(
+                                mBinding.editRegisterPassword1.getText().toString(),
+                                mBinding.editRegisterEmail.getText().toString()));
     }
-
 
     /**
      * An observer on the HTTP Response from the web server. This observer should be

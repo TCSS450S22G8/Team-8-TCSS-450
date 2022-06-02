@@ -34,6 +34,8 @@ public class PushReceiver extends BroadcastReceiver {
     private static final String DELETE_FRIEND_CHANNEL_ID = "3";
     private static final String ADD_FRIEND_TO_CHAT_CHANNEL_ID = "4";
     private static final String ACCEPT_FRIEND_REQUEST_CHANNEL_ID = "5";
+    private static final String DELETED_FROM_CHAT_CHANNEL_ID = "6";
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -62,6 +64,9 @@ public class PushReceiver extends BroadcastReceiver {
                 break;
             case "acceptFriendRequest":
                 acceptFriendRequestNotification(context, intent);
+                break;
+            case "deleteUserFromChat":
+                removeFromChatNotification(context, intent);
                 break;
         }
     }
@@ -282,6 +287,7 @@ public class PushReceiver extends BroadcastReceiver {
         }
     }
 
+
     /**
      * Push Notification sent to user when a new message is received.
      *
@@ -347,6 +353,59 @@ public class PushReceiver extends BroadcastReceiver {
 
             // Build the notification and display it
             notificationManager.notify(1, builder.build());
+        }
+    }
+
+
+    /**
+     * Push Notification sent to user when they have been removed from a chatroom.
+     *
+     * @param context
+     * @param intent
+     */
+    private void removeFromChatNotification(Context context, Intent intent) {
+        String message = intent.getStringExtra("message");
+
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
+
+        if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+            Log.d("PUSHY", "Message received in foreground: " + message);
+
+            Intent i = new Intent(RECEIVED_NEW_MESSAGE);
+            i.putExtra("message", message);
+            i.putExtra("deletedFromChat", "request");
+            i.putExtras(intent.getExtras());
+
+            context.sendBroadcast(i);
+        } else {
+            //app is in the background so create and post a notification
+            Log.d("PUSHY", "Message received in background: " + message);
+
+            Intent i = new Intent(context, MainActivity.class);
+            i.putExtras(intent.getExtras());
+
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
+                    i, PendingIntent.FLAG_MUTABLE);
+
+            //research more on notifications the how to display them
+            //https://developer.android.com/guide/topics/ui/notifiers/notifications
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, DELETED_FROM_CHAT_CHANNEL_ID)
+                    .setAutoCancel(true)
+                    .setSmallIcon(R.drawable.slapchaticon) //TODO: figure out why color isnt showing up
+                    .setContentTitle(message)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                    .setContentIntent(pendingIntent);
+
+            // Automatically configure a FriendRequestNotification Channel for devices running Android O+
+            Pushy.setNotificationChannel(builder, context);
+
+            // Get an instance of the NotificationManager service
+            NotificationManager notificationManager =
+                    (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+
+            // Build the notification and display it
+            notificationManager.notify(6, builder.build());
         }
     }
 }

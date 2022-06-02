@@ -16,6 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="92dp"
             android:clickable="true"
+            android:visibility="invisible"
             app:layout_constraintEnd_toStartOf="@+id/image_weather_condition"
             app:layout_constraintHorizontal_bias="0.542"
             app:layout_constraintStart_toStartOf="parent"

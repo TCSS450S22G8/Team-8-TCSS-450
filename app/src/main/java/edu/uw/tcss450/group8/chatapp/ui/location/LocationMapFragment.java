@@ -7,6 +7,9 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,11 +17,7 @@ import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -103,6 +102,7 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
                 }
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 return false;
@@ -147,7 +147,7 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
 
     @Override
     public void onMapClick(@NonNull LatLng latLng) {
-        if (marker!=null) {
+        if (marker != null) {
             marker.remove();
         }
         marker = mMap.addMarker(new MarkerOptions()
@@ -158,7 +158,13 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         mListModel.addLocation(mUser.getJwt(), latLng.latitude, latLng.longitude);
+                                Navigation.findNavController(getView()).navigate(
+                                LocationMapFragmentDirections
+                                        .actionLocationMapFragmentToNavWeatherFragment(String.valueOf(latLng.latitude), String.valueOf(latLng.longitude)));
+
                     }
+
+
                 })
                 .setNegativeButton("Cancel", null)
                 .show().setCanceledOnTouchOutside(true);

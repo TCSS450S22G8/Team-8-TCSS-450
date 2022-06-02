@@ -33,33 +33,31 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints" />
 
+
         <TextView
             android:id="@+id/text_contact_email"
-            android:layout_width="287dp"
-            android:layout_height="35dp"
+            android:layout_width="232dp"
+            android:layout_height="30dp"
             android:paddingStart="5dp"
             android:paddingEnd="8dp"
             android:paddingBottom="5dp"
             android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.486"
+            app:layout_constraintEnd_toStartOf="@+id/button_contact_accept_friend"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_contact_username"
             tools:ignore="MissingConstraints" />
-
 
         <Button
             android:id="@+id/button_contact_accept_friend"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="70dp"
             android:layout_height="35dp"
-            android:layout_marginStart="316dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="56dp"
             android:background="@drawable/rounded_corner"
             android:drawableTop="@drawable/ic_person_add_24"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_contact_email"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:ignore="MissingConstraints"
             tools:visibility="visible" />
 

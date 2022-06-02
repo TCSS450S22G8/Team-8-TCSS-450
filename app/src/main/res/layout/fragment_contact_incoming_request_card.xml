@@ -18,8 +18,8 @@
 
         <TextView
             android:id="@+id/text_contact_username"
-            android:layout_width="340dp"
-            android:layout_height="40dp"
+            android:layout_width="270dp"
+            android:layout_height="47dp"
             android:layout_marginTop="16dp"
             android:paddingRight="8dp"
             android:paddingBottom="8dp"
@@ -35,14 +35,13 @@
 
         <TextView
             android:id="@+id/text_contact_email"
-            android:layout_width="287dp"
-            android:layout_height="35dp"
+            android:layout_width="239dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="4dp"
             android:paddingStart="5dp"
             android:paddingEnd="8dp"
             android:paddingBottom="5dp"
             android:textAppearance="?attr/textAppearanceListItem"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.486"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_contact_username"
             tools:ignore="MissingConstraints" />
@@ -53,16 +52,15 @@
             android:layout_width="70dp"
             android:layout_height="35dp"
             android:layout_marginStart="3dp"
-            android:layout_marginTop="4dp"
             android:layout_marginEnd="16dp"
             android:background="@drawable/rounded_corner"
             android:drawableTop="@drawable/ic_delete_24"
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.232"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/button_contact_accept_friend"
-            app:layout_constraintTop_toBottomOf="@+id/text_contact_email"
             tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteY="63dp"
             tools:visibility="visible" />
 
         <Button
@@ -70,14 +68,12 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="70dp"
             android:layout_height="35dp"
-            android:layout_marginStart="188dp"
-            android:layout_marginTop="4dp"
             android:background="@drawable/rounded_corner"
             android:drawableTop="@drawable/ic_accept_24"
             android:textSize="12sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_contact_email"
+            app:layout_constraintStart_toEndOf="@+id/text_contact_email"
             tools:ignore="MissingConstraints"
+            tools:layout_editor_absoluteY="63dp"
             tools:visibility="visible" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

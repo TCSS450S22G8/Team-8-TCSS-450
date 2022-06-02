@@ -70,6 +70,11 @@ public class ContactRequestFragment extends Fragment {
                 mBinding.textContactIncoming.setVisibility(View.GONE);
             }
 
+            if (contacts.isEmpty()) {
+                mBinding.listContactOutgoing.setVisibility(View.GONE);
+                mBinding.textContactOutgoing.setVisibility(View.GONE);
+            }
+
         });
         mContact.getOutgoingRequestList(mUser.getJwt());
         mContact.outgoingRequestListObserver(getViewLifecycleOwner(), contacts -> {

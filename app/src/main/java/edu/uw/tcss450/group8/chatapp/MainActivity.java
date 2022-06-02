@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -380,6 +381,7 @@ public class MainActivity extends AppCompatActivity {
                 //Inform the view model holding chatroom messages of the new
                 //message.
                 mModel.addMessage(intent.getIntExtra("chatid", -1), cm);
+                return;
             }
 
             // Increment count for messages (for new chatroom)
@@ -389,16 +391,31 @@ public class MainActivity extends AppCompatActivity {
 
                 mNewMessageModel.increment(Integer.valueOf(intent.getStringExtra("chatid")));
                 mChatroomViewModel.getChatRoomsForUser(mUserModel.getJwt());
+                Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
+                return;
             }
 
 
             //Incrementing count for new friend requests
             if (intent.hasExtra("friendRequest")) {
-                Log.e("friend", "made it inside if statement");
+                Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
                 if (nd.getId() != R.id.nav_connections_fragment) {
                     mNewFriendRequestModel.increment();
                 }
+                return;
+            }
 
+            if (intent.hasExtra("deleteFriend")) {
+                Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
+                if (nd.getId() != R.id.nav_connections_fragment) {
+                    mNewFriendRequestModel.increment();
+                }
+                return;
+            }
+
+            if (intent.hasExtra("deletedFromChat")) {
+                Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
+                return;
             }
         }
     }

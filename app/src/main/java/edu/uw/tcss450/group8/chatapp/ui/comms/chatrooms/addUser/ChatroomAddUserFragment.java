@@ -106,7 +106,11 @@ public class ChatroomAddUserFragment extends Fragment{
 
 
 
-
+    /**
+     * attempt to start adding users process
+     *
+     * @param view current view
+     */
     public void attemptAdd(View view) {
         mBinding.progressBar.setVisibility(View.VISIBLE);
         Log.e("JWT", mUser.getJwt());

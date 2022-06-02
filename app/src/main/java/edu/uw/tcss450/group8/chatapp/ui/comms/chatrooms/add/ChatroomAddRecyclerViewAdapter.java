@@ -34,7 +34,7 @@ public class ChatroomAddRecyclerViewAdapter extends RecyclerView.Adapter<Chatroo
     private final ChatroomAddFragment mParent;
 
     /**
-     * Constructor for MessageRecyclerViewAdapter
+     * Constructor for AddMessageRecyclerViewAdapter
      *
      * @param items list of message
      */

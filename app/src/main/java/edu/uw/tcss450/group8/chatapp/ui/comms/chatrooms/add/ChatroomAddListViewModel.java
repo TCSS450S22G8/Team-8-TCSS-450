@@ -53,7 +53,7 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
 
 
     /**
-     * Constructor for Contact List ViewModel
+     * Constructor for Chatroom add List ViewModel
      * @param application app
      */
     public ChatroomAddListViewModel(@NonNull Application application) {

@@ -102,7 +102,7 @@ public class ChatroomAddFragment extends Fragment{
     /**
      * attempt to start adding process
      *
-     * @param view curent view
+     * @param view current view
      */
     public void attemptAdd(View view) {
         mBinding.progressBar.setVisibility(View.VISIBLE);

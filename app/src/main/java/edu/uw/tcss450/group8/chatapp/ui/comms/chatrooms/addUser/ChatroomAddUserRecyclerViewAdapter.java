@@ -38,7 +38,7 @@ public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<Cha
 
 
     /**
-     * Constructor for MessageRecyclerViewAdapter
+     * Constructor for AdduserRecyclerViewAdapter
      *
      * @param items list of message
      */

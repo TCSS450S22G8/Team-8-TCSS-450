@@ -129,8 +129,10 @@ public class WeatherFragment extends Fragment {
         mWeatherModel.addCurrentWeatherObserver(
                 getViewLifecycleOwner(),
                 this::observeCurrentWeatherResponse);
-        mWeatherModel.addErrorObserver(getViewLifecycleOwner(),
-                this::observeErrorResponse);
+        mWeatherModel.addZipErrorObserver(getViewLifecycleOwner(),
+                this::observeZipcodeErrorResponse);
+        mWeatherModel.addLatLonErrorObserver(getViewLifecycleOwner(),
+                this::observeLatLonErrorResponse);
         mWeatherModel.addHourlyWeatherObserver(getViewLifecycleOwner(),
                 weatherList ->
                         mBinding.listWeatherHourly.setAdapter(new WeatherHourlyRecyclerViewAdapter(weatherList)));
@@ -151,7 +153,7 @@ public class WeatherFragment extends Fragment {
             } catch (Exception e) {
                 Log.i("ANDROID", "Keyboard did not close");
             }
-            setDataToBlank();
+            //setDataToBlank();
             mWeatherModel.getWeatherZipCode(mBinding.editWeatherZipcode.getText().toString(),
                     mUserModel.getJwt());
         });
@@ -168,7 +170,7 @@ public class WeatherFragment extends Fragment {
             } catch (Exception e) {
                 Log.i("ANDROID", "Keyboard did not close");
             }
-            setDataToBlank();
+            //setDataToBlank();
             mWeatherModel.getWeatherLatLon(mBinding.editWeatherLat.getText().toString(),
                     mBinding.editWeatherLon.getText().toString(), mUserModel.getJwt());
         });
@@ -228,7 +230,10 @@ public class WeatherFragment extends Fragment {
      *
      * @param theError String the Response from the server
      */
-    private void observeErrorResponse(final String theError) {
+    private void observeZipcodeErrorResponse(String theError) {
+        //send toast message stating bad zipcode
+        Toast.makeText(getActivity(), "Invalid Zipcode!", Toast.LENGTH_SHORT).show();
+        mWeatherModel.resetZipcodeError();
         //making elements visible again due to incorrect input
         mBinding.textWeatherDailyHeader.setVisibility(View.VISIBLE);
         mBinding.textWeatherHourlyHeader.setVisibility(View.VISIBLE);
@@ -239,19 +244,28 @@ public class WeatherFragment extends Fragment {
         mBinding.imageWeatherCondition.setVisibility(View.VISIBLE);
         mBinding.textWeatherCurrentTemp.setVisibility(View.VISIBLE);
         mBinding.textWeatherCondition.setVisibility(View.VISIBLE);
-        //checking which type of data error
-        switch (theError) {
-            case "zipcode":
-                //send toast message stating bad zipcode
-                Toast.makeText(getActivity(), "Invalid Zipcode!", Toast.LENGTH_SHORT).show();
-                mWeatherModel.resetError();
-                break;
-            case "lat/lon":
-                //send toast message stating bad lat long
-                Toast.makeText(getActivity(), "Invalid Lat/Lon!", Toast.LENGTH_SHORT).show();
-                mWeatherModel.resetError();
-                break;
-        }
+    }
+
+    /**
+     * An observer on the HTTP Response from the web server.
+     * if user input incorrect data then show past correct data
+     *
+     * @param theError String the Response from the server
+     */
+    private void observeLatLonErrorResponse(String theError) {
+         //send toast message stating bad lat long
+        Toast.makeText(getActivity(), "Invalid Lat/Lon!", Toast.LENGTH_SHORT).show();
+        mWeatherModel.resetLatLonError();
+        //making elements visible again due to incorrect input
+        mBinding.textWeatherDailyHeader.setVisibility(View.VISIBLE);
+        mBinding.textWeatherHourlyHeader.setVisibility(View.VISIBLE);
+        mBinding.listWeatherHourly.setVisibility(View.VISIBLE);
+        mBinding.listWeatherDaily.setVisibility(View.VISIBLE);
+        mBinding.progressBar.setVisibility(View.GONE);
+        mBinding.textWeatherCity.setVisibility(View.VISIBLE);
+        mBinding.imageWeatherCondition.setVisibility(View.VISIBLE);
+        mBinding.textWeatherCurrentTemp.setVisibility(View.VISIBLE);
+        mBinding.textWeatherCondition.setVisibility(View.VISIBLE);
     }
 
     /**

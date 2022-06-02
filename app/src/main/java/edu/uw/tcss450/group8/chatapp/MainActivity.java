@@ -48,6 +48,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.location.LocationListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.location.LocationViewModel;
 
 /**
@@ -91,6 +92,7 @@ public class MainActivity extends AppCompatActivity {
     private LocationViewModel mLocationModel;
     private ChatroomViewModel mChatroomViewModel;
     private UserInfoViewModel mUserModel;
+    private LocationListViewModel mLocationListModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -130,12 +132,12 @@ public class MainActivity extends AppCompatActivity {
         mChatroomViewModel = viewModelProvider.get(ChatroomViewModel.class);
         ContactListViewModel mContactModel = viewModelProvider.get(ContactListViewModel.class);
         mLocationModel = viewModelProvider.get(LocationViewModel.class);
-
+        mLocationListModel = viewModelProvider.get(LocationListViewModel.class);
         mContactModel.getContacts(mUserModel.getJwt());
         mChatroomViewModel.getChatRoomsForUser(mUserModel.getJwt());
 
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
-
+        mLocationListModel.getLocations(mUserModel.getJwt());
         setContentView(mBinding.getRoot());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);

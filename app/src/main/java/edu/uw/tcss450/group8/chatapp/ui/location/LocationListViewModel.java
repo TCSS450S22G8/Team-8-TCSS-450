@@ -9,7 +9,6 @@ import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.Observer;
 
-import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -35,9 +34,9 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
  */
 public class LocationListViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<List<Location>> mLocations;
     private final MutableLiveData<String> mAdd;
     private final MutableLiveData<String> mDelete;
+    private MutableLiveData<List<Location>> mLocations;
 
 
     /**
@@ -55,14 +54,22 @@ public class LocationListViewModel extends AndroidViewModel {
     /**
      * adds an observer to this live data for the variable mLocations.
      *
-     * @param owner LifecycleOwner lifecycle owner that controls the observer
+     * @param owner    LifecycleOwner lifecycle owner that controls the observer
      * @param observer Observer the observer that receives events
      */
     public void addLocationsObserver(@NonNull LifecycleOwner owner,
-                                         @NonNull Observer<? super List<Location>> observer) {
+                                     @NonNull Observer<? super List<Location>> observer) {
         mLocations.observe(owner, observer);
     }
 
+    /**
+     * get the count of the saved location.
+     *
+     * @return the number of saved location
+     */
+    public int getLocationCount() {
+        return mLocations.getValue().size();
+    }
 
     /**
      * sends a JSON request to get a list of user saved locations
@@ -200,13 +207,16 @@ public class LocationListViewModel extends AndroidViewModel {
     private void handleError(final VolleyError theError) {
         if (Objects.isNull(theError.networkResponse)) {
             Log.e("NETWORK ERROR", theError.getMessage());
-        }
-        else {
+        } else {
             String data = new String(theError.networkResponse.data, Charset.defaultCharset());
             Log.e("CLIENT ERROR",
                     theError.networkResponse.statusCode +
                             " " +
                             data);
         }
+    }
+
+    public void resetLocation() {
+        mLocations = new MutableLiveData<>();
     }
 }

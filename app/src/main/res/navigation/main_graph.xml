@@ -43,6 +43,9 @@
         <argument
             android:name="lon"
             app:argType="string" />
+        <action
+            android:id="@+id/action_nav_weather_fragment_to_locationMapFragment"
+            app:destination="@id/locationMapFragment" />
     </fragment>
     <activity
         android:id="@+id/authenticationActivity"

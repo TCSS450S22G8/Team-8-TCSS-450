@@ -49,6 +49,7 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
 
     /**
      * Constructor for Chatroom add users List ViewModel
+     *
      * @param application app
      */
     public ChatroomAddUserListViewModel(@NonNull Application application) {
@@ -112,7 +113,6 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
      * @param chatId The id of the chat to add too
      */
     public void add1(String jwt, List<String> namesToAdd, int chatId) {
-        Log.e("ADD1ChatId", ": "+chatId );
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/addOther/"+chatId;
         for(int j = 0; j < namesToAdd.size();j++) {
             mjwt.setValue(jwt);
@@ -170,7 +170,6 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
      * @param response JSONObject
      */
     private void handleAdd1Success(final JSONObject response) {
-
     }
 
 

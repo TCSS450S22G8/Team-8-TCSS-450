@@ -80,7 +80,6 @@ public class ChatroomViewModel extends AndroidViewModel {
      * @return the mutable live data of chat Id
      */
     public MutableLiveData<Integer> getmChatId() {
-        Log.e("GETTER", "getmChatId: "+mChatId.getValue());
         return mChatId;
     }
 
@@ -91,7 +90,6 @@ public class ChatroomViewModel extends AndroidViewModel {
      * @return the set chat Id
      */
     public MutableLiveData<Integer> setmChatId(int id) {
-        Log.e("SETTER", "getmChatId: "+mChatId.getValue());
         mChatId.setValue(id);
         return mChatId;
     }
@@ -142,7 +140,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     }
 
     /**
-     * do it
+     * Handles get chat room success
      *
      * @param chatRooms
      */
@@ -162,7 +160,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     }
 
     /**
-     * do it
+     * Handles get chatroom error
      *
      * @param volleyError
      */
@@ -178,9 +176,9 @@ public class ChatroomViewModel extends AndroidViewModel {
     }
 
     /**
-     * Endpoint call to do first step of adding chat (create room)
-     *  @param jwt String of jwt
+     *  Endpoint to attempt to remove yourself from a chatroom
      *
+     *  @param jwt String of jwt
      */
     public void attemptRemoveSelf1(String jwt, int chatId, String email) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/delete/user/"+chatId+"/"+email;
@@ -235,9 +233,9 @@ public class ChatroomViewModel extends AndroidViewModel {
     }
 
     /**
-     * Endpoint call to do first step of adding chat (create room)
-     *  @param jwt String of jwt
+     *  Attempts to delete the chat
      *
+     *  @param jwt String of jwt
      */
     public void attemptRemoveSelf2(String jwt, int chatId, String email) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/delete/chatroom/group/"+chatId;
@@ -266,7 +264,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     }
 
     /**
-     * Handles errors for third add endpoint calls
+     * Handles errors for second add endpoint calls
      *
      * @param volleyError VolleyError
      */
@@ -292,9 +290,9 @@ public class ChatroomViewModel extends AndroidViewModel {
     }
 
     /**
-     * Endpoint call to do first step of adding chat (create room)
-     *  @param jwt String of jwt
+     *  Attempt to get the users in the chatroom
      *
+     *  @param jwt String of jwt
      */
     public void attemptGetUsersRoom(String jwt, int chatId, String email) {
         mjwt = jwt;
@@ -327,7 +325,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     }
 
     /**
-     * Handles errors for third add endpoint calls
+     * Handles errors for get user endpoint calls
      *
      * @param volleyError VolleyError
      */
@@ -350,7 +348,6 @@ public class ChatroomViewModel extends AndroidViewModel {
     private void handleGetUsersRoomSuccess(final JSONObject response) {
         try {
             int members = response.getInt("rowCount");
-            Log.e("NumInChat", ": "+members);
             if(members == 1){
                 attemptRemoveSelf2(mjwt,mChatId.getValue(),mEmail);
             }

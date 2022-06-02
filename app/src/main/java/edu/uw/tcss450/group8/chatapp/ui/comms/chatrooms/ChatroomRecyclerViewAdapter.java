@@ -35,6 +35,7 @@ import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
  *
  * @author Charles Bryan
  * @author Levi McCoy
+ * @author Sean Logan
  * @version 6/2/22
  */
 public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRecyclerViewAdapter.ChatroomViewHolder> {
@@ -51,7 +52,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
     private boolean mFlag = false;
 
     /**
-     * Constructor for MessageRecyclerViewAdapter
+     * Constructor for ChatroomRecyclerViewAdapter
      *
      * @param items list of chatroom
      */
@@ -64,11 +65,17 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         swipeIds = new ArrayList<>();
     }
 
+    /**
+     * Opens all chatrooms
+     */
     public void openAll() {
         swipeIds.forEach(swipeId -> viewBinder.openLayout(swipeId));
         mFlag = true;
     }
 
+    /**
+     * Closes all chatrooms
+     */
     public void closeAll() {
         swipeIds.forEach(swipeId -> viewBinder.closeLayout(swipeId));
         mFlag = false;
@@ -97,17 +104,27 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         return this.mChatroom.size();
     }
 
+    /**
+     * Gets list of chatrooms
+     *
+     * @return list of chatrooms
+     */
     public List<Chatroom> getChatrooms() {
         return this.mChatroom;
     }
 
+    /**
+     * Gets chatid
+     *
+     * @return chatid
+     */
     public int getChatId() {
         return chatIdReturn;
     }
 
     /**
      * Objects from this class represent an Individual row View from the List * of rows in the
-     * Message Recycler View.
+     * Chatroom Recycler View.
      */
     public class ChatroomViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
@@ -139,7 +156,6 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
 
                 }
             });
-//            binding.buttonChatroomRemoveself.setOnClickListener(this::attemptRemoveSelf);
 
             binding.buttonChatroomRemoveself.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -159,8 +175,12 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             binding.buttonChatroomAdd.setOnClickListener(this::attemptAddUser);
         }
 
+        /**
+         * Attempts to add a user to the chat
+         *
+         * @param view
+         */
         private void attemptAddUser(View view) {
-            Log.e("ChatIDBundle", ": " + Integer.parseInt(chatId.getText().toString()));
             chatIdReturn = Integer.parseInt(chatId.getText().toString());
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
@@ -171,9 +191,13 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             mModel.setmChatId(Integer.parseInt(chatId.getText().toString()));
             Navigation.findNavController(mParent.requireView()).navigate(
                     ChatroomListFragmentDirections.actionNavChatroomFragmentToChatroomAddUserFragment());
-
         }
 
+        /**
+         * Attempts to remove yourself from a chatroom
+         *
+         * @param view
+         */
         private void attemptRemoveSelf(View view) {
             TextView chatId;
             String jwt = mUser.getJwt();
@@ -186,7 +210,6 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             notifyItemRemoved(getAdapterPosition());
             notifyItemRangeChanged(getAdapterPosition(), mChatroom.size());
             Toast.makeText(mParent.getActivity(), "Chat Deleted!", Toast.LENGTH_SHORT).show();
-
         }
 
         /**
@@ -211,7 +234,6 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             mNewMessageModel.addMessageCountObserver(chatId, mParent.getViewLifecycleOwner(), count -> {
 
                 if (count == 0) {
-
                     binding.textUnread.setVisibility(View.INVISIBLE);
                 } else {
                     binding.textUnread.setVisibility(View.VISIBLE);

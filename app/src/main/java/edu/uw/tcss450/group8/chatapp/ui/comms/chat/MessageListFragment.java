@@ -80,7 +80,6 @@ public class MessageListFragment extends Fragment {
         getActivity().getTheme().resolveAttribute(R.attr.messageCard, typedValue, true);
         int color = typedValue.data;
 
-        Log.e("chat id iew create in message frag", String.valueOf(chatid));
         rv.setAdapter(new MessageRecyclerViewAdapter(
                 mChatModel.getMessageListByChatId(chatid),
                 mUserModel.getEmail(), color, chatid, mNewMessageModel));

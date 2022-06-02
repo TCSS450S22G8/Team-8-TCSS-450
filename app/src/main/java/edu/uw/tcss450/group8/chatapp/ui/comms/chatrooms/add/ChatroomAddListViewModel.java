@@ -274,7 +274,6 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
      */
     private void handleAdd2Success(final JSONObject response) {
         mChatrooms.add(new Chatroom(mChatid.getValue().toString(),mName,mEmail));
-        Log.e("Are they here", mChatrooms.toString());
         mChatroomsList.setValue(mChatrooms);
         add3(mNames.getValue());
     }

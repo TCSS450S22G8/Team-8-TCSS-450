@@ -66,11 +66,6 @@ public class ContactRequestFragment extends Fragment {
             mBinding.listContactIncoming.setAdapter(
                     mAdapterIncoming
             );
-//            if (contacts.isEmpty()) {
-//                mBinding.listContactIncoming.setVisibility(View.GONE);
-//                mBinding.textContactIncoming.setVisibility(View.GONE);
-//            }
-
         });
         mContact.getOutgoingRequestList(mUser.getJwt());
         mContact.outgoingRequestListObserver(getViewLifecycleOwner(), contacts -> {
@@ -79,10 +74,6 @@ public class ContactRequestFragment extends Fragment {
             mBinding.listContactOutgoing.setAdapter(
                     mAdapterOutgoing
             );
-//            if (contacts.isEmpty()) {
-//                mBinding.listContactOutgoing.setVisibility(View.GONE);
-//                mBinding.textContactOutgoing.setVisibility(View.GONE);
-//            }
         });
 
 
@@ -97,15 +88,6 @@ public class ContactRequestFragment extends Fragment {
             mContact.getOutgoingRequestList(mUser.getJwt());
             mContact.getIncomingRequestList(mUser.getJwt());
         });
-
-        //refreshing chat list swipe
-        //mBinding.swipeContactsRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-        //@Override
-        //public void onRefresh() {
-        //    mContact.getIncomingRequestList(mUser.getJwt());
-        //    mContact.getOutgoingRequestList(mUser.getJwt());
-        //}
-        // });
     }
 
     @Override

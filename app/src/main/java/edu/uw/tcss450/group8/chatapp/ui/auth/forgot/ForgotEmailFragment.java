@@ -27,7 +27,8 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 5/19/22
+ * @author Sean Logan
+ * @version 6/2/22
  */
 public class ForgotEmailFragment extends Fragment {
 
@@ -67,7 +68,6 @@ public class ForgotEmailFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mForgotModel.addEmailSuccessObserver(getViewLifecycleOwner(), email -> {
-            Log.e("TAG", "inside addEmailSuccessObserver");
             mForgotModel.resetSuccessResponse();
             navigateToEmailCheck();
         });
@@ -122,10 +122,8 @@ public class ForgotEmailFragment extends Fragment {
      * information validation.
      */
     private void verifyAuthWithServer() {
-//        navigateToEmailCheck();
         mForgotModel.sendForgotPasswordEmail(
                 mBinding.editForgotEmail.getText().toString());
-
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
     }
@@ -135,14 +133,6 @@ public class ForgotEmailFragment extends Fragment {
      * Navigates to the verify fragment to continue registration by verifying email.
      */
     private void navigateToEmailCheck() {
-        // ToDO: Register to Verification to autofill login
-//        RegisterFragmentDirections.ActionRegisterFragmentToLoginFragment directions =
-//                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
-//
-//        directions.setEmail(binding.editEmail.getText().toString());
-//        directions.setPassword(binding.editPassword1.getText().toString());
-
-
         Navigation.findNavController(getView()).
                 navigate(ForgotEmailFragmentDirections.
                         actionForgotEmailFragmentToForgotConfirmFragment(

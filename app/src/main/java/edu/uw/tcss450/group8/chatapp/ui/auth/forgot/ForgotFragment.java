@@ -32,7 +32,8 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @author shilnara dam
+ * @author Shilnara Dam
+ * @author Sean Logan
  * @version 6/1/22
  */
 public class ForgotFragment extends Fragment {
@@ -84,7 +85,7 @@ public class ForgotFragment extends Fragment {
     }
 
     /**
-     * Attempts to Chane to the new password, validates the user entered information,
+     * Attempts to Change to the new password, validates the user entered information,
      * then sends it to the server for validation.
      *
      * @param button button clicked

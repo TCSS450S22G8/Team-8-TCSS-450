@@ -55,7 +55,6 @@ public class HomeContactViewRecyclerAdapter extends RecyclerView.Adapter<HomeCon
     @Override
     public void onBindViewHolder(@NonNull HomeContactViewRecyclerAdapter.ContactViewHolder holder, int position) {
         holder.setContact(mContact.get(position));
-
     }
 
     @Override

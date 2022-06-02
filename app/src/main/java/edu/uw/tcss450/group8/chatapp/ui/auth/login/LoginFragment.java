@@ -1,7 +1,5 @@
 package edu.uw.tcss450.group8.chatapp.ui.auth.login;
 
-import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.getEmail;
-import static edu.uw.tcss450.group8.chatapp.utils.LogInStatusManager.getJWT;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkExcludeWhiteSpace;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdLength;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdSpecialChar;
@@ -30,8 +28,6 @@ import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentLoginBinding;
 import edu.uw.tcss450.group8.chatapp.model.PushyTokenViewModel;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.auth.verify.VerifyFragmentArgs;
-import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherFragmentArgs;
 import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
@@ -86,15 +82,6 @@ public class LoginFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        //String jwt = getJWT(getActivity());
-        //String email = getEmail(getActivity());
-//        if(!jwt.equals("")||!email.equals("")){
-//            Navigation.findNavController(getView())
-//                    .navigate(LoginFragmentDirections
-//                            .actionLoginFragmentToMainActivity(email, jwt));
-//            getActivity().finish();
-//        }
         LoginFragmentArgs args = LoginFragmentArgs.fromBundle(getArguments());
 
         //Local access to the ViewBinding object. No need to create as Instance Var as it is only
@@ -118,7 +105,7 @@ public class LoginFragment extends Fragment {
                 getViewLifecycleOwner(),
                 this::observeResponse);
 
-        //autofills user info when registering or forgetting password
+        //auto-fills user info when registering or forgetting password
         mBinding.editRegisterEmail.setText(args.getEmail().equals("default") ? "" : args.getEmail());
         mBinding.editPassword.setText(args.getPassword().equals("default") ? "" : args.getPassword());
 

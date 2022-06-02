@@ -71,14 +71,12 @@ public class ChatroomAddUserFragment extends Fragment{
             mBinding.listRoot.setVisibility(View.GONE);
             mBinding.progressBar.setVisibility(View.VISIBLE);
             chatId = getId;
-            Log.e("CHATID1", "onViewCreated: "+chatId);
             mAdd.getContactsNot(mUser.getJwt(),chatId);
         });
         mAdd.addGetContactsNotObserver(getViewLifecycleOwner(), contacts -> {
             mBinding.listRoot.setVisibility(View.VISIBLE);
             mBinding.progressBar.setVisibility(View.GONE);
             mBinding.swipeChatroomAddUserRefresh.setRefreshing(false);
-            Log.e("CONTACTS", "onViewCreated: "+contacts.toString());
             mBinding.listRoot.setAdapter(
                     new ChatroomAddUserRecyclerViewAdapter(contacts, this)
             );
@@ -103,16 +101,11 @@ public class ChatroomAddUserFragment extends Fragment{
      */
     public void attemptAdd(View view) {
         mBinding.progressBar.setVisibility(View.VISIBLE);
-        Log.e("JWT", mUser.getJwt());
-        Log.e("mynames", namesToAdd.toString() );
-        Log.e("THENUM", ": "+mView.getmChatId().getValue());
-            chatId = mView.getmChatId().getValue();
-            Log.e("THENUM2", ": "+chatId);
-            mAdd.add1(mUser.getJwt(), namesToAdd, chatId);
-            mBinding.progressBar.setVisibility(View.GONE);
-            Navigation.findNavController(getView()).navigate(
-                    ChatroomAddUserFragmentDirections.actionChatroomAddUserFragmentToNavChatroomFragment());
-        //}
+        chatId = mView.getmChatId().getValue();
+        mAdd.add1(mUser.getJwt(), namesToAdd, chatId);
+        mBinding.progressBar.setVisibility(View.GONE);
+        Navigation.findNavController(getView()).navigate(
+                ChatroomAddUserFragmentDirections.actionChatroomAddUserFragmentToNavChatroomFragment());
     }
 
 }

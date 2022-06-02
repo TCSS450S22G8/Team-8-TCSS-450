@@ -80,8 +80,6 @@ public class LocationListRecyclerViewAdapter extends RecyclerView.Adapter<Locati
             mWeather = theView.findViewById(R.id.button_location_weather);
 
 
-
-
             //delete saved location
             mDelete.setOnClickListener(new View.OnClickListener() {
                 @Override

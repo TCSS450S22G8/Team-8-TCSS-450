@@ -362,15 +362,6 @@ public class ContactListViewModel extends AndroidViewModel {
      */
     public void getChatId(String jwt, String email) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/private/" + email;
-        /*
-        //would prefer using body but endpoint thinks it is undefined for some reason
-        JSONObject body = new JSONObject();
-        try {
-            body.put("email", email);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-         */
         Request<JSONObject> request = new JsonObjectRequest(
                 Request.Method.GET,
                 url,

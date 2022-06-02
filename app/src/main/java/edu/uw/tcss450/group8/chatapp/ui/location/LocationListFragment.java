@@ -44,7 +44,6 @@ public class LocationListFragment extends Fragment {
         super.onCreate(savedInstanceState);
         mModel = new ViewModelProvider(requireActivity()).get(LocationListViewModel.class);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
-        //getActivity().findViewById()
     }
 
     @Override
@@ -65,8 +64,6 @@ public class LocationListFragment extends Fragment {
         mModel.addLocationsObserver(getViewLifecycleOwner(), locations -> {
             mBinding.swipeContactsRefresh.setRefreshing(false);
             mBinding.listLocations.setVisibility(View.VISIBLE);
-            //mBinding.progressBar.setVisibility(View.GONE);
-            //mBinding.swipeContactsRefresh.setRefreshing(false);
             mBinding.listLocations.setAdapter(
                     new LocationListRecyclerViewAdapter(locations, this)
             );

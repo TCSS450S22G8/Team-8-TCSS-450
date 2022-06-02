@@ -2,7 +2,6 @@ package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +30,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
  * @author Rin Pham
  * @author Shilnara Dam
  * @author Levi McCoy
+ * @author Sean Logan
  * @version 6/2/22
  */
 public class ChatroomAddFragment extends Fragment{

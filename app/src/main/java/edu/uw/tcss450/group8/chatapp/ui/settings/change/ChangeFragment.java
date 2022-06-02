@@ -93,8 +93,6 @@ public class ChangeFragment extends Fragment {
 
         mBinding.buttonChange.setOnClickListener(button -> {
             attemptChange(button);
-            //Navigation.findNavController(getView()).navigate(
-            //RegisterFragmentDirections.actionRegisterFragmentToVerifyFragment());
         });
         mChangeModel.addResponseObserver(getViewLifecycleOwner(),
                 this::observeResponse
@@ -183,12 +181,8 @@ public class ChangeFragment extends Fragment {
                 model.getJwt().toString(),
                 mBinding.editChangeCurPass.getText().toString(),
                 mBinding.editChangePassword1.getText().toString());
-
-
         //This is an Asynchronous call. No statements after should rely on the
         //result of connect().
-
-
     }
 
 
@@ -196,15 +190,7 @@ public class ChangeFragment extends Fragment {
      * Navigates to the verify fragment to continue registration by verifying email.
      */
     private void navigateToSettings() {
-        // ToDO: Register to Verification to autofill login
-//        RegisterFragmentDirections.ActionRegisterFragmentToLoginFragment directions =
-//                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
-//
-//        directions.setEmail(binding.editEmail.getText().toString());
-//        directions.setPassword(binding.editPassword1.getText().toString());
-
         Navigation.findNavController(getView()).navigate(ChangeFragmentDirections.actionChangeFragmentToNavHomeFragment());
-
     }
 
 
@@ -234,9 +220,5 @@ public class ChangeFragment extends Fragment {
             Log.d("JSON Response", "No Response");
             mBinding.layoutWait.setVisibility(View.GONE);
         }
-
     }
-
-
-
 }

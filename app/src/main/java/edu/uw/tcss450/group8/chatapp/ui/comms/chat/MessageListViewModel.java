@@ -55,7 +55,6 @@ public class MessageListViewModel extends AndroidViewModel {
     public MessageListViewModel(@NonNull Application application) {
         super(application);
         mMessages = new HashMap<>();
-//        mMessageList.setValue(MessageGenerator.getMessageList()); // Get Message from backend
     }
 
     /**
@@ -87,7 +86,6 @@ public class MessageListViewModel extends AndroidViewModel {
     }
 
     private MutableLiveData<List<Message>> getOrCreateMapEntry(final int chatId) {
-        Log.e("chat id inside mutable in message view model", String.valueOf(chatId));
         if (!mMessages.containsKey(chatId)) {
             mMessages.put(chatId, new MutableLiveData<>(new ArrayList<>()));
         }
@@ -205,7 +203,7 @@ public class MessageListViewModel extends AndroidViewModel {
                 Message cMessage = new Message(
                         message.getInt("messageid"),
                         message.getString("message"),
-                        message.getString("email"),
+                        message.getString("username"),
                         message.getString("timestamp")
                 );
                 if (!list.contains(cMessage)) {
@@ -214,8 +212,8 @@ public class MessageListViewModel extends AndroidViewModel {
                 } else {
                     // this shouldn't happen but could with the asynchronous
                     // nature of the application
-                    Log.wtf("Chat message already received",
-                            "Or duplicate id:" + cMessage.getMessageId());
+//                    Log.wtf("Chat message already received",
+//                            "Or duplicate id:" + cMessage.getMessageId());
                 }
 
             }

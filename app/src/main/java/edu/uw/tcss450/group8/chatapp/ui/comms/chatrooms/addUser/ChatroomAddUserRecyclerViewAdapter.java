@@ -41,7 +41,6 @@ public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<Cha
      *
      * @param items list of message
      */
-
     public ChatroomAddUserRecyclerViewAdapter(List<Contact> items, ChatroomAddUserFragment parent) {
         this.mContact= items;
         mParent = parent;
@@ -73,7 +72,6 @@ public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<Cha
      * Objects from this class represent an Individual row View from the List * of rows in the
      * Message Recycler View.
      */
-
     public class ChatroomAddUserViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
         public FragmentChatroomAddUserCardBinding mBinding;
@@ -88,28 +86,23 @@ public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<Cha
          *
          * @param view View
          */
-
         public ChatroomAddUserViewHolder(View view) {
             super(view);
             mView = view;
             mBinding = FragmentChatroomAddUserCardBinding.bind(view);
             mAdd = view.findViewById(R.id.checkBox_add_user);
 
-
             mAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(mParent.namesToAdd.contains(mBinding.textChatroomAddUserEmail.getText().toString())) {
                         mParent.namesToAdd.remove(mBinding.textChatroomAddUserEmail.getText().toString());
-                        Log.e("emailList", mParent.namesToAdd.toString());
                     }
                     else{
                         mParent.namesToAdd.add(mBinding.textChatroomAddUserEmail.getText().toString());
-                        Log.e("emailList", mParent.namesToAdd.toString());
                     }
                 }
             });
-
         }
 
 
@@ -120,7 +113,6 @@ public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<Cha
          *
          * @param contact Contact the contact object
          */
-
         void setContact(final Contact contact) {
             mBinding.textChatroomAddUserUsername.setText(contact.getUserName());
             mBinding.textChatroomAddUserEmail.setText(contact.getEmail());

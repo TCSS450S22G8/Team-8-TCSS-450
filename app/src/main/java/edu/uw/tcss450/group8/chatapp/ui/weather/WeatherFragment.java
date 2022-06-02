@@ -170,26 +170,9 @@ public class WeatherFragment extends Fragment {
             } catch (Exception e) {
                 Log.i("ANDROID", "Keyboard did not close");
             }
-            //setDataToBlank();
             mWeatherModel.getWeatherLatLon(mBinding.editWeatherLat.getText().toString(),
                     mBinding.editWeatherLon.getText().toString(), mUserModel.getJwt());
         });
-
-//        mLocationListModel.addLocationsObserver(getViewLifecycleOwner(), locations -> {
-//            mBinding.buttonWeatherLocationList.setOnClickListener(button -> {
-//                if (mLocationListModel.getLocationCount() == 0) {
-//                    Navigation.findNavController(getView()).navigate(
-//                            WeatherFragmentDirections
-//                                    .actionNavWeatherFragmentToLocationMapFragment());
-//                } else {
-//                    Navigation.findNavController(getView()).navigate(
-//                            WeatherFragmentDirections
-//                                    .actionNavWeatherFragmentToLocationFragment());
-//                }
-//
-//            });
-//        });
-        //button listener for moving to saved location list
     }
 
     @Override
@@ -220,8 +203,6 @@ public class WeatherFragment extends Fragment {
         Picasso.get().load(theWeather.getIcon()).into(mBinding.imageWeatherCondition);
         mBinding.textWeatherCurrentTemp.setText(theWeather.getTemp());
         mBinding.textWeatherCondition.setText(theWeather.getCondition());
-
-
     }
 
     /**

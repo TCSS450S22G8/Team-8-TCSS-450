@@ -68,11 +68,17 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
         swipeIds.add(swipeId);
     }
 
+    /**
+     * Opens all chatrooms
+     */
     public void openAll() {
         swipeIds.forEach(swipeId -> viewBinder.openLayout(swipeId));
         mFlag = true;
     }
 
+    /**
+     * Closes all chatrooms
+     */
     public void closeAll() {
         swipeIds.forEach(swipeId -> viewBinder.closeLayout(swipeId));
         mFlag = false;
@@ -90,7 +96,6 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
      * @param contactList ArrayList<Contact> the contact list
      */
     public void contactList(ArrayList<Contact> contactList) {
-        Log.e("error", "contactList: ");
         mContact = contactList;
         notifyDataSetChanged();
     }

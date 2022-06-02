@@ -57,7 +57,6 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
         mListModel = new ViewModelProvider(getActivity()).get(LocationListViewModel.class);
         mModel = new ViewModelProvider(getActivity()).get(LocationViewModel.class);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
-
     }
 
 
@@ -74,8 +73,6 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
         FragmentLocationMapBinding binding = FragmentLocationMapBinding.bind(getView());
         mModel = new ViewModelProvider(getActivity())
                 .get(LocationViewModel.class);
-        //mModel.addLocationObserver(getViewLifecycleOwner(), location ->
-        //binding.textLatLong.setText(location.toString()));
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment =
@@ -126,8 +123,6 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
                         Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                         && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION)
                         != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
                     // here to request the missing permissions, and then overriding
                     //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
                     //                                          int[] grantResults)
@@ -171,13 +166,5 @@ public class LocationMapFragment extends Fragment implements OnMapReadyCallback,
         mMap.animateCamera(
                 CameraUpdateFactory.newLatLngZoom(
                         latLng, mMap.getCameraPosition().zoom));
-    }
-
-    public void observeError(@NonNull LatLng latLng) {
-
-    }
-
-    public void observeSuccess(@NonNull LatLng latLng) {
-
     }
 }

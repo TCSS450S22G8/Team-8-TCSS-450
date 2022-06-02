@@ -34,7 +34,7 @@ public class ChatroomAddRecyclerViewAdapter extends RecyclerView.Adapter<Chatroo
     private final ChatroomAddFragment mParent;
 
     /**
-     * Constructor for AddMessageRecyclerViewAdapter
+     * Constructor for ChatroomAddRecyclerViewAdapter
      *
      * @param items list of message
      */
@@ -66,7 +66,7 @@ public class ChatroomAddRecyclerViewAdapter extends RecyclerView.Adapter<Chatroo
 
     /**
      * Objects from this class represent an Individual row View from the List * of rows in the
-     * Message Recycler View.
+     * Chatroom Add Recycler View.
      */
     public class ChatroomAddViewHolder extends RecyclerView.ViewHolder {
         public final View mView;
@@ -95,11 +95,9 @@ public class ChatroomAddRecyclerViewAdapter extends RecyclerView.Adapter<Chatroo
                 public void onClick(View view) {
                     if(mParent.namesToAdd.contains(mBinding.textChatroomAddEmail.getText().toString())) {
                         mParent.namesToAdd.remove(mBinding.textChatroomAddEmail.getText().toString());
-                        Log.e("emailList", mParent.namesToAdd.toString());
                     }
                     else{
                         mParent.namesToAdd.add(mBinding.textChatroomAddEmail.getText().toString());
-                        Log.e("emailList", mParent.namesToAdd.toString());
                     }
                 }
             });

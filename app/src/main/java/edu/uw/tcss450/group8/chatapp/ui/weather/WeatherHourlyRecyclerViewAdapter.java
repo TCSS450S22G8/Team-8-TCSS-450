@@ -80,7 +80,4 @@ public class WeatherHourlyRecyclerViewAdapter extends RecyclerView.Adapter<Weath
             mBinding.textTime.setText(theWeather.getTime());
         }
     }
-
-
-
 }

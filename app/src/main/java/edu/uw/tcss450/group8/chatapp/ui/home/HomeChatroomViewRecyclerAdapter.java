@@ -29,7 +29,6 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.Chatroom;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.home.HomeFragment;
 import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 
 /**
@@ -133,7 +132,6 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
 
                 }
             });
-//            binding.buttonChatroomRemoveself.setOnClickListener(this::attemptRemoveSelf);
 
             binding.buttonChatroomRemoveself.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -154,7 +152,6 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
         }
 
         private void attemptAddUser(View view) {
-            Log.e("ChatIDBundle", ": " + Integer.parseInt(chatId.getText().toString()));
             chatIdReturn = Integer.parseInt(chatId.getText().toString());
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
@@ -165,9 +162,13 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
             mModel.setmChatId(Integer.parseInt(chatId.getText().toString()));
             Navigation.findNavController(mParent.requireView()).navigate(
                     HomeFragmentDirections.actionNavHomeFragmentToChatroomAddUserFragment());
-
         }
 
+        /**
+         * Attempts to remove self from home fragment chat
+         *
+         * @param view
+         */
         private void attemptRemoveSelf(View view) {
             TextView chatId;
             String jwt = mUser.getJwt();
@@ -180,7 +181,6 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
             notifyItemRemoved(getAdapterPosition());
             notifyItemRangeChanged(getAdapterPosition(), mChatroom.size());
             Toast.makeText(mParent.getActivity(), "Chat Deleted!", Toast.LENGTH_SHORT).show();
-
         }
 
         /**
@@ -202,17 +202,13 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
             });
 
             mNewMessageModel.addMessageCountObserver(chatId, mParent.getViewLifecycleOwner(), count -> {
-
                 if (count == 0) {
-
                     binding.textUnread.setVisibility(View.INVISIBLE);
                 } else {
                     binding.textUnread.setVisibility(View.VISIBLE);
                     String str = String.valueOf(count);
                     binding.textUnread.setText(str);
-
                 }
-
             });
 
         }

@@ -118,8 +118,6 @@ public class ChatroomListFragment extends Fragment {
                 Navigation.findNavController(getView()).navigate(
                         ChatroomListFragmentDirections.actionNavChatroomFragmentToChatroomAddFragment()
                 ));
-
-
     }
 
     /**
@@ -131,7 +129,6 @@ public class ChatroomListFragment extends Fragment {
         Navigation.findNavController(getView()).
                 navigate(ChatroomListFragmentDirections.
                         actionNavChatroomFragmentToMessageListFragment(chatName, chatId));
-
     }
 
     /**
@@ -143,8 +140,5 @@ public class ChatroomListFragment extends Fragment {
         myAdapter.notifyDataSetChanged();
         mBinding.swipeContactsRefresh.refreshDrawableState();
         mBinding.swipeContactsRefresh.setRefreshing(false);
-
     }
-
-
 }

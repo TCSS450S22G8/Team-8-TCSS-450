@@ -1,5 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,11 +23,11 @@ import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomCardBinding;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomListBinding;
 import edu.uw.tcss450.group8.chatapp.model.NewMessageCountViewModel;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 
 /**
  * RecyclerViewAdapter for message.
@@ -137,12 +139,28 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
 
                 }
             });
-            binding.buttonChatroomRemoveself.setOnClickListener(this::attemptRemoveSelf);
+//            binding.buttonChatroomRemoveself.setOnClickListener(this::attemptRemoveSelf);
+
+            binding.buttonChatroomRemoveself.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(mParent.getContext());
+                    dialog.setTitle("Are you sure you want to remove this chat?")
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    attemptRemoveSelf(view);
+                                    Toast.makeText(mParent.getActivity(), "Delete ChatRoom", Toast.LENGTH_SHORT).show();
+                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show().setCanceledOnTouchOutside(true);
+                }
+            });
             binding.buttonChatroomAdd.setOnClickListener(this::attemptAddUser);
         }
 
         private void attemptAddUser(View view) {
-            Log.e("ChatIDBundle", ": "+Integer.parseInt(chatId.getText().toString()) );
+            Log.e("ChatIDBundle", ": " + Integer.parseInt(chatId.getText().toString()));
             chatIdReturn = Integer.parseInt(chatId.getText().toString());
             Intent intent = new Intent();
             Bundle bundle = new Bundle();
@@ -162,7 +180,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             String email = mUser.getEmail();
             chatId = mView.findViewById(R.id.text_chatid);
             int chatIdNum = Integer.parseInt(chatId.getText().toString());
-            mModel.attemptGetUsersRoom(jwt,chatIdNum,email);
+            mModel.attemptGetUsersRoom(jwt, chatIdNum, email);
             binding.getRoot().setVisibility(View.GONE);
             mChatroom.remove((getAdapterPosition()));
             notifyItemRemoved(getAdapterPosition());

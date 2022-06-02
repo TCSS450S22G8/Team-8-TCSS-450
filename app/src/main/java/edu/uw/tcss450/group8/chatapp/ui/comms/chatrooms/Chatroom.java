@@ -7,7 +7,7 @@ import java.io.Serializable;
  * A class to encapsulate a chat message object.
  *
  * @author Levi McCoy
- * @version 5/19/22
+ * @version 6/2/22
  */
 public class Chatroom implements Serializable {
     private final String mChatRoomName;

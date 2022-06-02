@@ -1,6 +1,5 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,11 +19,7 @@ import java.util.List;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddUserBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomRecyclerViewAdapter;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserFragmentDirections;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserListViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserRecyclerViewAdapter;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
 
 /**
@@ -35,7 +30,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
  * @author Rin Pham
  * @author Shilnara Dam
  * @author Levi McCoy
- * @version 5/30/22
+ * @version 6/2/22
  */
 
 public class ChatroomAddUserFragment extends Fragment{
@@ -45,7 +40,6 @@ public class ChatroomAddUserFragment extends Fragment{
     private FragmentChatroomAddUserBinding mBinding;
     private ContactListViewModel mContact;
     private ChatroomViewModel mView;
-    private ChatroomRecyclerViewAdapter mView2;
     private int chatId;
     List<String> namesToAdd = new ArrayList<String>();
 
@@ -73,31 +67,27 @@ public class ChatroomAddUserFragment extends Fragment{
 
 
         mBinding.buttonAdduserChat.setOnClickListener(this::attemptAdd);
-
-        // get user contacts
-            mBinding.progressBar.setVisibility(View.GONE);
-            mBinding.swipeChatroomAddUserRefresh.setRefreshing(false);
-            mBinding.listRoot.setAdapter(
-                    new ChatroomAddUserRecyclerViewAdapter(mContact.getContacts(), this)
-            );
-
-        // get user contacts
-        mBinding.listRoot.setVisibility(View.GONE);
-        mBinding.progressBar.setVisibility(View.VISIBLE);
-        mContact.addContactsListObserver(getViewLifecycleOwner(), contacts -> {
+        mView.addChatIdObserver(getViewLifecycleOwner(), getId -> {
+            mBinding.listRoot.setVisibility(View.GONE);
+            mBinding.progressBar.setVisibility(View.VISIBLE);
+            chatId = getId;
+            Log.e("CHATID1", "onViewCreated: "+chatId);
+            mAdd.getContactsNot(mUser.getJwt(),chatId);
+        });
+        mAdd.addGetContactsNotObserver(getViewLifecycleOwner(), contacts -> {
             mBinding.listRoot.setVisibility(View.VISIBLE);
             mBinding.progressBar.setVisibility(View.GONE);
             mBinding.swipeChatroomAddUserRefresh.setRefreshing(false);
+            Log.e("CONTACTS", "onViewCreated: "+contacts.toString());
             mBinding.listRoot.setAdapter(
                     new ChatroomAddUserRecyclerViewAdapter(contacts, this)
             );
         });
 
-        //refreshing chat list swipe
         mBinding.swipeChatroomAddUserRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mContact.getContacts(mUser.getJwt());
+                mAdd.getContactsNot(mUser.getJwt(),chatId);
             }
         });
 
@@ -115,20 +105,6 @@ public class ChatroomAddUserFragment extends Fragment{
         mBinding.progressBar.setVisibility(View.VISIBLE);
         Log.e("JWT", mUser.getJwt());
         Log.e("mynames", namesToAdd.toString() );
-        //if (mBinding.editChatroomAddUserName.getText().toString().trim().equals("")) {
-//            //mBinding.editChatroomAddUserName.setError("Must have a name for the chat room!");
-            //AlertDialog.Builder dialog = new AlertDialog.Builder(getContext());
-            //dialog.setTitle("Make sure you are naming your chat room!")
-                    //.setNegativeButton("Okay", null)
-                   // .show().setCanceledOnTouchOutside(true);
-            //mBinding.progressBar.setVisibility(View.GONE);
-           // return;
-       // }
-        //else {
-            //Bundle bundle = this.getArguments();
-            //int myInt = bundle.getInt("chatId");
-        //int myInt = mView.ch;
-       // Log.e("THEBUNDLENUM", ": "+myInt );
         Log.e("THENUM", ": "+mView.getmChatId().getValue());
             chatId = mView.getmChatId().getValue();
             Log.e("THENUM2", ": "+chatId);

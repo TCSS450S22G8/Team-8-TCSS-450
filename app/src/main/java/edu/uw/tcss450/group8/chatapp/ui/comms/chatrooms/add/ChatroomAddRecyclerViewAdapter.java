@@ -27,7 +27,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
  * @author Shilnara Dam
  * @author Sean Logan
  * @author Levi McCoy
- * @version 5/30/22
+ * @version 6/2/22
  */
 public class ChatroomAddRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomAddRecyclerViewAdapter.ChatroomAddViewHolder> {
     private final List<Contact> mContact;

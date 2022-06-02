@@ -38,13 +38,14 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
  * @author Shilnara Dam
  * @author Sean Logan
  * @author Levi McCoy
- * @version 5/30/22
+ * @version 6/2/22
  */
 public class ChatroomAddUserListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
     private MutableLiveData<Integer> mChatid;
     private MutableLiveData<String> mjwt;
     private MutableLiveData<List<String>> mNames;
+    private MutableLiveData<List<Contact>> mGetContactsNot;
 
     /**
      * Constructor for Chatroom add users List ViewModel
@@ -56,6 +57,7 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
         mChatid = new MutableLiveData<>();
         mjwt = new MutableLiveData<>();
         mNames = new MutableLiveData<>();
+        mGetContactsNot = new MutableLiveData<>();
     }
 
     /**
@@ -66,6 +68,16 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
     public void addChatroomAddUserListObserver(@NonNull LifecycleOwner owner,
                                         @NonNull Observer<? super List<Contact>> observer) {
         mContact.observe(owner, observer);
+    }
+
+    /**
+     * Helper method for observe
+     * @param owner owner of lifecycle
+     * @param observer contact list
+     */
+    public void addGetContactsNotObserver(@NonNull LifecycleOwner owner,
+                                               @NonNull Observer<? super List<Contact>> observer) {
+        mGetContactsNot.observe(owner, observer);
     }
 
     /**
@@ -162,7 +174,72 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
     }
 
 
+    /**
+     * Endpoint get the users in a chat who are not currently in it
+     *  @param jwt String of jwt
+     * @param chatId The id of the chat to add too
+     */
+    public void getContactsNot(String jwt, int chatId) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/not-in-chat/"+chatId;
+        Request<JSONObject> request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                this::handleGetContactsNotSuccess,
+                this::handleGetContactsNotError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+    }
 
+
+    /**
+     * Handles errors for users not in contacts endpoint calls
+     *
+     * @param volleyError VolleyError
+     */
+    private void handleGetContactsNotError(VolleyError volleyError) {
+        if (Objects.isNull(volleyError.networkResponse)) {
+            Log.e("NETWORK ERROR", volleyError.getMessage());
+        }
+        else {
+            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
+            Log.e("CLIENT ERROR",
+                    volleyError.networkResponse.statusCode + " " + data);
+        }
+    }
+
+
+
+
+    /**
+     * Handles the success for get users not in contacts endpoint calls
+     *
+     * @param response JSONObject
+     */
+    private void handleGetContactsNotSuccess(final JSONObject response) {
+        ArrayList<Contact> list = new ArrayList<>();
+        try {
+            JSONArray temp = response.getJSONArray("rows");
+            for (int i = 0; i <  temp.length(); i++) {
+                JSONObject contact = temp.getJSONObject(i);
+                list.add(new Contact(
+                        contact.getString("username"),
+                        contact.getString("email")));
+            }
+            mGetContactsNot.setValue(list);
+        } catch (JSONException e){
+            Log.e("JSON PARSE ERROR", "Found in handle Success");
+            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
+        }
+    }
 
 
     /**

@@ -39,7 +39,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
  * @author Shilnara Dam
  * @author Sean Logan
  * @author Levi McCoy
- * @version 5/30/22
+ * @version 6/2/22
  */
 public class ChatroomAddListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
@@ -285,7 +285,6 @@ public class ChatroomAddListViewModel extends AndroidViewModel {
      * @param response JSONObject
      */
     private void handleAdd3Success(final JSONObject response) {
-        //ArrayList<Chatroom> listChatRooms = mChatrooms;
 
     }
 

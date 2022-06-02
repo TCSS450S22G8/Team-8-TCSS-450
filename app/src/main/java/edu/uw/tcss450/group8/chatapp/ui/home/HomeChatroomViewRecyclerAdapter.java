@@ -43,7 +43,7 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
     /**
      * Constructor for HomeChatroomViewRecyclerAdapter
      *
-     * @param items list of chatroom
+     * @param items  list of chatroom
      * @param parent HomeFragment
      */
     public HomeChatroomViewRecyclerAdapter(List<Chatroom> items, HomeFragment parent) {
@@ -96,7 +96,7 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
             chatId = mView.findViewById(R.id.text_chatid);
             chatId.setVisibility(View.INVISIBLE);
             chatName = mView.findViewById(R.id.text_title);
-            binding.cardRoot.setOnClickListener(new View.OnClickListener() {
+            binding.layoutInner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mParent.homeStartChat(Integer.parseInt(chatId.getText().toString()), chatName.getText().toString());

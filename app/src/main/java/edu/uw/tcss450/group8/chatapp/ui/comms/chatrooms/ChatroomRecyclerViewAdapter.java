@@ -14,16 +14,18 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.apachat.swipereveallayout.core.ViewBinder;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomCardBinding;
+import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomListBinding;
 import edu.uw.tcss450.group8.chatapp.model.NewMessageCountViewModel;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
-
 
 /**
  * RecyclerViewAdapter for message.
@@ -35,18 +37,16 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
  */
 public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRecyclerViewAdapter.ChatroomViewHolder> {
 
+    private final ChatroomListFragment mParent;
+    private final ViewBinder viewBinder = new ViewBinder();
+    private List<String> swipeIds;
     //Store all of the blogs to present
     private List<Chatroom> mChatroom;
-
-    private final ChatroomListFragment mParent;
-
     private MessageListViewModel mMessageModel;
-
     private NewMessageCountViewModel mNewMessageModel;
-
     private ChatroomViewModel mModel;
-
     private int chatIdReturn;
+    private boolean mFlag = false;
 
     /**
      * Constructor for MessageRecyclerViewAdapter
@@ -59,7 +59,19 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         this.mMessageModel = new ViewModelProvider(mParent.getActivity()).get(MessageListViewModel.class);
         this.mNewMessageModel = new ViewModelProvider(mParent.getActivity()).get(NewMessageCountViewModel.class);
         this.mModel = new ViewModelProvider(mParent.getActivity()).get(ChatroomViewModel.class);
+        swipeIds = new ArrayList<>();
     }
+
+    public void openAll() {
+        swipeIds.forEach(swipeId -> viewBinder.openLayout(swipeId));
+        mFlag = true;
+    }
+
+    public void closeAll() {
+        swipeIds.forEach(swipeId -> viewBinder.closeLayout(swipeId));
+        mFlag = false;
+    }
+
 
     @NonNull
     @Override
@@ -72,6 +84,10 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
     @Override
     public void onBindViewHolder(@NonNull ChatroomViewHolder holder, int position) {
         holder.setChatroom(mChatroom.get(position));
+        String swipeId = mChatroom.get(position).getChatRoomId();
+        viewBinder.bind(holder.binding.swipeLayout, swipeId);
+        if (mFlag == true) viewBinder.openLayout(swipeId);
+        swipeIds.add(swipeId);
     }
 
     @Override
@@ -112,7 +128,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             chatId = mView.findViewById(R.id.text_chatid);
             chatId.setVisibility(View.INVISIBLE);
             chatName = mView.findViewById(R.id.text_title);
-            binding.cardRoot.setOnClickListener(new View.OnClickListener() {
+            binding.layoutInner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mParent.startChat(Integer.parseInt(chatId.getText().toString()), chatName.getText().toString());
@@ -163,6 +179,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         void setChatroom(final Chatroom chatroom) {
             mChatroomSingle = chatroom;
             binding.textTitle.setText(chatroom.getChatRoomName());
+            binding.textTitleSwipe.setText(chatroom.getChatRoomName());
             binding.textChatid.setText(chatroom.getChatRoomId());
             int chatId = Integer.parseInt(chatroom.getChatRoomId());
             mMessageModel.addMessageObserver(chatId, mParent.getViewLifecycleOwner(), messages -> {

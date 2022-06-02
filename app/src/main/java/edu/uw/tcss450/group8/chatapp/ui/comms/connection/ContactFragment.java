@@ -46,7 +46,6 @@ public class ContactFragment extends Fragment {
     private UserInfoViewModel mUser;
     private FragmentContactBinding mBinding;
     private ContactRecyclerViewAdapter mAdapter;
-    private final ViewBinder viewBinder = new ViewBinder();
     private boolean openFlag = false;
 
     public ContactFragment() {
@@ -170,6 +169,13 @@ public class ContactFragment extends Fragment {
             }
         }
         mAdapter.contactList(contactList);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        openFlag = false;
+        mAdapter.closeAll();
     }
 
     /**

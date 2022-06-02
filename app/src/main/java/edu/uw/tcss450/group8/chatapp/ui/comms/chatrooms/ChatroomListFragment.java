@@ -2,6 +2,9 @@ package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -29,15 +32,12 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
  * @version 6/2/22
  */
 public class ChatroomListFragment extends Fragment {
+    private ChatroomRecyclerViewAdapter myAdapter;
     private ChatroomViewModel mModel;
-
     private UserInfoViewModel mUser;
-
     private MessageListViewModel mMessage;
-
     private FragmentChatroomListBinding mBinding;
-
-    ChatroomRecyclerViewAdapter myAdapter;
+    private boolean openFlag = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,6 +46,29 @@ public class ChatroomListFragment extends Fragment {
         mModel = viewModelProvider.get(ChatroomViewModel.class);
         mUser = viewModelProvider.get(UserInfoViewModel.class);
         mMessage = viewModelProvider.get(MessageListViewModel.class);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.botton_saved_location, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.open_saved_location) {
+            if (openFlag == false) {
+                openFlag = true;
+                myAdapter.openAll();
+            } else {
+                openFlag = false;
+                myAdapter.closeAll();
+            }
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -53,6 +76,13 @@ public class ChatroomListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_chatroom_list, container, false);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        openFlag = false;
+        myAdapter.closeAll();
     }
 
     @Override
@@ -80,6 +110,7 @@ public class ChatroomListFragment extends Fragment {
             @Override
             public void onRefresh() {
                 mModel.getChatRoomsForUser(mUser.getJwt());
+                openFlag = false;
             }
         });
 

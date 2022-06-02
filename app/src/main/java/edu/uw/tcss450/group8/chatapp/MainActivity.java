@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             if (!jwt.isExpired(5)) {
+                Log.e("Tag", "inside if");
                 new ViewModelProvider(
                         this,
                         new UserInfoViewModel.UserInfoViewModelFactory(args.getEmail(), args.getJwt()))
@@ -186,6 +187,9 @@ public class MainActivity extends AppCompatActivity {
         mNewFriendRequestModel.addFriendRequestCountObserver(this, count -> {
             BadgeDrawable badge = mBinding.navView.getOrCreateBadge(R.id.nav_connections_fragment);
 //            badge.setMaxCharacterCount(2);
+
+            mContactModel.getOutgoingRequestList(mUserModel.getJwt());
+            mContactModel.getIncomingRequestList(mUserModel.getJwt());
             if (count > 0) {
                 //new messages! update and show the notification badge.
                 badge.setNumber(count);

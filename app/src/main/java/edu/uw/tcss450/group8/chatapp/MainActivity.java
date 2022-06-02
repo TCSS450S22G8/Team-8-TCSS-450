@@ -65,15 +65,6 @@ import edu.uw.tcss450.group8.chatapp.ui.location.LocationViewModel;
  */
 public class MainActivity extends AppCompatActivity {
 
-    private AppBarConfiguration mAppBarConfiguration;
-
-    private ActivityMainBinding mBinding;
-    private MainPushMessageReceiver mPushMessageReceiver;
-
-    private NewMessageCountViewModel mNewMessageModel;
-
-    private NewFriendRequestCountViewModel mNewFriendRequestModel;
-
     /**
      * The desired interval for location updates. Inexact. Updates may be more or less frequent.
      */
@@ -86,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
             UPDATE_INTERVAL_IN_MILLISECONDS / 2;
     // A constant int for the permissions request code. Must be a 16 bit number
     private static final int MY_PERMISSIONS_LOCATIONS = 8414;
+    private AppBarConfiguration mAppBarConfiguration;
+    private ActivityMainBinding mBinding;
+    private MainPushMessageReceiver mPushMessageReceiver;
+    private NewMessageCountViewModel mNewMessageModel;
+    private NewFriendRequestCountViewModel mNewFriendRequestModel;
     private LocationRequest mLocationRequest;
     //Use a FusedLocationProviderClient to request the location
     private FusedLocationProviderClient mFusedLocationClient;
@@ -93,6 +89,8 @@ public class MainActivity extends AppCompatActivity {
     private LocationCallback mLocationCallback;
     //The ViewModel that will store the current location
     private LocationViewModel mLocationModel;
+    private ChatroomViewModel mChatroomViewModel;
+    private UserInfoViewModel mUserModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,18 +122,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-
         // load contact and chatroom as soon as login
 
         ViewModelProvider viewModelProvider = new ViewModelProvider(this);
 
-        UserInfoViewModel mUserModel = viewModelProvider.get(UserInfoViewModel.class);
-        ChatroomViewModel mChatModel = viewModelProvider.get(ChatroomViewModel.class);
+        mUserModel = viewModelProvider.get(UserInfoViewModel.class);
+        mChatroomViewModel = viewModelProvider.get(ChatroomViewModel.class);
         ContactListViewModel mContactModel = viewModelProvider.get(ContactListViewModel.class);
         mLocationModel = viewModelProvider.get(LocationViewModel.class);
 
         mContactModel.getContacts(mUserModel.getJwt());
-        mChatModel.getChatRoomsForUser(mUserModel.getJwt());
+        mChatroomViewModel.getChatRoomsForUser(mUserModel.getJwt());
 
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
 
@@ -303,53 +300,6 @@ public class MainActivity extends AppCompatActivity {
         this.finish();
     }
 
-    /**
-     * A BroadcastReceiver that listens for messages sent from PushReceiver
-     */
-    private class MainPushMessageReceiver extends BroadcastReceiver {
-
-        private MessageListViewModel mModel =
-                new ViewModelProvider(MainActivity.this)
-                        .get(MessageListViewModel.class);
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            NavController nc =
-                    Navigation.findNavController(
-                            MainActivity.this, R.id.nav_host_fragment);
-            NavDestination nd = nc.getCurrentDestination();
-            if (intent.hasExtra("chatMessage")) {
-                Message cm = (Message) intent.getSerializableExtra("chatMessage");
-                //If the user is not on the chat screen, update the
-                // NewMessageCountView Model
-                mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
-
-                //Inform the view model holding chatroom messages of the new
-                //message.
-                mModel.addMessage(intent.getIntExtra("chatid", -1), cm);
-            }
-
-            // Increment count for messages (for new chatroom)
-            if (intent.hasExtra("addedToChat")) {
-                //If the user is not on the chat screen, update the
-                // NewMessageCountView Model
-
-                mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
-            }
-
-
-            //Incrementing count for new friend requests
-            if (intent.hasExtra("friendRequest")) {
-                Log.e("friend", "made it inside if statement");
-                if (nd.getId() != R.id.nav_connections_fragment) {
-                    mNewFriendRequestModel.increment();
-                }
-
-            }
-        }
-    }
-
-
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -403,6 +353,53 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                     });
+        }
+    }
+
+    /**
+     * A BroadcastReceiver that listens for messages sent from PushReceiver
+     */
+    private class MainPushMessageReceiver extends BroadcastReceiver {
+
+        private MessageListViewModel mModel =
+                new ViewModelProvider(MainActivity.this)
+                        .get(MessageListViewModel.class);
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            NavController nc =
+                    Navigation.findNavController(
+                            MainActivity.this, R.id.nav_host_fragment);
+            NavDestination nd = nc.getCurrentDestination();
+            if (intent.hasExtra("chatMessage")) {
+                Message cm = (Message) intent.getSerializableExtra("chatMessage");
+                //If the user is not on the chat screen, update the
+                // NewMessageCountView Model
+                mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
+
+                //Inform the view model holding chatroom messages of the new
+                //message.
+                mModel.addMessage(intent.getIntExtra("chatid", -1), cm);
+            }
+
+            // Increment count for messages (for new chatroom)
+            if (intent.hasExtra("addedToChat")) {
+                //If the user is not on the chat screen, update the
+                // NewMessageCountView Model
+
+                mNewMessageModel.increment(Integer.valueOf(intent.getStringExtra("chatid")));
+                mChatroomViewModel.getChatRoomsForUser(mUserModel.getJwt());
+            }
+
+
+            //Incrementing count for new friend requests
+            if (intent.hasExtra("friendRequest")) {
+                Log.e("friend", "made it inside if statement");
+                if (nd.getId() != R.id.nav_connections_fragment) {
+                    mNewFriendRequestModel.increment();
+                }
+
+            }
         }
     }
 

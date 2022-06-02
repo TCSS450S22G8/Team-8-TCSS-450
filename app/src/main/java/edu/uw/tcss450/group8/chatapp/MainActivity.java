@@ -11,6 +11,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -383,6 +384,16 @@ public class MainActivity extends AppCompatActivity {
                 //Inform the view model holding chatroom messages of the new
                 //message.
                 mModel.addMessage(intent.getIntExtra("chatid", -1), cm);
+
+                MediaPlayer mediaplayer = MediaPlayer.create(MainActivity.this, R.raw.slap);
+                mediaplayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        mediaPlayer.reset();
+                        mediaPlayer.release();
+                    }
+                });
+                mediaplayer.start();
                 return;
             }
 

@@ -30,7 +30,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
 
 
 /**
- * View Model for contact list in chatroom add.
+ * View Model for contact list in chatroom add users.
  * Adapted from original code by Charles Bryan.
  *
  * @author Charles Bryan
@@ -38,16 +38,17 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
  * @author Shilnara Dam
  * @author Sean Logan
  * @author Levi McCoy
- * @version 5/30/22
+ * @version 6/2/22
  */
 public class ChatroomAddUserListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
     private MutableLiveData<Integer> mChatid;
     private MutableLiveData<String> mjwt;
     private MutableLiveData<List<String>> mNames;
+    private MutableLiveData<List<Contact>> mGetContactsNot;
 
     /**
-     * Constructor for Contact List ViewModel
+     * Constructor for Chatroom add users List ViewModel
      * @param application app
      */
     public ChatroomAddUserListViewModel(@NonNull Application application) {
@@ -56,6 +57,7 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
         mChatid = new MutableLiveData<>();
         mjwt = new MutableLiveData<>();
         mNames = new MutableLiveData<>();
+        mGetContactsNot = new MutableLiveData<>();
     }
 
     /**
@@ -66,6 +68,16 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
     public void addChatroomAddUserListObserver(@NonNull LifecycleOwner owner,
                                         @NonNull Observer<? super List<Contact>> observer) {
         mContact.observe(owner, observer);
+    }
+
+    /**
+     * Helper method for observe
+     * @param owner owner of lifecycle
+     * @param observer contact list
+     */
+    public void addGetContactsNotObserver(@NonNull LifecycleOwner owner,
+                                               @NonNull Observer<? super List<Contact>> observer) {
+        mGetContactsNot.observe(owner, observer);
     }
 
     /**
@@ -94,13 +106,12 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
     }
 
     /**
-     * Endpoint call to do first step of adding chat (create room)
+     * Endpoint call to do first step of adding users to chat
      *  @param jwt String of jwt
-     * @param
      * @param namesToAdd list of string with emails of who to add
+     * @param chatId The id of the chat to add too
      */
     public void add1(String jwt, List<String> namesToAdd, int chatId) {
-        //String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats";
         Log.e("ADD1ChatId", ": "+chatId );
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/addOther/"+chatId;
         for(int j = 0; j < namesToAdd.size();j++) {
@@ -114,11 +125,6 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            //try {
-            //body.put("name", name);
-            //} catch (JSONException e) {
-            //e.printStackTrace();
-            // }
             Request<JSONObject> request = new JsonObjectRequest(
                     Request.Method.PUT,
                     url,
@@ -138,75 +144,9 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
         }
     }
 
-    /**
-     * Endpoint call to do second step of adding chat (add yourself)
-     *
-     * @param chatId the chatId you want to add yourself and others to
-     */
-    /*public void add2(int chatId) {
-        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/addSelf/"+chatId;
-        JSONObject body = new JSONObject();
-        try {
-            body.put("chatId", chatId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        Request<JSONObject> request = new JsonObjectRequest(
-                Request.Method.PUT,
-                url,
-                body,
-                this::handleAdd2Success,
-                this::handleAdd2Error) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                // add headers <key,value>
-                headers.put("Authorization", mjwt.getValue());
-                return headers;
-            }
-        };
-        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
-                .addToRequestQueue(request);
-    }*/
 
     /**
-     * Endpoint call to do third step of adding chat (add other users)
-     *
-     * @param namesToAdd list of string with emails of who to add
-     */
-    /*public void add3(List<String> namesToAdd) {
-        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/addOther/"+mChatid.getValue();
-        for(int j = 0; j < namesToAdd.size();j++) {
-            JSONObject body = new JSONObject();
-            try {
-                body.put("chatId", mChatid.getValue());
-                body.put("email", namesToAdd.get(j));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            Request<JSONObject> request = new JsonObjectRequest(
-                    Request.Method.PUT,
-                    url,
-                    body,
-                    this::handleAdd3Success,
-                    this::handleAdd3Error) {
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> headers = new HashMap<>();
-                    // add headers <key,value>
-                    headers.put("Authorization", mjwt.getValue());
-                    return headers;
-                }
-            };
-            RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
-                    .addToRequestQueue(request);
-        }
-    }*/
-
-
-
-    /**
-     * Handles errors for first add endpoint calls
+     * Handles errors for first add user endpoint calls
      *
      * @param volleyError VolleyError
      */
@@ -221,71 +161,86 @@ public class ChatroomAddUserListViewModel extends AndroidViewModel {
         }
     }
 
-    /**
-     * Handles errors for second add endpoint calls
-     *
-     * @param volleyError VolleyError
-     */
-    /*private void handleAdd2Error(VolleyError volleyError) {
-        if (Objects.isNull(volleyError.networkResponse)) {
-            Log.e("NETWORK ERROR", volleyError.getMessage());
-        }
-        else {
-            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
-            Log.e("CLIENT ERROR",
-                    volleyError.networkResponse.statusCode + " " + data);
-        }
-    }*/
+
+
 
     /**
-     * Handles errors for third add endpoint calls
-     *
-     * @param volleyError VolleyError
-     */
-    /*private void handleAdd3Error(VolleyError volleyError) {
-        if (Objects.isNull(volleyError.networkResponse)) {
-            Log.e("NETWORK ERROR", volleyError.getMessage());
-        }
-        else {
-            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
-            Log.e("CLIENT ERROR",
-                    volleyError.networkResponse.statusCode + " " + data);
-        }
-    }*/
-
-    /**
-     * Handles the success for first add endpoint calls
+     * Handles the success for first add user endpoint calls
      *
      * @param response JSONObject
      */
     private void handleAdd1Success(final JSONObject response) {
-        /*try {
-            int chatId = response.getInt("chatID");
-            mChatid.setValue(chatId);
-            add2(chatId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
+
     }
 
+
     /**
-     * Handles the success for second add endpoint calls
+     * Endpoint get the users in a chat who are not currently in it
+     *  @param jwt String of jwt
+     * @param chatId The id of the chat to add too
+     */
+    public void getContactsNot(String jwt, int chatId) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/not-in-chat/"+chatId;
+        Request<JSONObject> request = new JsonObjectRequest(
+                Request.Method.GET,
+                url,
+                null,
+                this::handleGetContactsNotSuccess,
+                this::handleGetContactsNotError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+    }
+
+
+    /**
+     * Handles errors for users not in contacts endpoint calls
+     *
+     * @param volleyError VolleyError
+     */
+    private void handleGetContactsNotError(VolleyError volleyError) {
+        if (Objects.isNull(volleyError.networkResponse)) {
+            Log.e("NETWORK ERROR", volleyError.getMessage());
+        }
+        else {
+            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
+            Log.e("CLIENT ERROR",
+                    volleyError.networkResponse.statusCode + " " + data);
+        }
+    }
+
+
+
+
+    /**
+     * Handles the success for get users not in contacts endpoint calls
      *
      * @param response JSONObject
      */
-   /* private void handleAdd2Success(final JSONObject response) {
+    private void handleGetContactsNotSuccess(final JSONObject response) {
+        ArrayList<Contact> list = new ArrayList<>();
+        try {
+            JSONArray temp = response.getJSONArray("rows");
+            for (int i = 0; i <  temp.length(); i++) {
+                JSONObject contact = temp.getJSONObject(i);
+                list.add(new Contact(
+                        contact.getString("username"),
+                        contact.getString("email")));
+            }
+            mGetContactsNot.setValue(list);
+        } catch (JSONException e){
+            Log.e("JSON PARSE ERROR", "Found in handle Success");
+            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
+        }
+    }
 
-        add3(mNames.getValue());
-    }*/
-
-    /**
-     * Handles the success for third add endpoint calls
-     *
-     * @param response JSONObject
-     */
-    /*private void handleAdd3Success(final JSONObject response) {
-
-    }*/
 
     /**
      * Handles errors for the getContact endpoint calls

@@ -36,52 +36,60 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
  * @author Levi McCoy
  * @author Shilnara Dam
  * @author Sean Logan
- * @version 5/19/22
+ * @version 6/2/22
  */
 public class ChatroomViewModel extends AndroidViewModel {
     private MutableLiveData<List<Chatroom>> mChatroomList;
-    private ChatroomListFragment mParent;
     private ArrayList<Chatroom> mChatrooms;
     private String mjwt;
     private String mEmail;
     private MutableLiveData<Integer> mChatId;
-    //private FragmentChatroomListBinding mBinding;
-    //private ChatroomListFragment mBinding2;
 
     /**
      * Constructor for Message List ViewModel
-     *
-     * @param application
+     * @param application the app
      *
      */
     public ChatroomViewModel(@NonNull Application application) {
         super(application);
         mChatroomList = new MutableLiveData<>();
         mChatId = new MutableLiveData<>();
-        //mBinding = application;
-        //mParent =
-//        mChatroomList.setValue(ChatroomGenerator.getChatroomList());
     }
 
     /**
-     * send
+     * Getter for list of chatrooms
      *
-     *
-     * @return
+     * @return the mutable live data of chatroom list
      */
     public MutableLiveData<List<Chatroom>> getChatRooms() {
         return mChatroomList;
     }
 
+    /**
+     * Getter for list of chatrooms as Arraylist
+     *
+     * @return the Arraylist of chatroom list
+     */
     public ArrayList<Chatroom> getChatRoomsList() {
         return mChatrooms;
     }
 
+    /**
+     * Getter for list of chat Id
+     *
+     * @return the mutable live data of chat Id
+     */
     public MutableLiveData<Integer> getmChatId() {
         Log.e("GETTER", "getmChatId: "+mChatId.getValue());
         return mChatId;
     }
 
+    /**
+     * Setter for list of chat Id
+     *
+     * @param id the chat id
+     * @return the set chat Id
+     */
     public MutableLiveData<Integer> setmChatId(int id) {
         Log.e("SETTER", "getmChatId: "+mChatId.getValue());
         mChatId.setValue(id);
@@ -96,6 +104,15 @@ public class ChatroomViewModel extends AndroidViewModel {
      */
     public void addChatRoomListObserver(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<Chatroom>> observer) {
         mChatroomList.observe(owner, observer);
+    }
+
+    /**
+     * Helper method for observe chatId
+     * @param owner owner of lifecycle
+     * @param observer integer
+     */
+    public void addChatIdObserver(@NonNull LifecycleOwner owner, @NonNull Observer<? super Integer> observer) {
+        mChatId.observe(owner, observer);
     }
 
     /**
@@ -166,7 +183,6 @@ public class ChatroomViewModel extends AndroidViewModel {
      *
      */
     public void attemptRemoveSelf1(String jwt, int chatId, String email) {
-        //mParent = parent;
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/delete/user/"+chatId+"/"+email;
         JSONObject body = new JSONObject();
         try {
@@ -215,10 +231,6 @@ public class ChatroomViewModel extends AndroidViewModel {
      * @param response JSONObject
      */
     private void handleRemoveSelf1Success(final JSONObject response) {
-        //mParent = FragmentChatroomListBinding.bind(mBinding2.getView());
-        //mBinding.swipeContactsRefresh.setRefreshing(false);
-        //Toast.makeText(mBinding2.getActivity(), "Chat Deleted!", Toast.LENGTH_SHORT).show();
-        //mParent.refreshAdapter();
 
     }
 
@@ -228,7 +240,6 @@ public class ChatroomViewModel extends AndroidViewModel {
      *
      */
     public void attemptRemoveSelf2(String jwt, int chatId, String email) {
-        //mParent = parent;
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/delete/chatroom/group/"+chatId;
         JSONObject body = new JSONObject();
         try {
@@ -286,7 +297,6 @@ public class ChatroomViewModel extends AndroidViewModel {
      *
      */
     public void attemptGetUsersRoom(String jwt, int chatId, String email) {
-        //mParent = parent;
         mjwt = jwt;
         Log.e("chatID", ": "+chatId );
         mChatId.setValue(chatId);

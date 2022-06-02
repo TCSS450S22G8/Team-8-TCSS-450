@@ -1,7 +1,6 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add;
 
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,8 +20,6 @@ import java.util.List;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.Chatroom;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomRecyclerViewAdapter;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
 
@@ -34,7 +31,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
  * @author Rin Pham
  * @author Shilnara Dam
  * @author Levi McCoy
- * @version 5/30/22
+ * @version 6/2/22
  */
 public class ChatroomAddFragment extends Fragment{
 
@@ -70,11 +67,11 @@ public class ChatroomAddFragment extends Fragment{
         mBinding.buttonAddChat.setOnClickListener(this::attemptAdd);
 
         // get user contacts
-            mBinding.progressBar.setVisibility(View.GONE);
-            mBinding.swipeChatroomAddRefresh.setRefreshing(false);
-            mBinding.listRoot.setAdapter(
-                    new ChatroomAddRecyclerViewAdapter(mContact.getContacts(), this)
-            );
+        mBinding.progressBar.setVisibility(View.GONE);
+        mBinding.swipeChatroomAddRefresh.setRefreshing(false);
+        mBinding.listRoot.setAdapter(
+                new ChatroomAddRecyclerViewAdapter(mContact.getContacts(), this)
+        );
 
         // get user contacts
         mBinding.listRoot.setVisibility(View.GONE);
@@ -102,7 +99,7 @@ public class ChatroomAddFragment extends Fragment{
     /**
      * attempt to start adding process
      *
-     * @param view curent view
+     * @param view current view
      */
     public void attemptAdd(View view) {
         mBinding.progressBar.setVisibility(View.VISIBLE);

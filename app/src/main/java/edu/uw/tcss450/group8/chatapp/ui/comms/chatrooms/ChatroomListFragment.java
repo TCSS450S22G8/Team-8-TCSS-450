@@ -29,7 +29,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
  * @author Levi McCoy
  * @author Shilnara Dam
  * @author Sean Logan
- * @version 5/19/22
+ * @version 6/2/22
  */
 public class ChatroomListFragment extends Fragment {
     private ChatroomRecyclerViewAdapter myAdapter;
@@ -135,30 +135,9 @@ public class ChatroomListFragment extends Fragment {
     }
 
     /**
-     * Enters a chat room with a contact.
+     * Attempts to refresh list adapter
      */
     public void refreshAdapter() {
-        /*
-        mBinding = FragmentChatroomListBinding.bind(getView());
-
-        ChatroomRecyclerViewAdapter myAdapter;
-        mModel.addChatRoomListObserver(getViewLifecycleOwner(), chatList -> {
-            if (!chatList.isEmpty()) {
-                chatList.forEach(chatroom -> {
-                    int chatId = Integer.parseInt(chatroom.getChatRoomId());
-                    mMessage.getFirstMessages(chatId, mUser.getJwt());
-                    mMessage.addMessageObserver(chatId, getViewLifecycleOwner(), messages -> {
-                        mBinding.listRoot.setAdapter(
-                               myAdapter = new ChatroomRecyclerViewAdapter(chatList, this)
-                        );
-                    });
-                });
-                mBinding.swipeContactsRefresh.setRefreshing(false);
-            }
-        });
-
-         */
-
         mBinding.swipeContactsRefresh.setRefreshing(true);
         mBinding.listRoot.setAdapter(myAdapter);
         myAdapter.notifyDataSetChanged();

@@ -15,7 +15,6 @@ import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddUserCardBinding;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserFragment;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
 
 /**
@@ -28,7 +27,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
  * @author Shilnara Dam
  * @author Sean Logan
  * @author Levi McCoy
- * @version 5/30/22
+ * @version 6/2/22
  */
 
 public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomAddUserRecyclerViewAdapter.ChatroomAddUserViewHolder> {
@@ -38,7 +37,7 @@ public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<Cha
 
 
     /**
-     * Constructor for MessageRecyclerViewAdapter
+     * Constructor for AdduserRecyclerViewAdapter
      *
      * @param items list of message
      */
@@ -95,7 +94,6 @@ public class ChatroomAddUserRecyclerViewAdapter extends RecyclerView.Adapter<Cha
             mView = view;
             mBinding = FragmentChatroomAddUserCardBinding.bind(view);
             mAdd = view.findViewById(R.id.checkBox_add_user);
-            //name = view.findViewById(R.id.edit_chatroom_add_name);
 
 
             mAdd.setOnClickListener(new View.OnClickListener() {

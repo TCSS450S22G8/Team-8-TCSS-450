@@ -3,21 +3,27 @@ package edu.uw.tcss450.group8.chatapp;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.getThemeColor;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.setCustomizedThemes;
 
+import android.Manifest;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
@@ -26,6 +32,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.auth0.android.jwt.JWT;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -39,6 +50,8 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.location.LocationListViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.location.LocationViewModel;
 
 /**
  * Class for Main Activity
@@ -55,14 +68,33 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
  */
 public class MainActivity extends AppCompatActivity {
 
+    /**
+     * The desired interval for location updates. Inexact. Updates may be more or less frequent.
+     */
+    public static final long UPDATE_INTERVAL_IN_MILLISECONDS = 10000;
+    /**
+     * The fastest rate for active location updates. Exact. Updates will never be more frequent
+     * than this value.
+     */
+    public static final long FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS =
+            UPDATE_INTERVAL_IN_MILLISECONDS / 2;
+    // A constant int for the permissions request code. Must be a 16 bit number
+    private static final int MY_PERMISSIONS_LOCATIONS = 8414;
     private AppBarConfiguration mAppBarConfiguration;
-
     private ActivityMainBinding mBinding;
     private MainPushMessageReceiver mPushMessageReceiver;
-
     private NewMessageCountViewModel mNewMessageModel;
-
     private NewFriendRequestCountViewModel mNewFriendRequestModel;
+    private LocationRequest mLocationRequest;
+    //Use a FusedLocationProviderClient to request the location
+    private FusedLocationProviderClient mFusedLocationClient;
+    // Will use this call back to decide what to do when a location change is detected
+    private LocationCallback mLocationCallback;
+    //The ViewModel that will store the current location
+    private LocationViewModel mLocationModel;
+    private ChatroomViewModel mChatroomViewModel;
+    private UserInfoViewModel mUserModel;
+    private LocationListViewModel mLocationListModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +117,7 @@ public class MainActivity extends AppCompatActivity {
                         this,
                         new UserInfoViewModel.UserInfoViewModelFactory(args.getEmail(), args.getJwt()))
                         .get(UserInfoViewModel.class);
+
             } else {
                 signOut();
             }
@@ -92,19 +125,21 @@ public class MainActivity extends AppCompatActivity {
             signOut();
         }
 
+
         // load contact and chatroom as soon as login
 
         ViewModelProvider viewModelProvider = new ViewModelProvider(this);
 
-        UserInfoViewModel mUserModel = viewModelProvider.get(UserInfoViewModel.class);
-        ChatroomViewModel mChatModel = viewModelProvider.get(ChatroomViewModel.class);
+        mUserModel = viewModelProvider.get(UserInfoViewModel.class);
+        mChatroomViewModel = viewModelProvider.get(ChatroomViewModel.class);
         ContactListViewModel mContactModel = viewModelProvider.get(ContactListViewModel.class);
-
+        mLocationModel = viewModelProvider.get(LocationViewModel.class);
+        mLocationListModel = viewModelProvider.get(LocationListViewModel.class);
         mContactModel.getContacts(mUserModel.getJwt());
-        mChatModel.getChatRoomsForUser(mUserModel.getJwt());
+        mChatroomViewModel.getChatRoomsForUser(mUserModel.getJwt());
 
         mBinding = ActivityMainBinding.inflate(getLayoutInflater());
-
+        mLocationListModel.getLocations(mUserModel.getJwt());
         setContentView(mBinding.getRoot());
 
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -161,6 +196,21 @@ public class MainActivity extends AppCompatActivity {
                 badge.setVisible(false);
             }
         });
+
+        //request user location permission and gets location
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_COARSE_LOCATION
+                            , Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_LOCATIONS);
+        } else {
+            //The user has already allowed the use of Locations. Get the current location.
+            requestLocation();
+        }
 
     }
 
@@ -254,6 +304,62 @@ public class MainActivity extends AppCompatActivity {
         this.finish();
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case MY_PERMISSIONS_LOCATIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // permission was granted, yay! Do the
+                    // locations-related task you need to do.
+                    requestLocation();
+                } else {
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Log.d("PERMISSION DENIED", "Nothing to see or do here.");
+
+                    //Shut down the app. In production release, you would let the user
+                    //know why the app is shutting down...maybe ask for permission again?
+                    finishAndRemoveTask();
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+
+    /**
+     * request of user location and saving it to location view model
+     */
+    private void requestLocation() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+            Log.e("LOCATION", "User did NOT allow permission to request location!");
+        } else {
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            // Got last known location. In some rare situations this can be null.
+                            if (location != null) {
+                                Log.e("LOCATION", location.toString());
+                                if (mLocationModel == null) {
+                                    mLocationModel = new ViewModelProvider(MainActivity.this)
+                                            .get(LocationViewModel.class);
+                                }
+                                mLocationModel.setLocation(location);
+                            }
+                        }
+                    });
+        }
+    }
+
     /**
      * A BroadcastReceiver that listens for messages sent from PushReceiver
      */
@@ -278,6 +384,17 @@ public class MainActivity extends AppCompatActivity {
                 //Inform the view model holding chatroom messages of the new
                 //message.
                 mModel.addMessage(intent.getIntExtra("chatid", -1), cm);
+
+                MediaPlayer mediaplayer = MediaPlayer.create(MainActivity.this, R.raw.slap);
+                mediaplayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                    @Override
+                    public void onCompletion(MediaPlayer mediaPlayer) {
+                        mediaPlayer.reset();
+                        mediaPlayer.release();
+                    }
+                });
+                mediaplayer.start();
+                return;
             }
 
             // Increment count for messages (for new chatroom)
@@ -285,17 +402,33 @@ public class MainActivity extends AppCompatActivity {
                 //If the user is not on the chat screen, update the
                 // NewMessageCountView Model
 
-                mNewMessageModel.increment(intent.getIntExtra("chatid", 0));
+                mNewMessageModel.increment(Integer.valueOf(intent.getStringExtra("chatid")));
+                mChatroomViewModel.getChatRoomsForUser(mUserModel.getJwt());
+                Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
+                return;
             }
 
 
             //Incrementing count for new friend requests
             if (intent.hasExtra("friendRequest")) {
-                Log.e("friend", "made it inside if statement");
+                Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
                 if (nd.getId() != R.id.nav_connections_fragment) {
                     mNewFriendRequestModel.increment();
                 }
+                return;
+            }
 
+            if (intent.hasExtra("deleteFriend")) {
+                Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
+                if (nd.getId() != R.id.nav_connections_fragment) {
+                    mNewFriendRequestModel.increment();
+                }
+                return;
+            }
+
+            if (intent.hasExtra("deletedFromChat")) {
+                Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
+                return;
             }
         }
     }

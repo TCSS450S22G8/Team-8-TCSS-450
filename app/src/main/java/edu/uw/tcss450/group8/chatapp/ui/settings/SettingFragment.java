@@ -16,10 +16,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentSettingBinding;
+import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.location.LocationListViewModel;
 
 /**
  * Class for setting Fragment to handle user settings
@@ -30,12 +33,21 @@ import edu.uw.tcss450.group8.chatapp.databinding.FragmentSettingBinding;
  * @version 5/19/22
  */
 public class SettingFragment extends Fragment {
+    private UserInfoViewModel mUser;
+    private SettingViewModel mSetting;
 
     /**
      * Required empty public constructor.
      */
     public SettingFragment() {
-        // Required empty public constructor
+        // Required empty public constructor\
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
+        mSetting = new ViewModelProvider(getActivity()).get(SettingViewModel.class);
     }
 
     @Override
@@ -48,7 +60,7 @@ public class SettingFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        mSetting.getUserInfo(mUser.getJwt());
         FragmentSettingBinding binding = FragmentSettingBinding.bind(getView());
         binding.buttonSettingsChange.setOnClickListener(button2 -> {
             Navigation.findNavController(getView()).navigate(
@@ -56,6 +68,10 @@ public class SettingFragment extends Fragment {
                             .actionSettingFragmentToChangeFragment());
         });
 
+        mSetting.addUserFirstNameObserver(getViewLifecycleOwner(), firstName -> binding.textSettingsFirstname.setText("First Name: " + firstName));
+        mSetting.addUserLastNameObserver(getViewLifecycleOwner(), lastname -> binding.textSettingsLastname.setText("Last Name: " + lastname));
+        mSetting.addUserNameObserver(getViewLifecycleOwner(), username -> binding.textSettingsUsername.setText("Username: " + username));
+        binding.textSettingsEmail.setText("Email: " + mUser.getEmail());
 
         TextView orange = view.findViewById(R.id.text_settings_orangeColor);
         TextView red = view.findViewById(R.id.text_settings_redColor);

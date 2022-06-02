@@ -8,6 +8,7 @@ import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdLowe
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdSpecialChar;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdUpperCase;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import androidx.navigation.Navigation;
 
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotBinding;
 
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
@@ -30,7 +32,8 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 5/19/22
+ * @author shilnara dam
+ * @version 6/1/22
  */
 public class ForgotFragment extends Fragment {
 
@@ -105,7 +108,10 @@ public class ForgotFragment extends Fragment {
                 matchValidator.apply(mBinding.editForgotPassword1.getText().toString().trim()),
                 this::validatePassword,
                 result -> {
-                    mBinding.editForgotPassword2.setError("Passwords must match.");
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Both passwords must match!")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -119,7 +125,12 @@ public class ForgotFragment extends Fragment {
                 mPassWordValidator.apply(mBinding.editForgotPassword1.getText().toString()),
                 this::verifyAuthWithServer,
                 result -> {
-                    mBinding.editForgotPassword1.setError("Please enter a valid Password.");
+                    mResetPassword.resetFailedResponse();
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Please enter a valid Password.")
+                            .setNegativeButton("Okay", null)
+                            .setMessage("Password Requirements:\n\n-Minimum length of 7\n-At least one of these characters @#$%&*!?\n-No spaces\n-Contain at least one number\n-At least one letter")
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -143,15 +154,19 @@ public class ForgotFragment extends Fragment {
      * Navigates to the verify fragment to continue registration by verifying email.
      */
     private void navigateToLogin() {
-        // ToDO: Register to Verification to autofill login
-//        RegisterFragmentDirections.ActionRegisterFragmentToLoginFragment directions =
-//                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
-//
-//        directions.setEmail(binding.editEmail.getText().toString());
-//        directions.setPassword(binding.editPassword1.getText().toString());
+        mResetPassword.resetSuccessResponse();
 
         //send toast message stating password was reset
         Toast.makeText(getActivity(), "Password Updated!", Toast.LENGTH_SHORT).show();
-        Navigation.findNavController(getView()).navigate(ForgotFragmentDirections.actionForgotFragmentToLoginFragment());
+
+        //send email and password for autofill then navigate to log in
+        ForgotFragmentArgs args = ForgotFragmentArgs.fromBundle(getArguments());
+        ForgotFragmentDirections
+                .ActionForgotFragmentToLoginFragment directions =
+                ForgotFragmentDirections
+                        .actionForgotFragmentToLoginFragment();
+        directions.setEmail(args.getEmail());
+        directions.setPassword(mBinding.editForgotPassword1.getText().toString());
+        Navigation.findNavController(getView()).navigate(directions);
     }
 }

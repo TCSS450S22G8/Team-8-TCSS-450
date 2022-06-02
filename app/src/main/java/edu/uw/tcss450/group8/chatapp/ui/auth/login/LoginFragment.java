@@ -6,20 +6,20 @@ import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkExclude
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdLength;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdSpecialChar;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
-
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.auth0.android.jwt.JWT;
 
@@ -30,6 +30,9 @@ import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentLoginBinding;
 import edu.uw.tcss450.group8.chatapp.model.PushyTokenViewModel;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.auth.verify.VerifyFragmentArgs;
+import edu.uw.tcss450.group8.chatapp.ui.weather.WeatherFragmentArgs;
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
@@ -40,7 +43,7 @@ import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
  * @author Sean Logan
  * @author Shilnara Dam
  * @author Levi McCoy
- * @version 5/19/22
+ * @version 6/1/22
  */
 public class LoginFragment extends Fragment {
 
@@ -84,15 +87,15 @@ public class LoginFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String jwt = getJWT(getActivity());
-        String email = getEmail(getActivity());
-
+        //String jwt = getJWT(getActivity());
+        //String email = getEmail(getActivity());
 //        if(!jwt.equals("")||!email.equals("")){
 //            Navigation.findNavController(getView())
 //                    .navigate(LoginFragmentDirections
 //                            .actionLoginFragmentToMainActivity(email, jwt));
 //            getActivity().finish();
 //        }
+        LoginFragmentArgs args = LoginFragmentArgs.fromBundle(getArguments());
 
         //Local access to the ViewBinding object. No need to create as Instance Var as it is only
         //used here.
@@ -115,10 +118,9 @@ public class LoginFragment extends Fragment {
                 getViewLifecycleOwner(),
                 this::observeResponse);
 
-        LoginFragmentArgs args = LoginFragmentArgs.fromBundle(getArguments());
+        //autofills user info when registering or forgetting password
         mBinding.editRegisterEmail.setText(args.getEmail().equals("default") ? "" : args.getEmail());
         mBinding.editPassword.setText(args.getPassword().equals("default") ? "" : args.getPassword());
-
 
         //don't allow sign in until pushy token retrieved
         mPushyTokenViewModel.addTokenObserver(getViewLifecycleOwner(), token ->
@@ -149,7 +151,11 @@ public class LoginFragment extends Fragment {
                 mEmailValidator.apply(mBinding.editRegisterEmail.getText().toString().trim()),
                 this::validatePassword,
                 result -> {
-                    mBinding.editRegisterEmail.setError("Please enter a valid Email address.");
+                    // These don't actually do anything we get the response from the server
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Please enter a valid Email address.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.progressBar.setVisibility(View.GONE);
                 });
     }
@@ -163,7 +169,6 @@ public class LoginFragment extends Fragment {
                 mPassWordValidator.apply(mBinding.editPassword.getText().toString()),
                 this::verifyAuthWithServer,
                 result -> {
-                    mBinding.editPassword.setError("Please enter a valid Password.");
                     mBinding.progressBar.setVisibility(View.GONE);
                 });
 
@@ -197,8 +202,11 @@ public class LoginFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 //this error cannot be fixed by the user changing credentials...
-                mBinding.editRegisterEmail.setError(
-                        "Error Authenticating on Push Token. Please contact support");
+                AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                dialog.setTitle("Error Authenticating on Push Token. Please contact support")
+                        .setNegativeButton("Okay", null)
+                        .show().setCanceledOnTouchOutside(true);
+
             } else {
                 navigateToSuccess(
                         mBinding.editRegisterEmail.getText().toString(),
@@ -241,9 +249,10 @@ public class LoginFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    mBinding.editRegisterEmail.setError(
-                            "Error Authenticating: " +
-                                    response.getJSONObject("data").getString("message"));
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Error Authenticating: " + response.getJSONObject("data").getString("message"))
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.progressBar.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());

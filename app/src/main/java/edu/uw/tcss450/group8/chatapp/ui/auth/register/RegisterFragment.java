@@ -1,5 +1,6 @@
 package edu.uw.tcss450.group8.chatapp.ui.auth.register;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentRegisterBinding;
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.*;
@@ -30,7 +32,7 @@ import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkClientP
  * @author Levi McCoy
  * @author Shilnara Dam
  * @author Sean Logan
- * @version 5/19/22
+ * @version 6/1/22
  */
 public class RegisterFragment extends Fragment {
 
@@ -109,7 +111,10 @@ public class RegisterFragment extends Fragment {
                 mNameValidator.apply(mBinding.editRegisterNickname.getText().toString().trim()),
                 this::validateFirst,
                 result -> {
-                    mBinding.editRegisterNickname.setError("Please enter a Nickname.");
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Please enter a username.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -123,7 +128,10 @@ public class RegisterFragment extends Fragment {
                 mNameValidator.apply(mBinding.editRegisterFirst.getText().toString().trim()),
                 this::validateLast,
                 result -> {
-                    mBinding.editRegisterFirst.setError("Please enter a first name.");
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Please enter a first name.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -137,7 +145,10 @@ public class RegisterFragment extends Fragment {
                 mNameValidator.apply(mBinding.editRegisterLast.getText().toString().trim()),
                 this::validateEmail,
                 result -> {
-                    mBinding.editRegisterLast.setError("Please enter a last name.");
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Please enter a last name.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -151,7 +162,10 @@ public class RegisterFragment extends Fragment {
                 mEmailValidator.apply(mBinding.editRegisterEmail.getText().toString().trim()),
                 this::validatePasswordsMatch,
                 result -> {
-                    mBinding.editRegisterEmail.setError("Please enter a valid Email address.");
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Please enter a valid email address.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -169,7 +183,10 @@ public class RegisterFragment extends Fragment {
                 matchValidator.apply(mBinding.editRegisterPassword1.getText().toString().trim()),
                 this::validatePassword,
                 result -> {
-                    mBinding.editRegisterPassword1.setError("Passwords must match.");
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Both passwords must match.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -183,7 +200,11 @@ public class RegisterFragment extends Fragment {
                 mPassWordValidator.apply(mBinding.editRegisterPassword1.getText().toString()),
                 this::verifyAuthWithServer,
                 result -> {
-                    mBinding.editRegisterPassword1.setError("Please enter a valid Password.");
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Please enter a valid Password.")
+                            .setNegativeButton("Okay", null)
+                            .setMessage("Password Requirements:\n\n-Minimum length of 7\n-At least one of these characters @#$%&*!?\n-No spaces\n-Contain at least one number\n-At least one letter")
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -209,18 +230,12 @@ public class RegisterFragment extends Fragment {
      * Navigates to the verify fragment to continue registration by verifying email.
      */
     private void navigateToLogin() {
-        // ToDO: Register to Verification to autofill login
-//        RegisterFragmentDirections.ActionRegisterFragmentToLoginFragment directions =
-//                RegisterFragmentDirections.actionRegisterFragmentToLoginFragment();
-//
-//        directions.setEmail(binding.editEmail.getText().toString());
-//        directions.setPassword(binding.editPassword1.getText().toString());
-
         Navigation.findNavController(getView()).
                 navigate(RegisterFragmentDirections.
-                        actionRegisterFragmentToVerifyFragment());
+                        actionRegisterFragmentToVerifyFragment(
+                                mBinding.editRegisterPassword1.getText().toString(),
+                                mBinding.editRegisterEmail.getText().toString()));
     }
-
 
     /**
      * An observer on the HTTP Response from the web server. This observer should be
@@ -232,9 +247,10 @@ public class RegisterFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    mBinding.editRegisterEmail.setError(
-                            "Error Authenticating: " +
-                                    response.getJSONObject("data").getString("message"));
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Error Authenticating: " + response.getJSONObject("data").getString("message"))
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());

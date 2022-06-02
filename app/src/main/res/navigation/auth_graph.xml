@@ -56,6 +56,12 @@
         <action
             android:id="@+id/action_verifyFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <argument
+            android:name="password"
+            app:argType="string" />
+        <argument
+            android:name="email"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/forgotEmailFragment"

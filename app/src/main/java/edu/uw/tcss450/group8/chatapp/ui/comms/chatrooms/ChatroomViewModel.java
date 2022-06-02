@@ -50,6 +50,7 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     /**
      * Constructor for Message List ViewModel
+     *
      * @param application
      *
      */
@@ -89,7 +90,8 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     /**
      * Helper method for observe
-     * @param owner owner of lifecycle
+     *
+     * @param owner    owner of lifecycle
      * @param observer message list
      */
     public void addChatRoomListObserver(@NonNull LifecycleOwner owner, @NonNull Observer<? super List<Chatroom>> observer) {
@@ -99,7 +101,7 @@ public class ChatroomViewModel extends AndroidViewModel {
     /**
      * sends a JSON request for all the chats the user is in
      *
-     * @param jwt String the zipcode of the desired location
+     * @param jwt String the jwt of the user
      */
     public void getChatRoomsForUser(String jwt) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/get-chats";
@@ -124,6 +126,7 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     /**
      * do it
+     *
      * @param chatRooms
      */
     public void handleGetChatRoomSuccess(final JSONArray chatRooms) {
@@ -143,13 +146,13 @@ public class ChatroomViewModel extends AndroidViewModel {
 
     /**
      * do it
+     *
      * @param volleyError
      */
     public void handlesGetChatRoomError(VolleyError volleyError) {
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
-        }
-        else {
+        } else {
             String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
             mChatroomList.setValue(new ArrayList<>());
             Log.e("CLIENT ERROR",

@@ -5,7 +5,7 @@
     <string name="action_logout">Logout</string>
     <string name="title_home">Home</string>
     <string name="title_chat">Chat</string>
-    <string name="title_connections">Connections</string>
+    <string name="title_connections">Contacts</string>
     <string name="title_weather">Weather</string>
     <string name="title_login">Login</string>
     <string name="title_settings">Settings</string>
@@ -27,7 +27,8 @@
     <string name="hint_retype_new_pass">Retype your new password</string>
     <string name="action_change">Change</string>
     <string name="action_change_pass">Change Password</string>
-    <string name="action_forgot">Forgot Password</string>
+    <string name="action_forgot">Forgot Your Password?</string>
+    <string name="hint_need_account">Need an Account?</string>
 
     <string name="action_search">Search</string>
     <string name="header_daily">Daily</string>
@@ -56,6 +57,23 @@
     <string name="hint_user_in_chat">User in chat</string>
     <string name="title_add_chat">Add Chat</string>
 
+
+    <string name="GOOGLE_MAPS_API_KEY">AIzaSyDfBe1Rhu6_zwuZwzVSTmphUu0Qk9lpylI</string>
+    <string name="title_activity_maps">MapsActivity</string>
+
+    <string name="title_map">Map</string>
+    <string name="title_locations">Saved Locations</string>
+
+    <string name="user_name">Username:</string>
+    <string name="user_first_name">First Name:</string>
+    <string name="user_last_name">Last Name:</string>
+    <string name="user_email">Email:</string>
+
+
+    <string name="text_incoming_requests">Incoming Requests</string>
+    <string name="text_outgoing_requests">Outgoing Requests</string>
+    <string name="text_requests">Requests</string>
+    <string name="text_add_contacts">Add Contacts</string>
 
 
 </resources>

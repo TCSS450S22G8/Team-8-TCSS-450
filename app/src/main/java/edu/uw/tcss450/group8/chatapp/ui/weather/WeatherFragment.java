@@ -1,47 +1,55 @@
 package edu.uw.tcss450.group8.chatapp.ui.weather;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
 import com.squareup.picasso.Picasso;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentWeatherBinding;
+import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.location.LocationListViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.location.LocationViewModel;
 
 /**
  * Class for Weather Fragment to display weather
  *
- *  @author Shilnara Dam
- *  @version 5/15/22
+ * @author Shilnara Dam
+ * @version 6/1/22
  */
 public class WeatherFragment extends Fragment {
     private WeatherViewModel mWeatherModel;
+    private LocationListViewModel mLocationListModel;
+    private LocationViewModel mLocationModel;
     private FragmentWeatherBinding mBinding;
+    private UserInfoViewModel mUserModel;
 
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mWeatherModel = new ViewModelProvider(requireActivity()).get(WeatherViewModel.class);
-        //hardcoded zipcode
-        String zipcode = "98404";
-        mWeatherModel.getWeatherZipCode(zipcode);
-
+        mLocationModel = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
+        mLocationListModel = new ViewModelProvider(requireActivity()).get(LocationListViewModel.class);
+        mUserModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -49,14 +57,72 @@ public class WeatherFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_weather, container, false);
+
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.botton_saved_location, menu);
+        inflater.inflate(R.menu.botton_map, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.open_saved_location) {
+
+
+            mLocationListModel.addLocationsObserver(getViewLifecycleOwner(), locations -> {
+                if (mLocationListModel.getLocationCount() == 0) {
+                    Navigation.findNavController(getView()).navigate(
+                            WeatherFragmentDirections
+                                    .actionNavWeatherFragmentToLocationMapFragment());
+                } else {
+                    Navigation.findNavController(getView()).navigate(
+                            WeatherFragmentDirections
+                                    .actionNavWeatherFragmentToLocationFragment());
+                }
+            });
+
+            mLocationListModel.resetLocation();
+            mLocationListModel.getLocations(mUserModel.getJwt());
+
+
+        }
+        if (id == R.id.open_map) {
+
+            Navigation.findNavController(getView()).navigate(
+                    WeatherFragmentDirections
+                            .actionNavWeatherFragmentToLocationMapFragment());
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        try {
+            //get weather info from arguments (saved locations)
+            WeatherFragmentArgs args = WeatherFragmentArgs.fromBundle(getArguments());
+            mWeatherModel.getWeatherLatLon(args.getLat(),
+                    args.getLon());
+        } catch (IllegalArgumentException e) {
+            //get weather info from user current location
+            //adding observer for current location's to set weather
+            mLocationModel.addLocationObserver(getViewLifecycleOwner(), location -> {
+                mWeatherModel.getWeatherLatLon(String.valueOf(location.getLatitude()),
+                        String.valueOf(location.getLongitude()));
+            });
+        }
+
+
         mBinding = FragmentWeatherBinding.bind(requireView());
         mBinding.progressBar.setVisibility(View.VISIBLE);
+
+
         //adding weather observers
         mWeatherModel.addCurrentWeatherObserver(
                 getViewLifecycleOwner(),
@@ -65,18 +131,19 @@ public class WeatherFragment extends Fragment {
                 this::observeErrorResponse);
         mWeatherModel.addHourlyWeatherObserver(getViewLifecycleOwner(),
                 weatherList ->
-                    mBinding.listWeatherHourly.setAdapter(new WeatherHourlyRecyclerViewAdapter(weatherList)));
+                        mBinding.listWeatherHourly.setAdapter(new WeatherHourlyRecyclerViewAdapter(weatherList)));
         mWeatherModel.addDailyWeatherObserver(getViewLifecycleOwner(),
                 weatherList -> {
                     mBinding.listWeatherDaily.setAdapter(new WeatherDailyRecyclerViewAdapter(weatherList));
-        });
+                });
+
         //button listener for zipcode
         mBinding.buttonWeatherZipcodeEnter.setOnClickListener(button -> {
             try {
                 //remove text focus
                 mBinding.editWeatherZipcode.clearFocus();
                 //close keyboard
-                InputMethodManager imm = (InputMethodManager)getActivity().
+                InputMethodManager imm = (InputMethodManager) getActivity().
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
             } catch (Exception e) {
@@ -92,7 +159,7 @@ public class WeatherFragment extends Fragment {
                 mBinding.editWeatherLat.clearFocus();
                 mBinding.editWeatherLon.clearFocus();
                 //close keyboard
-                InputMethodManager imm = (InputMethodManager)getActivity().
+                InputMethodManager imm = (InputMethodManager) getActivity().
                         getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
             } catch (Exception e) {
@@ -103,7 +170,23 @@ public class WeatherFragment extends Fragment {
                     mBinding.editWeatherLon.getText().toString());
         });
 
+//        mLocationListModel.addLocationsObserver(getViewLifecycleOwner(), locations -> {
+//            mBinding.buttonWeatherLocationList.setOnClickListener(button -> {
+//                if (mLocationListModel.getLocationCount() == 0) {
+//                    Navigation.findNavController(getView()).navigate(
+//                            WeatherFragmentDirections
+//                                    .actionNavWeatherFragmentToLocationMapFragment());
+//                } else {
+//                    Navigation.findNavController(getView()).navigate(
+//                            WeatherFragmentDirections
+//                                    .actionNavWeatherFragmentToLocationFragment());
+//                }
+//
+//            });
+//        });
+        //button listener for moving to saved location list
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -163,6 +246,7 @@ public class WeatherFragment extends Fragment {
                 //send toast message stating bad lat long
                 Toast.makeText(getActivity(), "Invalid Lat/Lon!", Toast.LENGTH_SHORT).show();
         }
+        mWeatherModel.resetError();
     }
 
     /**

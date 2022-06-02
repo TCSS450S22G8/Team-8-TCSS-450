@@ -25,12 +25,28 @@
         <action
             android:id="@+id/action_nav_home_fragment_to_chatroomListFragment"
             app:destination="@id/nav_chatroom_fragment" />
+        <action
+            android:id="@+id/action_nav_home_fragment_to_messageListFragment"
+            app:destination="@id/messageListFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_weather_fragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.weather.WeatherFragment"
         android:label="@string/title_weather"
-        tools:layout="@layout/fragment_weather" />
+        tools:layout="@layout/fragment_weather" >
+        <action
+            android:id="@+id/action_nav_weather_fragment_to_locationFragment"
+            app:destination="@id/locationFragment" />
+        <argument
+            android:name="lat"
+            app:argType="string" />
+        <argument
+            android:name="lon"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_nav_weather_fragment_to_locationMapFragment"
+            app:destination="@id/locationMapFragment" />
+    </fragment>
     <activity
         android:id="@+id/authenticationActivity"
         android:name="edu.uw.tcss450.group8.chatapp.AuthenticationActivity"
@@ -43,6 +59,12 @@
         <action
             android:id="@+id/action_nav_connections_fragment_to_messageListFragment"
             app:destination="@id/messageListFragment" />
+        <action
+            android:id="@+id/action_nav_connections_fragment_to_addContactFragment"
+            app:destination="@id/addContactFragment" />
+        <action
+            android:id="@+id/action_nav_connections_fragment_to_contactRequestFragment"
+            app:destination="@id/contactRequestFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_chatroom_fragment"
@@ -78,6 +100,7 @@
             app:argType="integer" />
     </fragment>
     <fragment
+
         android:id="@+id/chatroomAddFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add.ChatroomAddFragment"
         android:label="@string/title_add_chat">
@@ -92,5 +115,48 @@
         <action
             android:id="@+id/action_chatroomAddUserFragment_to_nav_chatroom_fragment"
             app:destination="@id/nav_chatroom_fragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/locationMapFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.location.LocationMapFragment"
+        android:label="@string/title_map" >
+        <action
+            android:id="@+id/action_locationMapFragment_to_nav_weather_fragment"
+            app:destination="@id/nav_weather_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/locationFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.location.LocationListFragment"
+        android:label="@string/title_locations"
+        tools:layout="@layout/fragment_location">
+        <action
+            android:id="@+id/action_locationFragment_to_locationMapFragment"
+            app:destination="@id/locationMapFragment" />
+        <action
+            android:id="@+id/action_locationFragment_to_nav_weather_fragment"
+            app:destination="@id/nav_weather_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addContactFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.AddContactFragment"
+        android:label="@string/text_add_contacts">
+        <action
+            android:id="@+id/action_addContactFragment_to_nav_connections_fragment"
+            app:destination="@id/nav_connections_fragment" />
+        <action
+            android:id="@+id/action_addContactFragment_to_contactRequestFragment"
+            app:destination="@id/contactRequestFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/contactRequestFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactRequestFragment"
+        android:label="@string/text_requests">
+        <action
+            android:id="@+id/action_contactRequestFragment_to_addContactFragment"
+            app:destination="@id/addContactFragment" />
+        <action
+            android:id="@+id/action_contactRequestFragment_to_nav_connections_fragment"
+            app:destination="@id/nav_connections_fragment" />
     </fragment>
 </navigation>

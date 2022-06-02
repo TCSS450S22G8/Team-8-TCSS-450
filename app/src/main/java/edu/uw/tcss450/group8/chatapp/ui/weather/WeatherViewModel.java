@@ -43,7 +43,7 @@ public class WeatherViewModel extends AndroidViewModel {
     private final MutableLiveData<Weather> mCurrentWeather;
     private final MutableLiveData<ArrayList<Weather>> mHourlyWeather;
     private final MutableLiveData<ArrayList<Weather>> mDailyWeather;
-    private final MutableLiveData<String> mError;
+    private MutableLiveData<String> mError;
     private JSONObject mResponse;
 
 
@@ -57,6 +57,10 @@ public class WeatherViewModel extends AndroidViewModel {
         mCurrentWeather = new MutableLiveData<>();
         mHourlyWeather = new MutableLiveData<>();
         mDailyWeather = new MutableLiveData<>();
+        mError = new MutableLiveData<>();
+    }
+
+    public void resetError() {
         mError = new MutableLiveData<>();
     }
 
@@ -292,6 +296,7 @@ public class WeatherViewModel extends AndroidViewModel {
                                 mResponse.getString("city"),
                                 formatter.format(date),
                                 temp.getString("day"),
+                                temp.getString("night"),
                                 setEachWordCap(weather.getString("description")),
                                 weather.getString("icon")
                         ));

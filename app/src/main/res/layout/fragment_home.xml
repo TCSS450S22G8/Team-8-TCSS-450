@@ -3,8 +3,8 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout"
@@ -16,64 +16,99 @@
             android:id="@+id/list_weather_hourly"
             android:layout_width="354dp"
             android:layout_height="135dp"
+            android:layout_marginTop="48dp"
             android:orientation="horizontal"
             app:layoutManager="LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_app_name"
-            app:layout_constraintVertical_bias="0.184"
             tools:layout_conversion_absoluteHeight="135dp"
             tools:layout_conversion_absoluteWidth="411dp"
             tools:listitem="@layout/fragment_weather_card" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_contacts_home_fragment"
+            android:layout_width="354dp"
+            android:layout_height="135dp"
+            android:layout_marginTop="48dp"
+            android:orientation="vertical"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.508"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/list_weather_hourly"
+            tools:layout_conversion_absoluteHeight="135dp"
+            tools:layout_conversion_absoluteWidth="411dp"
+            tools:listitem="@layout/fragment_contact_card" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_chatroom_home_fragment"
+            android:layout_width="354dp"
+            android:layout_height="135dp"
+            android:layout_marginTop="60dp"
+            android:orientation="vertical"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/list_contacts_home_fragment"
+            tools:layout_conversion_absoluteHeight="135dp"
+            tools:layout_conversion_absoluteWidth="411dp"
+            tools:listitem="@layout/fragment_chatroom_card" />
 
         <TextView
             android:id="@+id/text_current_condition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="24dp"
             android:textSize="18sp"
-            app:layout_constraintBottom_toTopOf="@+id/list_weather_hourly"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_app_name"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/text_app_name" />
 
         <TextView
             android:id="@+id/text_app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="@string/app_name"
+            android:textAlignment="center"
             android:textSize="34sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/list_chats"
-            android:layout_width="351dp"
-            android:layout_height="112dp"
-            android:layout_marginTop="24dp"
-            android:textSize="34sp"
-            android:text="SHOW RECENT CHAT ROOMS"
+            android:id="@+id/text_home_contacts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/title_connections"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/list_contacts_home_fragment"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/list_weather_hourly" />
+            app:layout_constraintTop_toBottomOf="@+id/list_weather_hourly"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
-            android:id="@+id/list_contacts"
-            android:layout_width="351dp"
-            android:layout_height="112dp"
-            android:textSize="34sp"
-            android:layout_marginTop="24dp"
-            android:text="SHOW RECENT CONTACTS"
+            android:id="@+id/text_home_chatrooms"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/title_chat_rooms"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/list_chatroom_home_fragment"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.516"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/list_chats" />
+            app:layout_constraintTop_toBottomOf="@+id/list_contacts_home_fragment"
+            app:layout_constraintVertical_bias="1.0" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

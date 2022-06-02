@@ -8,6 +8,7 @@ import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdLowe
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdSpecialChar;
 import static edu.uw.tcss450.group8.chatapp.utils.PasswordValidator.checkPwdUpperCase;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import org.json.JSONObject;
 
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChangeBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 import edu.uw.tcss450.group8.chatapp.utils.PasswordValidator;
 
 /**
@@ -127,7 +129,10 @@ public class ChangeFragment extends Fragment {
                 matchValidator.apply(mBinding.editChangePassword1.getText().toString().trim()),
                 this::validatePassword,
                 result -> {
-                    mBinding.editChangePassword2.setError("Passwords must match.");
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Both passwords must match.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -141,7 +146,11 @@ public class ChangeFragment extends Fragment {
                 mPassWordValidator.apply(mBinding.editChangePassword1.getText().toString()),
                 this::validatePassword2,
                 result -> {
-                    mBinding.editChangePassword1.setError("Please enter a valid Password 1.");
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Please enter a valid Password.")
+                            .setNegativeButton("Okay", null)
+                            .setMessage("Password Requirements:\n\n-Minimum length of 7\n-At least one of these characters @#$%&*!?\n-No spaces\n-Contain at least one number\n-At least one letter")
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -155,7 +164,10 @@ public class ChangeFragment extends Fragment {
                 mPassWordValidator2.apply(mBinding.editChangeCurPass.getText().toString()),
                 this::verifyAuthWithServer,
                 result -> {
-                    mBinding.editChangeCurPass.setError("Please enter your current password.");
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Please enter your current password.")
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 });
     }
@@ -206,9 +218,10 @@ public class ChangeFragment extends Fragment {
         if (response.length() > 0) {
             if (response.has("code")) {
                 try {
-                    mBinding.editChangeCurPass.setError(
-                            "Error Authenticating: " +
-                                    response.getJSONObject("data").getString("message"));
+                    AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                    dialog.setTitle("Error Authenticating: " + response.getJSONObject("data").getString("message"))
+                            .setNegativeButton("Okay", null)
+                            .show().setCanceledOnTouchOutside(true);
                     mBinding.layoutWait.setVisibility(View.GONE);
                 } catch (JSONException e) {
                     Log.e("JSON Parse Error", e.getMessage());

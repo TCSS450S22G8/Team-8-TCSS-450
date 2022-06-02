@@ -62,7 +62,7 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
     public void onBindViewHolder(@NonNull ContactRecyclerViewAdapter.ContactViewHolder holder, int position) {
         holder.setContact(mContact.get(position));
         String swipeId = mContact.get(position).getUserName();
-        viewBinder.bind(holder.mBinding.swipeReveal, swipeId);
+        viewBinder.bind(holder.mBinding.swipeLayout, swipeId);
         swipeIds.add(swipeId);
     }
 
@@ -141,12 +141,13 @@ public class ContactRecyclerViewAdapter extends RecyclerView.Adapter<ContactRecy
             });
 
             //button to message friend
-            messageFriend.setOnClickListener(new View.OnClickListener() {
+            mBinding.layoutInner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mParent.sendMessage(email.getText().toString(), username.getText().toString());
                 }
             });
+            mBinding.buttonContactSendMessage.setVisibility(View.INVISIBLE);
         }
 
         /**

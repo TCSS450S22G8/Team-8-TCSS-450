@@ -20,7 +20,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
 
 /**
  * Recycler View to show all contacts as a list.
- *
+ * <p>
  * Adapted from original code by Charles Bryan
  *
  * @author Charles Bryan
@@ -36,11 +36,11 @@ public class HomeContactViewRecyclerAdapter extends RecyclerView.Adapter<HomeCon
     /**
      * Constructor for HomeContactViewRecyclerAdapter
      *
-     * @param items list of contacts
+     * @param items  list of contacts
      * @param parent HomeFragment
      */
     public HomeContactViewRecyclerAdapter(List<Contact> items, HomeFragment parent) {
-        this.mContact= items;
+        this.mContact = items;
         mParent = parent;
     }
 
@@ -102,19 +102,21 @@ public class HomeContactViewRecyclerAdapter extends RecyclerView.Adapter<HomeCon
                                     mContact.remove((getAdapterPosition()));
                                     notifyItemRemoved(getAdapterPosition());
                                     notifyItemRangeChanged(getAdapterPosition(), mContact.size());
-                                    Toast.makeText(mParent.getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();                                }
+                                    Toast.makeText(mParent.getActivity(), "Unfriend success!", Toast.LENGTH_SHORT).show();
+                                }
                             })
                             .setNegativeButton("Cancel", null)
                             .show().setCanceledOnTouchOutside(true);
                 }
             });
 
-            messageFriend.setOnClickListener(new View.OnClickListener() {
+            mBinding.layoutInner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     mParent.homeSendMessage(email.getText().toString(), username.getText().toString());
                 }
             });
+            messageFriend.setVisibility(View.INVISIBLE);
         }
 
         /**

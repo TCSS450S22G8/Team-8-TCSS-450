@@ -1,8 +1,6 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms;
 
-import android.app.ActionBar;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +26,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
  * @author Levi McCoy
  * @author Shilnara Dam
  * @author Sean Logan
- * @version 5/19/22
+ * @version 6/2/22
  */
 public class ChatroomListFragment extends Fragment {
     private ChatroomViewModel mModel;
@@ -38,6 +36,8 @@ public class ChatroomListFragment extends Fragment {
     private MessageListViewModel mMessage;
 
     private FragmentChatroomListBinding mBinding;
+
+    ChatroomRecyclerViewAdapter myAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,7 +67,7 @@ public class ChatroomListFragment extends Fragment {
                     mMessage.getFirstMessages(chatId, mUser.getJwt());
                     mMessage.addMessageObserver(chatId, getViewLifecycleOwner(), messages -> {
                         mBinding.listRoot.setAdapter(
-                                new ChatroomRecyclerViewAdapter(chatList, this)
+                                myAdapter = new ChatroomRecyclerViewAdapter(chatList, this)
                         );
                     });
                 });
@@ -82,6 +82,13 @@ public class ChatroomListFragment extends Fragment {
                 mModel.getChatRoomsForUser(mUser.getJwt());
             }
         });
+
+        mBinding.floatingButtonAdd.setOnClickListener(button ->
+                Navigation.findNavController(getView()).navigate(
+                        ChatroomListFragmentDirections.actionNavChatroomFragmentToChatroomAddFragment()
+                ));
+
+
     }
 
     /**
@@ -95,4 +102,18 @@ public class ChatroomListFragment extends Fragment {
                         actionNavChatroomFragmentToMessageListFragment(chatName, chatId));
 
     }
+
+    /**
+     * Attempts to refresh list adapter
+     */
+    public void refreshAdapter() {
+        mBinding.swipeContactsRefresh.setRefreshing(true);
+        mBinding.listRoot.setAdapter(myAdapter);
+        myAdapter.notifyDataSetChanged();
+        mBinding.swipeContactsRefresh.refreshDrawableState();
+        mBinding.swipeContactsRefresh.setRefreshing(false);
+
+    }
+
+
 }

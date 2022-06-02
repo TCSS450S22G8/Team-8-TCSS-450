@@ -7,11 +7,12 @@ import java.io.Serializable;
  * A class to encapsulate a chat message object.
  *
  * @author Levi McCoy
- * @version 5/19/22
+ * @version 6/2/22
  */
 public class Chatroom implements Serializable {
     private final String mChatRoomName;
     private final String mChatRoomId;
+    private final String mOwner;
 
     /**
      * Constructor for Message
@@ -19,9 +20,10 @@ public class Chatroom implements Serializable {
      * @param chatRoomId  id of chat room
      * @param chatRoomName the name of the chat
      */
-    public Chatroom(String chatRoomId, String chatRoomName) {
+    public Chatroom(String chatRoomId, String chatRoomName, String owner) {
         mChatRoomId = chatRoomId;
         mChatRoomName = chatRoomName;
+        mOwner = owner;
     }
 
 
@@ -41,5 +43,14 @@ public class Chatroom implements Serializable {
      */
     public String getChatRoomId() {
         return mChatRoomId;
+    }
+
+    /**
+     * Getter for room owner
+     *
+     * @return returns the email of the room owner
+     */
+    public String getChatOwner() {
+        return mOwner;
     }
 }

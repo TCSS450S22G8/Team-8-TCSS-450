@@ -73,6 +73,12 @@
         <action
             android:id="@+id/action_nav_chatroom_fragment_to_messageListFragment"
             app:destination="@id/messageListFragment" />
+        <action
+            android:id="@+id/action_nav_chatroom_fragment_to_chatroomAddFragment"
+            app:destination="@id/chatroomAddFragment" />
+        <action
+            android:id="@+id/action_nav_chatroom_fragment_to_chatroomAddUserFragment"
+            app:destination="@id/chatroomAddUserFragment" />
     </fragment>
     <fragment
         android:id="@+id/changeFragment"
@@ -93,6 +99,23 @@
             android:name="chatid"
             app:argType="integer" />
     </fragment>
+    <fragment
+
+        android:id="@+id/chatroomAddFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.add.ChatroomAddFragment"
+        android:label="@string/title_add_chat">
+        <action
+            android:id="@+id/action_chatroomAddFragment_to_nav_chatroom_fragment"
+            app:destination="@id/nav_chatroom_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatroomAddUserFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserFragment"
+        android:label="@string/title_add_user">
+        <action
+            android:id="@+id/action_chatroomAddUserFragment_to_nav_chatroom_fragment"
+            app:destination="@id/nav_chatroom_fragment" />
+ </fragment>
     <fragment
         android:id="@+id/locationMapFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.location.LocationMapFragment"
@@ -134,5 +157,6 @@
         <action
             android:id="@+id/action_contactRequestFragment_to_nav_connections_fragment"
             app:destination="@id/nav_connections_fragment" />
+
     </fragment>
 </navigation>

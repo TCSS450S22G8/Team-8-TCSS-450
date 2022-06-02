@@ -67,7 +67,16 @@ public class ContactListViewModel extends AndroidViewModel {
     }
 
     /**
-     * Helper method for observe mContact
+     * Gets contacts
+     *
+     * @return list of contacts
+     */
+    public List<Contact> getContacts() {
+        return mContact.getValue();
+    }
+
+    /**
+     * Helper method for observe
      * @param owner owner of lifecycle
      * @param observer contact list
      */

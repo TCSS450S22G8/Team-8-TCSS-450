@@ -85,12 +85,7 @@ public class ContactRequestFragment extends Fragment {
 //            }
         });
 
-        //adding button listeners for navigation
-        mBinding.buttonContactsContacts.setOnClickListener(button -> {
-            Navigation.findNavController(getView()).navigate(
-                    ContactRequestFragmentDirections
-                            .actionContactRequestFragmentToNavConnectionsFragment());
-        });
+
 
         mBinding.buttonContactsAdd.setOnClickListener(button -> {
             Navigation.findNavController(getView()).navigate(

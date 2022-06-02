@@ -4,26 +4,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         tools:context=".ui.home.HomeFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_weather_hourly"
             android:layout_width="354dp"
             android:layout_height="135dp"
+            android:layout_marginTop="48dp"
             android:orientation="horizontal"
             app:layoutManager="LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/text_app_name"
-            app:layout_constraintVertical_bias="0.094"
             tools:layout_conversion_absoluteHeight="135dp"
             tools:layout_conversion_absoluteWidth="411dp"
             tools:listitem="@layout/fragment_weather_card" />
@@ -32,11 +31,11 @@
             android:id="@+id/list_contacts_home_fragment"
             android:layout_width="354dp"
             android:layout_height="135dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="48dp"
             android:orientation="vertical"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.491"
+            app:layout_constraintHorizontal_bias="0.508"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/list_weather_hourly"
             tools:layout_conversion_absoluteHeight="135dp"
@@ -47,14 +46,13 @@
             android:id="@+id/list_chatroom_home_fragment"
             android:layout_width="354dp"
             android:layout_height="135dp"
+            android:layout_marginTop="60dp"
             android:orientation="vertical"
             app:layoutManager="LinearLayoutManager"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.491"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/list_contacts_home_fragment"
-            app:layout_constraintVertical_bias="1.0"
             tools:layout_conversion_absoluteHeight="135dp"
             tools:layout_conversion_absoluteWidth="411dp"
             tools:listitem="@layout/fragment_chatroom_card" />
@@ -63,22 +61,22 @@
             android:id="@+id/text_current_condition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
             android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/list_weather_hourly"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_app_name"
-            app:layout_constraintVertical_bias="1.0" />
+            app:layout_constraintTop_toBottomOf="@+id/text_app_name" />
 
         <TextView
             android:id="@+id/text_app_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:text="@string/app_name"
+            android:textAlignment="center"
             android:textSize="34sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -88,11 +86,13 @@
             android:id="@+id/text_home_contacts"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             android:text="@string/title_connections"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/list_contacts_home_fragment"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/list_weather_hourly"
             app:layout_constraintVertical_bias="1.0" />
@@ -106,7 +106,6 @@
             android:textStyle="bold"
             app:layout_constraintBottom_toTopOf="@+id/list_chatroom_home_fragment"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/list_contacts_home_fragment"
             app:layout_constraintVertical_bias="1.0" />

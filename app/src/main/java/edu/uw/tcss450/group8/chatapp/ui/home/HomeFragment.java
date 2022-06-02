@@ -116,7 +116,7 @@ public class HomeFragment extends Fragment {
 
         mLocation.addLocationObserver(getViewLifecycleOwner(), location -> {
             mWeatherModel.getWeatherLatLon(String.valueOf(location.getLatitude()),
-                    String.valueOf(location.getLongitude()));
+                    String.valueOf(location.getLongitude()), mUser.getJwt());
         });
 
     }

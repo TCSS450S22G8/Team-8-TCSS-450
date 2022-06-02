@@ -42,6 +42,7 @@ public class WeatherFragment extends Fragment {
 
 
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +50,7 @@ public class WeatherFragment extends Fragment {
         mLocationModel = new ViewModelProvider(requireActivity()).get(LocationViewModel.class);
         mLocationListModel = new ViewModelProvider(requireActivity()).get(LocationListViewModel.class);
         mUserModel = new ViewModelProvider(requireActivity()).get(UserInfoViewModel.class);
+
         setHasOptionsMenu(true);
     }
 
@@ -108,13 +110,13 @@ public class WeatherFragment extends Fragment {
             //get weather info from arguments (saved locations)
             WeatherFragmentArgs args = WeatherFragmentArgs.fromBundle(getArguments());
             mWeatherModel.getWeatherLatLon(args.getLat(),
-                    args.getLon());
+                    args.getLon(), mUserModel.getJwt());
         } catch (IllegalArgumentException e) {
             //get weather info from user current location
             //adding observer for current location's to set weather
             mLocationModel.addLocationObserver(getViewLifecycleOwner(), location -> {
                 mWeatherModel.getWeatherLatLon(String.valueOf(location.getLatitude()),
-                        String.valueOf(location.getLongitude()));
+                        String.valueOf(location.getLongitude()), mUserModel.getJwt());
             });
         }
 
@@ -150,7 +152,8 @@ public class WeatherFragment extends Fragment {
                 Log.i("ANDROID", "Keyboard did not close");
             }
             setDataToBlank();
-            mWeatherModel.getWeatherZipCode(mBinding.editWeatherZipcode.getText().toString());
+            mWeatherModel.getWeatherZipCode(mBinding.editWeatherZipcode.getText().toString(),
+                    mUserModel.getJwt());
         });
         //button listener for lat/lon
         mBinding.buttonWeatherLatLonEnter.setOnClickListener(button -> {
@@ -167,7 +170,7 @@ public class WeatherFragment extends Fragment {
             }
             setDataToBlank();
             mWeatherModel.getWeatherLatLon(mBinding.editWeatherLat.getText().toString(),
-                    mBinding.editWeatherLon.getText().toString());
+                    mBinding.editWeatherLon.getText().toString(), mUserModel.getJwt());
         });
 
 //        mLocationListModel.addLocationsObserver(getViewLifecycleOwner(), locations -> {
@@ -241,12 +244,14 @@ public class WeatherFragment extends Fragment {
             case "zipcode":
                 //send toast message stating bad zipcode
                 Toast.makeText(getActivity(), "Invalid Zipcode!", Toast.LENGTH_SHORT).show();
+                mWeatherModel.resetError();
                 break;
             case "lat/lon":
                 //send toast message stating bad lat long
                 Toast.makeText(getActivity(), "Invalid Lat/Lon!", Toast.LENGTH_SHORT).show();
+                mWeatherModel.resetError();
+                break;
         }
-        mWeatherModel.resetError();
     }
 
     /**

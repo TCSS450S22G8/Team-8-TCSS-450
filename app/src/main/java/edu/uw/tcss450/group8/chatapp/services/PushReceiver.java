@@ -339,7 +339,7 @@ public class PushReceiver extends BroadcastReceiver {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context, MESSAGE_CHANNEL_ID)
                     .setAutoCancel(true)
                     .setSmallIcon(R.drawable.ic_chat_notification)
-                    .setContentTitle("Message from: " + message.getSender())
+                    .setContentTitle("Message from: " + message.getUsername())
                     .setContentText(message.getMessage())
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                     .setContentIntent(pendingIntent);

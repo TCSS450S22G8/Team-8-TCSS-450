@@ -68,6 +68,9 @@ public class PushReceiver extends BroadcastReceiver {
             case "deleteUserFromChat":
                 removeFromChatNotification(context, intent);
                 break;
+            case "deleteAccount":
+                deleteAccount(context, intent);
+                break;
         }
     }
 
@@ -406,6 +409,26 @@ public class PushReceiver extends BroadcastReceiver {
 
             // Build the notification and display it
             notificationManager.notify(6, builder.build());
+        }
+    }
+
+    /**
+     * Push for deleting account, signs user out
+     *
+     * @param context
+     * @param intent
+     */
+    private void deleteAccount(Context context, Intent intent) {
+        ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
+        ActivityManager.getMyMemoryState(appProcessInfo);
+
+        if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
+
+            Intent i = new Intent(RECEIVED_NEW_MESSAGE);
+            i.putExtra("deleteAccount", "request");
+            i.putExtras(intent.getExtras());
+
+            context.sendBroadcast(i);
         }
     }
 }

@@ -165,7 +165,6 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     attemptRemoveSelf(view);
-                                    Toast.makeText(mParent.getActivity(), "Delete ChatRoom", Toast.LENGTH_SHORT).show();
                                 }
                             })
                             .setNegativeButton("Cancel", null)
@@ -209,7 +208,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             mChatroom.remove((getAdapterPosition()));
             notifyItemRemoved(getAdapterPosition());
             notifyItemRangeChanged(getAdapterPosition(), mChatroom.size());
-            Toast.makeText(mParent.getActivity(), "Chat Deleted!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mParent.getActivity(), "Left Chat", Toast.LENGTH_SHORT).show();
         }
 
         /**

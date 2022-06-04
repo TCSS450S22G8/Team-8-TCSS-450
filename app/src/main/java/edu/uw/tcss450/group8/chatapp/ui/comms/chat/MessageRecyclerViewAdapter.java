@@ -1,6 +1,7 @@
 package edu.uw.tcss450.group8.chatapp.ui.comms.chat;
 
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,7 @@ import edu.uw.tcss450.group8.chatapp.model.NewMessageCountViewModel;
  * @author JenHo Liao
  * @author Shilnara Dam
  * @author Sean Logan
- * @version 5/19/22
+ * @version 6/3/22
  */
 public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecyclerViewAdapter.MessageViewHolder> {
 
@@ -118,7 +119,7 @@ public class MessageRecyclerViewAdapter extends RecyclerView.Adapter<MessageRecy
                 card.requestLayout();
             } else {
                 //This message is from another user. Format it as such
-                binding.textMessage.setText(message.getSender() +
+                binding.textMessage.setText(message.getUsername() +
                         ": " + message.getMessage());
                 ViewGroup.MarginLayoutParams layoutParams =
                         (ViewGroup.MarginLayoutParams) card.getLayoutParams();

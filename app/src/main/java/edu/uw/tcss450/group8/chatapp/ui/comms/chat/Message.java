@@ -8,9 +8,14 @@ import org.json.JSONObject;
 import java.io.Serializable;
 
 /**
- * @author Charles Bryan
- *
  * Encapsulate chat message details.
+ * Original code adapted from Charles Bryan
+ *
+ * @author Charles Bryan
+ * @author Sean Logan
+ * @author Shilnara Dam
+ *
+ * @version 6/3/2022
  */
 public final class Message implements Serializable {
 
@@ -18,12 +23,14 @@ public final class Message implements Serializable {
     private final String mMessage;
     private final String mSender;
     private final String mTimeStamp;
+    private final String mUsername;
 
-    public Message(int messageId, String message, String sender, String timeStamp) {
+    public Message(int messageId, String message, String sender, String timeStamp, String username) {
         mMessageId = messageId;
         mMessage = message;
         mSender = sender;
         mTimeStamp = timeStamp;
+        mUsername = username;
     }
 
     /**
@@ -38,7 +45,8 @@ public final class Message implements Serializable {
         return new Message(msg.getInt("messageid"),
                 msg.getString("message"),
                 msg.getString("email"),
-                msg.getString("timestamp"));
+                msg.getString("timestamp"),
+                msg.getString("username"));
     }
 
     public String getMessage() {
@@ -55,6 +63,10 @@ public final class Message implements Serializable {
 
     public int getMessageId() {
         return mMessageId;
+    }
+
+    public String getUsername() {
+        return mUsername;
     }
 
     /**

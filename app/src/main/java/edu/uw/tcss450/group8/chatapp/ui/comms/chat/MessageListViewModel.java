@@ -37,7 +37,7 @@ import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
  * @author JenHo Liao
  * @author Shilnara Dam
  * @author Sean Logan
- * @version 5/19/22
+ * @version 6/3/22
  */
 public class MessageListViewModel extends AndroidViewModel {
     /**
@@ -204,7 +204,8 @@ public class MessageListViewModel extends AndroidViewModel {
                         message.getInt("messageid"),
                         message.getString("message"),
                         message.getString("email"),
-                        message.getString("timestamp")
+                        message.getString("timestamp"),
+                        message.getString("username")
                 );
                 if (!list.contains(cMessage)) {
                     // don't add a duplicate

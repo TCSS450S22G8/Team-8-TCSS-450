@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
     private ChatroomViewModel mChatroomViewModel;
     private UserInfoViewModel mUserModel;
     private LocationListViewModel mLocationListModel;
+    private ContactListViewModel mContactModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
         mUserModel = viewModelProvider.get(UserInfoViewModel.class);
         mChatroomViewModel = viewModelProvider.get(ChatroomViewModel.class);
-        ContactListViewModel mContactModel = viewModelProvider.get(ContactListViewModel.class);
+        mContactModel = viewModelProvider.get(ContactListViewModel.class);
         mLocationModel = viewModelProvider.get(LocationViewModel.class);
         mLocationListModel = viewModelProvider.get(LocationListViewModel.class);
         mContactModel.getContacts(mUserModel.getJwt());
@@ -405,7 +406,6 @@ public class MainActivity extends AppCompatActivity {
             if (intent.hasExtra("addedToChat")) {
                 //If the user is not on the chat screen, update the
                 // NewMessageCountView Model
-
                 mNewMessageModel.increment(Integer.valueOf(intent.getStringExtra("chatid")));
                 mChatroomViewModel.getChatRoomsForUser(mUserModel.getJwt());
                 Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
@@ -415,6 +415,8 @@ public class MainActivity extends AppCompatActivity {
 
             //Incrementing count for new friend requests
             if (intent.hasExtra("friendRequest")) {
+                mContactModel.getIncomingRequestList(mUserModel.getJwt());
+                mContactModel.getContacts(mUserModel.getJwt());
                 Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
                 if (nd.getId() != R.id.nav_connections_fragment) {
                     mNewFriendRequestModel.increment();
@@ -423,6 +425,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             if (intent.hasExtra("deleteFriend")) {
+                mContactModel.getContacts(mUserModel.getJwt());
                 Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
                 if (nd.getId() != R.id.nav_connections_fragment) {
                     mNewFriendRequestModel.increment();

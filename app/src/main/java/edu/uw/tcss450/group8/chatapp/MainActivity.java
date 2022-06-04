@@ -433,10 +433,10 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            if (intent.hasExtra("deletedFromChat")) {
-                Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
-                return;
-            }
+//            if (intent.hasExtra("deletedFromChat")) {
+//                Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
+//                return;
+//            }
         }
     }
 

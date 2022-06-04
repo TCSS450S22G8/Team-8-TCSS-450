@@ -49,6 +49,7 @@ import edu.uw.tcss450.group8.chatapp.services.PushReceiver;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactFragmentDirections;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.location.LocationListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.location.LocationViewModel;
@@ -433,11 +434,16 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
+            if (intent.hasExtra("deleteAccount")) {
+                Intent i = new Intent (MainActivity.this, AuthenticationActivity.class);
+                startActivity(i);
+                signOut();
+            }
+
 //            if (intent.hasExtra("deletedFromChat")) {
 //                Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
 //                return;
 //            }
         }
     }
-
 }

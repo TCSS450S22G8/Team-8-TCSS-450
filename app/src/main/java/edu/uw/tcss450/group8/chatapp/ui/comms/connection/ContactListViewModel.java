@@ -157,7 +157,7 @@ public class ContactListViewModel extends AndroidViewModel {
      * @param jwt String the user's jwt
      */
     public void getNonFriendList(String jwt) {
-        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve/nonfriends";
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve/add-non-friends";
         Request request = new JsonObjectRequest(
                 Request.Method.GET,
                 url,

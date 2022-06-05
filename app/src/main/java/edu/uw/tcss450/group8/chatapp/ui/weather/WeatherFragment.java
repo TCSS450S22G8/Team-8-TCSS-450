@@ -24,6 +24,7 @@ import com.squareup.picasso.Picasso;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentWeatherBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactFragmentDirections;
 import edu.uw.tcss450.group8.chatapp.ui.location.LocationListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.location.LocationViewModel;
 
@@ -72,8 +73,6 @@ public class WeatherFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.open_saved_location) {
-
-
             mLocationListModel.addLocationsObserver(getViewLifecycleOwner(), locations -> {
                 if (mLocationListModel.getLocationCount() == 0) {
                     Navigation.findNavController(getView()).navigate(
@@ -172,6 +171,13 @@ public class WeatherFragment extends Fragment {
             }
             mWeatherModel.getWeatherLatLon(mBinding.editWeatherLat.getText().toString(),
                     mBinding.editWeatherLon.getText().toString(), mUserModel.getJwt());
+        });
+
+        //button listener to send user to view additional current weather information
+        mBinding.buttonWeatherAdditionalInfo.setOnClickListener(button -> {
+            Navigation.findNavController(getView()).
+                    navigate(WeatherFragmentDirections
+                            .actionNavWeatherFragmentToWeatherMoreInfoFragment());
         });
     }
 

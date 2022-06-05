@@ -33,16 +33,18 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 import edu.uw.tcss450.group8.chatapp.io.RequestQueueSingleton;
+import edu.uw.tcss450.group8.chatapp.ui.comms.connection.AddContactFragment;
 
 /**
  * View Model class for weather
  *
  * @author shilnara dam
- * @version 5/15/22
+ * @version 6/5/22
  */
 public class WeatherViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Weather> mCurrentWeather;
+    private final MutableLiveData<WeatherAdditionalInfo> mAdditionalCurrentWeather;
     private final MutableLiveData<ArrayList<Weather>> mHourlyWeather;
     private final MutableLiveData<ArrayList<Weather>> mDailyWeather;
     private MutableLiveData<String> mZipError;
@@ -58,6 +60,7 @@ public class WeatherViewModel extends AndroidViewModel {
     public WeatherViewModel(@NonNull Application application) {
         super(application);
         mCurrentWeather = new MutableLiveData<>();
+        mAdditionalCurrentWeather = new MutableLiveData<>();
         mHourlyWeather = new MutableLiveData<>();
         mDailyWeather = new MutableLiveData<>();
         mZipError = new MutableLiveData<>();
@@ -134,6 +137,17 @@ public class WeatherViewModel extends AndroidViewModel {
     public void addCurrentWeatherObserver(@NonNull LifecycleOwner owner,
                                    @NonNull Observer<? super Weather> observer) {
         mCurrentWeather.observe(owner, observer);
+    }
+
+    /**
+     * adds an observer to this live data for the variable mAdditionalCurrentWeather.
+     *
+     * @param owner LifecycleOwner lifecycle owner that controls the observer
+     * @param observer Observer the observer that receives events
+     */
+    public void addAdditionalCurrentWeatherObserver(@NonNull LifecycleOwner owner,
+                                          @NonNull Observer<? super WeatherAdditionalInfo> observer) {
+        mAdditionalCurrentWeather.observe(owner, observer);
 
     }
 
@@ -260,6 +274,7 @@ public class WeatherViewModel extends AndroidViewModel {
         setCurrent();
         setHourly();
         setDaily();
+        setAdditionalCurrent();
     }
 
     /**
@@ -285,6 +300,40 @@ public class WeatherViewModel extends AndroidViewModel {
     }
 
     /**
+     * sets additional current weather indo
+     *
+     */
+    private void setAdditionalCurrent() {
+        try {
+            JSONObject current = mResponse.getJSONObject("current");
+
+            //formatting time to be 12 hour am/pm
+            Date sunrise = new Date((Long.parseLong(current.getString("sunrise")) + Long.parseLong(mResponse.getString("timezone_offset"))) * 1000);
+            Date sunset = new Date((Long.parseLong(current.getString("sunset")) + Long.parseLong(mResponse.getString("timezone_offset"))) * 1000);
+            DateFormat formatter = new SimpleDateFormat("h:mm a", Locale.US);
+            formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+            formatter.format(sunrise);
+
+
+            mAdditionalCurrentWeather.setValue(
+                    new WeatherAdditionalInfo(
+                            current.getString("wind_speed"),
+                            current.getString("wind_deg"),
+                            current.getString("humidity"),
+                            current.getString("dew_point"),
+                            current.getString("pressure"),
+                            current.getString("uvi"),
+                            current.getString("clouds"),
+                            formatter.format(sunrise),
+                            formatter.format(sunset)
+                    ));
+        } catch (JSONException e){
+            Log.e("JSON PARSE ERROR", "Found in handle Success Weather Current");
+            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
+        }
+    }
+
+    /**
      * sets hourly weather
      *
      */
@@ -295,11 +344,11 @@ public class WeatherViewModel extends AndroidViewModel {
             for (int i = 0; i < hourly.length(); i++) {
                 JSONObject hour = hourly.getJSONObject(i);
                 JSONObject weather = hour.getJSONArray("weather").getJSONObject(0);
-                //formatting date to hour:00
+                //formatting date to 12 hour system with am/pm
                 Date date = new Date((Long.parseLong(hour.getString("dt")) + Long.parseLong(mResponse.getString("timezone_offset"))) * 1000);
-                DateFormat formatter = new SimpleDateFormat("hh", Locale.US);
-                formatter.setTimeZone(TimeZone.getTimeZone("UTC-7"));
-                String dateFormatted = formatter.format(date) + ":00";
+                DateFormat formatter = new SimpleDateFormat("h a", Locale.US);
+                formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+                String dateFormatted = formatter.format(date);
                 //adding object to list
                 weatherList.add(
                         new Weather(
@@ -331,7 +380,7 @@ public class WeatherViewModel extends AndroidViewModel {
                 JSONObject weather = day.getJSONArray("weather").getJSONObject(0);
                 //formatting date to M/D
                 Date date = new Date(Long.parseLong(day.getString("dt")) * 1000);
-                DateFormat formatter = new SimpleDateFormat("MM/dd", Locale.US);
+                DateFormat formatter = new SimpleDateFormat("E", Locale.US);
                 //adding object to list
                 weatherList.add(
                         new Weather(

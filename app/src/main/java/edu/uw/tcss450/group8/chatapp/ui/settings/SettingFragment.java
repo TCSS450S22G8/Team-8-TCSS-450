@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import edu.uw.tcss450.group8.chatapp.MainActivity;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentSettingBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
@@ -82,10 +84,12 @@ public class SettingFragment extends Fragment {
                 dialog.setTitle("To delete your account permanently click \"Confirm\".")
                         .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-                                mSetting.deleteUserAccount(mUser.getJwt());
+//                                mSetting.deleteUserAccount(mUser.getJwt());
                                 Navigation.findNavController(getView()).navigate(
                                                 SettingFragmentDirections
                                                         .actionSettingFragmentToAuthenticationActivity());
+                                final ImageView ToastImageAdd = new ImageView(getActivity());
+                                ToastImageAdd.setImageResource(R.drawable.slapchaticon);
                                 Toast.makeText(getActivity(), "Your account has been deleted", Toast.LENGTH_LONG).show();
                             }
                         })

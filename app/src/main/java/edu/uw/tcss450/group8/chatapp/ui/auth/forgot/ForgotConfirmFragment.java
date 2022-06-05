@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -12,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotConfirmlBinding;
 
 /**
@@ -60,6 +62,8 @@ public class ForgotConfirmFragment extends Fragment {
 
         String email = ForgotConfirmFragmentArgs.fromBundle(getArguments()).getEmail();
         mBinding.buttonForgotConfirmResend.setOnClickListener(button -> {
+            final ImageView ToastImageAdd = new ImageView(getActivity());
+            ToastImageAdd.setImageResource(R.drawable.slapchaticon);
             Toast.makeText(getActivity(), "We'll resend that email!", Toast.LENGTH_SHORT).show();
             mModel.sendForgotPasswordEmail(email);
         });
@@ -76,6 +80,8 @@ public class ForgotConfirmFragment extends Fragment {
 
             } else {
                 // popup need to confirm email address to continue
+                final ImageView ToastImageAdd = new ImageView(getActivity());
+                ToastImageAdd.setImageResource(R.drawable.slapchaticon);
                 Toast.makeText(getActivity(), "Please Verify your email to continue!", Toast.LENGTH_SHORT).show();
             }
         });

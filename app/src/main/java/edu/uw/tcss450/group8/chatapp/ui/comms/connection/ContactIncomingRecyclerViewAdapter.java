@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -95,6 +96,8 @@ public class ContactIncomingRecyclerViewAdapter extends RecyclerView.Adapter<Con
                     mContactRequest.remove((getAdapterPosition()));
                     notifyItemRemoved(getAdapterPosition());
                     notifyItemRangeChanged(getAdapterPosition(), mContactRequest.size());
+                    final ImageView ToastImageAdd = new ImageView(mParentRequest.getActivity());
+                    ToastImageAdd.setImageResource(R.drawable.slapchaticon);
                     Toast.makeText(mParentRequest.getActivity(), "Accepted friend request successful!", Toast.LENGTH_SHORT).show();
                 }
             });

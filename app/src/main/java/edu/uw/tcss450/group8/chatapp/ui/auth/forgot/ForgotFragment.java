@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentForgotBinding;
 
 import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
@@ -158,6 +160,8 @@ public class ForgotFragment extends Fragment {
         mResetPassword.resetSuccessResponse();
 
         //send toast message stating password was reset
+        final ImageView ToastImageAdd = new ImageView(getActivity());
+        ToastImageAdd.setImageResource(R.drawable.slapchaticon);
         Toast.makeText(getActivity(), "Password Updated!", Toast.LENGTH_SHORT).show();
 
         //send email and password for autofill then navigate to log in

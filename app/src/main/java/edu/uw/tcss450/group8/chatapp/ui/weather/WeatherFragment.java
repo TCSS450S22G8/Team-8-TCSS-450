@@ -18,6 +18,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.squareup.picasso.Picasso;
 
@@ -119,10 +121,12 @@ public class WeatherFragment extends Fragment {
             });
         }
 
-
         mBinding = FragmentWeatherBinding.bind(requireView());
         mBinding.progressBar.setVisibility(View.VISIBLE);
 
+        //allows the recycler view to snap into place
+        SnapHelper helper1 = new LinearSnapHelper();
+        SnapHelper helper2 = new LinearSnapHelper();
 
         //adding weather observers
         mWeatherModel.addCurrentWeatherObserver(
@@ -133,10 +137,15 @@ public class WeatherFragment extends Fragment {
         mWeatherModel.addLatLonErrorObserver(getViewLifecycleOwner(),
                 this::observeLatLonErrorResponse);
         mWeatherModel.addHourlyWeatherObserver(getViewLifecycleOwner(),
-                weatherList ->
-                        mBinding.listWeatherHourly.setAdapter(new WeatherHourlyRecyclerViewAdapter(weatherList)));
+                weatherList -> {
+                        mBinding.listWeatherHourly.setOnFlingListener(null);
+                        helper1.attachToRecyclerView(mBinding.listWeatherHourly);
+                        mBinding.listWeatherHourly.setAdapter(new WeatherHourlyRecyclerViewAdapter(weatherList));
+                });
         mWeatherModel.addDailyWeatherObserver(getViewLifecycleOwner(),
                 weatherList -> {
+                    mBinding.listWeatherDaily.setOnFlingListener(null);
+                    helper2.attachToRecyclerView(mBinding.listWeatherDaily);
                     mBinding.listWeatherDaily.setAdapter(new WeatherDailyRecyclerViewAdapter(weatherList));
                 });
 

@@ -172,6 +172,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
                 }
             });
             binding.buttonChatroomAdd.setOnClickListener(this::attemptAddUser);
+            binding.buttonChatroomInfo.setOnClickListener(this::attemptInfo);
         }
 
         /**
@@ -209,6 +210,17 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             notifyItemRemoved(getAdapterPosition());
             notifyItemRangeChanged(getAdapterPosition(), mChatroom.size());
             Toast.makeText(mParent.getActivity(), "Left Chat", Toast.LENGTH_SHORT).show();
+        }
+
+        /**
+         * Attempts to add a user to the chat
+         *
+         * @param view
+         */
+        private void attemptInfo(View view) {
+            mModel.setmChatId(Integer.parseInt(chatId.getText().toString()));
+            Navigation.findNavController(mParent.requireView()).navigate(
+                    ChatroomListFragmentDirections.actionNavChatroomFragmentToChatroomInfoFragment());
         }
 
         /**

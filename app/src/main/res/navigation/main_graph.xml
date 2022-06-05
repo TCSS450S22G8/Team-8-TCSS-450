@@ -82,6 +82,9 @@
         <action
             android:id="@+id/action_nav_chatroom_fragment_to_chatroomAddUserFragment"
             app:destination="@id/chatroomAddUserFragment" />
+        <action
+            android:id="@+id/action_nav_chatroom_fragment_to_chatroomInfoFragment"
+            app:destination="@id/chatroomInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/changeFragment"
@@ -161,5 +164,13 @@
         <action
             android:id="@+id/action_contactRequestFragment_to_nav_connections_fragment"
             app:destination="@id/nav_connections_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatroomInfoFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.info.ChatroomInfoFragment"
+        android:label="@string/title_users_chat">
+        <action
+            android:id="@+id/action_chatroomInfoFragment_to_nav_chatroom_fragment"
+            app:destination="@id/nav_chatroom_fragment" />
     </fragment>
 </navigation>

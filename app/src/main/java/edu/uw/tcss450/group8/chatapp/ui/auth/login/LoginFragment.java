@@ -237,7 +237,7 @@ public class LoginFragment extends Fragment {
             if (response.has("code")) {
                 try {
                     AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
-                    dialog.setTitle("Error Authenticating: " + response.getJSONObject("data").getString("message"))
+                    dialog.setTitle(response.getJSONObject("data").getString("message") + ".")
                             .setNegativeButton("Okay", null)
                             .show().setCanceledOnTouchOutside(true);
                     mBinding.progressBar.setVisibility(View.GONE);

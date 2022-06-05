@@ -3,6 +3,8 @@ package edu.uw.tcss450.group8.chatapp.ui.settings;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.getThemeColor;
 import static edu.uw.tcss450.group8.chatapp.utils.ThemeManager.setThemeColor;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -12,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -23,6 +26,7 @@ import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentSettingBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.location.LocationListViewModel;
+import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 
 /**
  * Class for setting Fragment to handle user settings
@@ -35,6 +39,7 @@ import edu.uw.tcss450.group8.chatapp.ui.location.LocationListViewModel;
 public class SettingFragment extends Fragment {
     private UserInfoViewModel mUser;
     private SettingViewModel mSetting;
+    private FragmentSettingBinding mBinding;
 
     /**
      * Required empty public constructor.
@@ -53,25 +58,47 @@ public class SettingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        mBinding = FragmentSettingBinding.inflate(inflater);
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_setting, container, false);
-    }
+        return mBinding.getRoot();    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mSetting.getUserInfo(mUser.getJwt());
-        FragmentSettingBinding binding = FragmentSettingBinding.bind(getView());
-        binding.buttonSettingsChange.setOnClickListener(button2 -> {
+        mBinding = FragmentSettingBinding.bind(getView());
+        mBinding.buttonSettingsChange.setOnClickListener(button2 -> {
             Navigation.findNavController(getView()).navigate(
                     SettingFragmentDirections
                             .actionSettingFragmentToChangeFragment());
         });
 
-        mSetting.addUserFirstNameObserver(getViewLifecycleOwner(), firstName -> binding.textSettingsFirstname.setText("First Name: " + firstName));
-        mSetting.addUserLastNameObserver(getViewLifecycleOwner(), lastname -> binding.textSettingsLastname.setText("Last Name: " + lastname));
-        mSetting.addUserNameObserver(getViewLifecycleOwner(), username -> binding.textSettingsUsername.setText("Username: " + username));
-        binding.textSettingsEmail.setText("Email: " + mUser.getEmail());
+
+        mBinding.buttonSettingsDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(getContext());
+                dialog.setTitle("To delete your account permanently click \"Confirm\".")
+                        .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                mSetting.deleteUserAccount(mUser.getJwt());
+                                Navigation.findNavController(getView()).navigate(
+                                                SettingFragmentDirections
+                                                        .actionSettingFragmentToAuthenticationActivity());
+                                Toast.makeText(getActivity(), "Your account has been deleted", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        .setNegativeButton("Cancel", null)
+                        .show().setCanceledOnTouchOutside(true);
+            }
+        });
+
+
+        mSetting.addUserFirstNameObserver(getViewLifecycleOwner(), firstName -> mBinding.textSettingsFirstname.setText("First Name: " + firstName));
+        mSetting.addUserLastNameObserver(getViewLifecycleOwner(), lastname -> mBinding.textSettingsLastname.setText("Last Name: " + lastname));
+        mSetting.addUserNameObserver(getViewLifecycleOwner(), username -> mBinding.textSettingsUsername.setText("Username: " + username));
+        mBinding.textSettingsEmail.setText("Email: " + mUser.getEmail());
 
         TextView orange = view.findViewById(R.id.text_settings_orangeColor);
         TextView red = view.findViewById(R.id.text_settings_redColor);
@@ -79,11 +106,11 @@ public class SettingFragment extends Fragment {
         TextView green = view.findViewById(R.id.text_settings_greenColor);
         TextView uw = view.findViewById(R.id.text_settings_uwColor);
 
-        binding.textSettingsOrangeColor.setOnClickListener(button -> SetColor("orange"));
-        binding.textSettingsRedColor.setOnClickListener(button -> SetColor("red"));
-        binding.textSettingsBlueColor.setOnClickListener(button -> SetColor("blue"));
-        binding.textSettingsGreenColor.setOnClickListener(button -> SetColor("green"));
-        binding.textSettingsUwColor.setOnClickListener(button -> SetColor("uw"));
+        mBinding.textSettingsOrangeColor.setOnClickListener(button -> SetColor("orange"));
+        mBinding.textSettingsRedColor.setOnClickListener(button -> SetColor("red"));
+        mBinding.textSettingsBlueColor.setOnClickListener(button -> SetColor("blue"));
+        mBinding.textSettingsGreenColor.setOnClickListener(button -> SetColor("green"));
+        mBinding.textSettingsUwColor.setOnClickListener(button -> SetColor("uw"));
 
         if (isDarkMode()) {
             orange.setBackgroundColor(getResources().getColor(R.color.orange_dark, null));

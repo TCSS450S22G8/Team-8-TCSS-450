@@ -84,7 +84,7 @@ public class SettingFragment extends Fragment {
                 dialog.setTitle("To delete your account permanently click \"Confirm\".")
                         .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
-//                                mSetting.deleteUserAccount(mUser.getJwt());
+                                mSetting.deleteUserAccount(mUser.getJwt());
                                 Navigation.findNavController(getView()).navigate(
                                                 SettingFragmentDirections
                                                         .actionSettingFragmentToAuthenticationActivity());

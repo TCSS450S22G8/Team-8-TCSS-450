@@ -33,6 +33,7 @@
     <string name="action_search">Search</string>
     <string name="header_daily">Daily</string>
     <string name="header_hourly">Hourly</string>
+
     <string name="text_description">Description</string>
     <string name="hint_enter_zipcode">Enter Zipcode</string>
     <string name="hint_enter_lat">Latitude</string>
@@ -69,6 +70,7 @@
     <string name="user_first_name">First Name:</string>
     <string name="user_last_name">Last Name:</string>
     <string name="user_email">Email:</string>
+    <string name="delete_account">Delete Account</string>
 
 
     <string name="text_incoming_requests">Incoming Requests</string>
@@ -78,6 +80,17 @@
     <string name="title_users_chat">Users in Chat</string>
     <string name="title_remove_user">Remove Users</string>
     <string name="action_remove_user">Remove user</string>
+
+    <string name="header_additional_details">Today\'s Details</string>
+    <string name="text_wind">Wind</string>
+    <string name="text_humidity">Humidity</string>
+    <string name="text_dew_point">Dew Point</string>
+    <string name="text_pressure">Pressure</string>
+    <string name="text_uv_index">UV Index</string>
+    <string name="text_sunrise">Sunrise</string>
+    <string name="text_sunset">Sunset</string>
+    <string name="text_cloudiness">Cloudiness</string>
+
 
 
 </resources>

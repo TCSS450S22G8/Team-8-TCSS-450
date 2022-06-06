@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -226,6 +227,8 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             mChatroom.remove((getAdapterPosition()));
             notifyItemRemoved(getAdapterPosition());
             notifyItemRangeChanged(getAdapterPosition(), mChatroom.size());
+            final ImageView ToastImageAdd = new ImageView(mParent.getActivity());
+            ToastImageAdd.setImageResource(R.drawable.slapchaticon);
             Toast.makeText(mParent.getActivity(), "Left Chat", Toast.LENGTH_SHORT).show();
         }
 

@@ -199,4 +199,31 @@ public class SettingViewModel extends AndroidViewModel {
     }
 
 
+    /**
+     * sends a JSON request to delete users account
+     *
+     * @param jwt String the users jwt
+     */
+    public void deleteUserAccount(String jwt) {
+        String url = "https://tcss-450-sp22-group-8.herokuapp.com/delete-account/";
+
+        Request<JSONObject> request = new JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                null,
+                this::handleSuccess,
+                this::handleError) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> headers = new HashMap<>();
+                // add headers <key,value>
+                headers.put("Authorization", jwt);
+                return headers;
+            }
+        };
+        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
+                .addToRequestQueue(request);
+    }
+
+
 }

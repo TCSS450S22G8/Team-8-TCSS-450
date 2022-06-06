@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_settingFragment_to_changeFragment"
             app:destination="@id/changeFragment" />
+        <action
+            android:id="@+id/action_nav_setting_fragment_to_authenticationActivity"
+            app:destination="@id/authenticationActivity" />
     </fragment>
     <fragment
         android:id="@+id/nav_home_fragment"
@@ -55,6 +58,9 @@
         <action
             android:id="@+id/action_nav_weather_fragment_to_locationMapFragment"
             app:destination="@id/locationMapFragment" />
+        <action
+            android:id="@+id/action_nav_weather_fragment_to_weatherMoreInfoFragment"
+            app:destination="@id/weatherMoreInfoFragment" />
     </fragment>
     <activity
         android:id="@+id/authenticationActivity"
@@ -189,5 +195,14 @@
         <action
             android:id="@+id/action_chatroomRemoveFragment_to_nav_chatroom_fragment"
             app:destination="@id/nav_chatroom_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/weatherMoreInfoFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.weather.WeatherMoreInfoFragment"
+        android:label="@string/header_additional_details"
+        tools:layout="@layout/fragment_weather_more_info" />
+        <action
+            android:id="@+id/action_nav_weather_fragment_to_weatherMoreInfoFragment"
+            app:destination="@id/weatherMoreInfoFragment" />
     </fragment>
 </navigation>

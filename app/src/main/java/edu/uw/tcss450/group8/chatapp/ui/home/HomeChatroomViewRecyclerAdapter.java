@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -144,6 +145,8 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                                 public void onClick(DialogInterface dialog, int which) {
                                     attemptRemoveSelf(view);
+                                    final ImageView ToastImageAdd = new ImageView(mParent.getActivity());
+                                    ToastImageAdd.setImageResource(R.drawable.slapchaticon);
                                     Toast.makeText(mParent.getActivity(), "Delete ChatRoom", Toast.LENGTH_SHORT).show();
                                 }
                             })

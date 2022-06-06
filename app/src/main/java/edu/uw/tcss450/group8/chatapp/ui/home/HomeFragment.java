@@ -7,6 +7,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.SnapHelper;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -86,9 +88,15 @@ public class HomeFragment extends Fragment {
         mWeatherModel.addCurrentWeatherObserver(
                 getViewLifecycleOwner(),
                 this::observeCurrentWeatherResponse);
+
+        //allows the recycler view to snap into place
+        SnapHelper helper1 = new LinearSnapHelper();
         mWeatherModel.addHourlyWeatherObserver(this,
-                weatherList ->
-                        mBinding.listWeatherHourly.setAdapter(new WeatherHourlyRecyclerViewAdapter(weatherList)));
+                weatherList -> {
+                        mBinding.listWeatherHourly.setOnFlingListener(null);
+                        helper1.attachToRecyclerView(mBinding.listWeatherHourly);
+                        mBinding.listWeatherHourly.setAdapter(new WeatherHourlyRecyclerViewAdapter(weatherList));
+                });
 
         mContactListModel.addContactsListObserver(
                 getViewLifecycleOwner(),

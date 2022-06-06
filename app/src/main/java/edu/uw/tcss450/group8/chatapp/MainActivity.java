@@ -447,10 +447,10 @@ public class MainActivity extends AppCompatActivity {
                 signOut();
             }
 
-//            if (intent.hasExtra("deletedFromChat")) {
-//                Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
-//                return;
-//            }
+            if (intent.hasExtra("deletedFromChat")) {
+                mChatroomViewModel.getChatRoomsForUser(mUserModel.getJwt());
+                return;
+            }
         }
     }
 }

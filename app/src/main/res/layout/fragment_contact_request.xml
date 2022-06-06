@@ -14,7 +14,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_contact_incoming"
-            android:layout_width="416dp"
+            android:layout_width="match_parent"
             android:layout_height="236dp"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -27,7 +27,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_contact_outgoing"
-            android:layout_width="411dp"
+            android:layout_width="match_parent"
             android:layout_height="243dp"
             android:layout_marginTop="68dp"
             app:layoutManager="LinearLayoutManager"
@@ -78,20 +78,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:srcCompat="@drawable/ic_person_add_24" />
-
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/button_contacts_request_refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="84dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@drawable/ic_refresh_black_24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.954"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

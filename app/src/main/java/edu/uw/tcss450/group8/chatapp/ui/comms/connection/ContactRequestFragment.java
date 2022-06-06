@@ -83,11 +83,6 @@ public class ContactRequestFragment extends Fragment {
                     ContactRequestFragmentDirections
                             .actionContactRequestFragmentToAddContactFragment());
         });
-
-        mBinding.buttonContactsRequestRefresh.setOnClickListener(button -> {
-            mContact.getOutgoingRequestList(mUser.getJwt());
-            mContact.getIncomingRequestList(mUser.getJwt());
-        });
     }
 
     @Override

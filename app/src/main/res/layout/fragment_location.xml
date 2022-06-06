@@ -9,8 +9,8 @@
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_contacts_refresh"
-        android:layout_width="406dp"
-        android:layout_height="558dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toTopOf="@+id/button_open_map"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

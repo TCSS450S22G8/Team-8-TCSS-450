@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -213,6 +214,8 @@ public class WeatherFragment extends Fragment {
      */
     private void observeZipcodeErrorResponse(String theError) {
         //send toast message stating bad zipcode
+        final ImageView ToastImageAdd = new ImageView(getActivity());
+        ToastImageAdd.setImageResource(R.drawable.slapchaticon);
         Toast.makeText(getActivity(), "Invalid Zipcode!", Toast.LENGTH_SHORT).show();
         mWeatherModel.resetZipcodeError();
         //making elements visible again due to incorrect input

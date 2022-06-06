@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -109,6 +110,8 @@ public class ContactOutgoingRecyclerViewAdapter extends RecyclerView.Adapter<Con
                                     mContactRequest.remove((getAdapterPosition()));
                                     notifyItemRemoved(getAdapterPosition());
                                     notifyItemRangeChanged(getAdapterPosition(), mContactRequest.size());
+                                    final ImageView ToastImageAdd = new ImageView(mParentRequest.getActivity());
+                                    ToastImageAdd.setImageResource(R.drawable.slapchaticon);
                                     Toast.makeText(mParentRequest.getActivity(), "Deleted friend request successful!", Toast.LENGTH_SHORT).show();                              }
                             })
                             .setNegativeButton("Cancel", null)

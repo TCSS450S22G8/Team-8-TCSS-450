@@ -69,6 +69,7 @@
     <string name="user_first_name">First Name:</string>
     <string name="user_last_name">Last Name:</string>
     <string name="user_email">Email:</string>
+    <string name="delete_account">Delete Account</string>
 
 
     <string name="text_incoming_requests">Incoming Requests</string>

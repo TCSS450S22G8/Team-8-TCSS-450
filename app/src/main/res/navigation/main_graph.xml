@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_settingFragment_to_changeFragment"
             app:destination="@id/changeFragment" />
+        <action
+            android:id="@+id/action_nav_setting_fragment_to_authenticationActivity"
+            app:destination="@id/authenticationActivity" />
     </fragment>
     <fragment
         android:id="@+id/nav_home_fragment"

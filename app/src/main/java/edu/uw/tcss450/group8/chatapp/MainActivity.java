@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -409,6 +410,8 @@ public class MainActivity extends AppCompatActivity {
                 // NewMessageCountView Model
                 mNewMessageModel.increment(Integer.valueOf(intent.getStringExtra("chatid")));
                 mChatroomViewModel.getChatRoomsForUser(mUserModel.getJwt());
+                final ImageView ToastImageAdd = new ImageView(MainActivity.this);
+                ToastImageAdd.setImageResource(R.drawable.slapchaticon);
                 Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -418,6 +421,8 @@ public class MainActivity extends AppCompatActivity {
             if (intent.hasExtra("friendRequest")) {
                 mContactModel.getIncomingRequestList(mUserModel.getJwt());
                 mContactModel.getContacts(mUserModel.getJwt());
+                final ImageView ToastImageAdd = new ImageView(MainActivity.this);
+                ToastImageAdd.setImageResource(R.drawable.slapchaticon);
                 Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
                 if (nd.getId() != R.id.nav_connections_fragment) {
                     mNewFriendRequestModel.increment();
@@ -427,6 +432,8 @@ public class MainActivity extends AppCompatActivity {
 
             if (intent.hasExtra("deleteFriend")) {
                 mContactModel.getContacts(mUserModel.getJwt());
+                final ImageView ToastImageAdd = new ImageView(MainActivity.this);
+                ToastImageAdd.setImageResource(R.drawable.slapchaticon);
                 Toast.makeText(MainActivity.this, intent.getStringExtra("message"), Toast.LENGTH_SHORT).show();
                 if (nd.getId() != R.id.nav_connections_fragment) {
                     mNewFriendRequestModel.increment();

@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -88,6 +89,8 @@ public class LocationListRecyclerViewAdapter extends RecyclerView.Adapter<Locati
                     mLocations.remove((getAdapterPosition()));
                     notifyItemRemoved(getAdapterPosition());
                     notifyItemRangeChanged(getAdapterPosition(), mLocations.size());
+                    final ImageView ToastImageAdd = new ImageView(mParent.getActivity());
+                    ToastImageAdd.setImageResource(R.drawable.slapchaticon);
                     Toast.makeText(mParent.getActivity(), "Location Removed", Toast.LENGTH_SHORT).show();
                 }
             });

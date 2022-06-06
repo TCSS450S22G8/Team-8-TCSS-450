@@ -41,7 +41,7 @@ public class WeatherAdditionalInfo implements Serializable {
         this.mHumidity = theHumidity + "%";
         this.mDewPoint = theDewPoint + "\u00B0";
         this.mPressure = setPressure(Double.parseDouble(thePressure));
-        this.mUVIndex = setUVIndex(Integer.parseInt(theUVIndex));
+        this.mUVIndex = setUVIndex((int)Double.parseDouble(theUVIndex));
         this.mCloudiness = theCloudiness + "%";
         this.mSunrise = theSunrise;
         this.mSunset = theSunset;

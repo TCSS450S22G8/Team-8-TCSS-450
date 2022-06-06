@@ -34,6 +34,12 @@
         <action
             android:id="@+id/action_nav_home_fragment_to_chatroomAddUserFragment"
             app:destination="@id/chatroomAddUserFragment" />
+        <action
+            android:id="@+id/action_nav_home_fragment_to_chatroomRemoveFragment"
+            app:destination="@id/chatroomRemoveFragment" />
+        <action
+            android:id="@+id/action_nav_home_fragment_to_chatroomInfoFragment"
+            app:destination="@id/chatroomInfoFragment" />
     </fragment>
     <fragment
         android:id="@+id/nav_weather_fragment"
@@ -88,6 +94,12 @@
         <action
             android:id="@+id/action_nav_chatroom_fragment_to_chatroomAddUserFragment"
             app:destination="@id/chatroomAddUserFragment" />
+        <action
+            android:id="@+id/action_nav_chatroom_fragment_to_chatroomInfoFragment"
+            app:destination="@id/chatroomInfoFragment" />
+        <action
+            android:id="@+id/action_nav_chatroom_fragment_to_chatroomRemoveFragment"
+            app:destination="@id/chatroomRemoveFragment" />
     </fragment>
     <fragment
         android:id="@+id/changeFragment"
@@ -169,8 +181,28 @@
             app:destination="@id/nav_connections_fragment" />
     </fragment>
     <fragment
+        android:id="@+id/chatroomInfoFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.info.ChatroomInfoFragment"
+        android:label="@string/title_users_chat">
+        <action
+            android:id="@+id/action_chatroomInfoFragment_to_nav_chatroom_fragment"
+            app:destination="@id/nav_chatroom_fragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/chatroomRemoveFragment"
+        android:name="edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.remove.ChatroomRemoveFragment"
+        android:label="@string/title_remove_user">
+        <action
+            android:id="@+id/action_chatroomRemoveFragment_to_nav_chatroom_fragment"
+            app:destination="@id/nav_chatroom_fragment" />
+    </fragment>
+    <fragment
         android:id="@+id/weatherMoreInfoFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.weather.WeatherMoreInfoFragment"
         android:label="@string/header_additional_details"
         tools:layout="@layout/fragment_weather_more_info" />
+        <action
+            android:id="@+id/action_nav_weather_fragment_to_weatherMoreInfoFragment"
+            app:destination="@id/weatherMoreInfoFragment" />
+    </fragment>
 </navigation>

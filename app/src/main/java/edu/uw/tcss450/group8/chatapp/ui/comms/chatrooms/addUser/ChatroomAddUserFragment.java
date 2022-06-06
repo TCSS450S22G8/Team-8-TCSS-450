@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.uw.tcss450.group8.chatapp.MainActivity;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddUserBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
@@ -105,6 +107,8 @@ public class ChatroomAddUserFragment extends Fragment{
         chatId = mView.getmChatId().getValue();
         mAdd.add1(mUser.getJwt(), namesToAdd, chatId);
         mBinding.progressBar.setVisibility(View.GONE);
+        final ImageView ToastImageAdd = new ImageView(getActivity());
+        ToastImageAdd.setImageResource(R.drawable.slapchaticon);
         Toast.makeText(getActivity(), "Added User(s)", Toast.LENGTH_SHORT).show();
         Navigation.findNavController(getView()).navigate(
                 ChatroomAddUserFragmentDirections.actionChatroomAddUserFragmentToNavChatroomFragment());

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import java.util.ArrayList;
 import java.util.List;
 
+import edu.uw.tcss450.group8.chatapp.MainActivity;
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomRemoveBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
@@ -103,6 +105,8 @@ public class ChatroomRemoveFragment extends Fragment{
         chatId = mView.getmChatId().getValue();
         mAdd.remove1(mUser.getJwt(), namesToRemove, chatId);
         mBinding.progressBar.setVisibility(View.GONE);
+        final ImageView ToastImageAdd = new ImageView(getActivity());
+        ToastImageAdd.setImageResource(R.drawable.slapchaticon);
         Toast.makeText(getActivity(), "Removed User(s)", Toast.LENGTH_SHORT).show();
         Navigation.findNavController(getView()).navigate(
                 ChatroomRemoveFragmentDirections.actionChatroomRemoveFragmentToNavChatroomFragment());

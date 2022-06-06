@@ -200,7 +200,7 @@
         android:id="@+id/weatherMoreInfoFragment"
         android:name="edu.uw.tcss450.group8.chatapp.ui.weather.WeatherMoreInfoFragment"
         android:label="@string/header_additional_details"
-        tools:layout="@layout/fragment_weather_more_info" />
+        tools:layout="@layout/fragment_weather_more_info">
         <action
             android:id="@+id/action_nav_weather_fragment_to_weatherMoreInfoFragment"
             app:destination="@id/weatherMoreInfoFragment" />

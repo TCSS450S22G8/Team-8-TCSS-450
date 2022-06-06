@@ -28,6 +28,7 @@ import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.Message;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chat.MessageListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.Chatroom;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomListFragmentDirections;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
 import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
 
@@ -108,6 +109,7 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
         private Chatroom mChatroomSingle;
         private TextView chatId;
         private TextView chatName;
+        private TextView mOwner;
         private UserInfoViewModel mUser;
 
         /**
@@ -123,6 +125,8 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
             chatId = mView.findViewById(R.id.text_chatid);
             chatId.setVisibility(View.INVISIBLE);
             chatName = mView.findViewById(R.id.text_title);
+            mOwner = mView.findViewById(R.id.text_owner);
+            mOwner.setVisibility(View.INVISIBLE);
             binding.layoutInner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -149,6 +153,21 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
                 }
             });
             binding.buttonChatroomAdd.setOnClickListener(this::attemptAddUser);
+            binding.buttonChatroomInfo.setOnClickListener(this::attemptInfo);
+            binding.buttonChatroomRemoveother.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mUser.getEmail().equals(mOwner.getText().toString())) {
+                        attemptRemove(view);
+                    }
+                    else{
+                        AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(mParent.getContext());
+                        dialog.setTitle("You are not the chat owner and cannot remove others!")
+                                .setNegativeButton("Okay", null)
+                                .show().setCanceledOnTouchOutside(true);
+                    }
+                }
+            });
         }
 
         private void attemptAddUser(View view) {
@@ -184,6 +203,31 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
         }
 
         /**
+         * Attempts to get users in the chat
+         *
+         * @param view
+         */
+        private void attemptInfo(View view) {
+            mModel.setmChatId(Integer.parseInt(chatId.getText().toString()));
+            Navigation.findNavController(mParent.requireView()).navigate(
+                    HomeFragmentDirections.actionNavHomeFragmentToChatroomInfoFragment());
+        }
+
+        /**
+         * Attempts to add a user to the chat
+         *
+         * @param view
+         */
+        private void attemptRemove(View view) {
+            TextView holdOwner;
+            holdOwner = mView.findViewById(R.id.text_owner);
+            String tempOwner = holdOwner.getText().toString();
+            mModel.setmChatId(Integer.parseInt(chatId.getText().toString()));
+            Navigation.findNavController(mParent.requireView()).navigate(
+                    HomeFragmentDirections.actionNavHomeFragmentToChatroomRemoveFragment());
+        }
+
+        /**
          * Sets the chat room id and name
          *
          * @param chatroom Chatroom
@@ -192,6 +236,7 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
             mChatroomSingle = chatroom;
             binding.textTitle.setText(chatroom.getChatRoomName());
             binding.textChatid.setText(chatroom.getChatRoomId());
+            binding.textOwner.setText(chatroom.getChatOwner());
             int chatId = Integer.parseInt(chatroom.getChatRoomId());
             mMessageModel.addMessageObserver(chatId, mParent.getViewLifecycleOwner(), messages -> {
                 List<Message> messageList = mMessageModel.getMessageListByChatId(chatId);

@@ -1,9 +1,11 @@
-package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.info;
+package edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.remove;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,9 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
+import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomRemoveBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomInfoBinding;
 import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.remove.ChatroomRemoveFragmentDirections;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.remove.ChatroomRemoveListViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.remove.ChatroomRemoveRecyclerViewAdapter;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
 
 /**
@@ -32,11 +37,11 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
  * @version 6/2/22
  */
 
-public class ChatroomInfoFragment extends Fragment{
+public class ChatroomRemoveFragment extends Fragment{
 
-    private ChatroomInfoListViewModel mAdd;
+    private ChatroomRemoveListViewModel mAdd;
     private UserInfoViewModel mUser;
-    private FragmentChatroomInfoBinding mBinding;
+    private FragmentChatroomRemoveBinding mBinding;
     private ContactListViewModel mContact;
     private ChatroomViewModel mView;
     private int chatId;
@@ -46,7 +51,7 @@ public class ChatroomInfoFragment extends Fragment{
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mAdd = new ViewModelProvider(getActivity()).get(ChatroomInfoListViewModel.class);
+        mAdd = new ViewModelProvider(getActivity()).get(ChatroomRemoveListViewModel.class);
         mUser = new ViewModelProvider(getActivity()).get(UserInfoViewModel.class);
         mContact = new ViewModelProvider(getActivity()).get(ContactListViewModel.class);
         mView = new ViewModelProvider(getActivity()).get(ChatroomViewModel.class);
@@ -56,17 +61,15 @@ public class ChatroomInfoFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chatroom_info, container, false);
+        return inflater.inflate(R.layout.fragment_chatroom_remove, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mBinding = FragmentChatroomInfoBinding.bind(getView());
-        //mBinding.swipeChatroomInfoRefresh.setVisibility(View.INVISIBLE);
+        mBinding = FragmentChatroomRemoveBinding.bind(getView());
 
-
-        //mBinding.buttonInfoChat.setOnClickListener(this::attemptAdd);
+        mBinding.buttonRemoveChat.setOnClickListener(this::attemptAdd);
         mView.addChatIdObserver(getViewLifecycleOwner(), getId -> {
             mBinding.listRoot.setVisibility(View.GONE);
             mBinding.progressBar.setVisibility(View.VISIBLE);
@@ -76,13 +79,13 @@ public class ChatroomInfoFragment extends Fragment{
         mAdd.addGetContactsNotObserver(getViewLifecycleOwner(), contacts -> {
             mBinding.listRoot.setVisibility(View.VISIBLE);
             mBinding.progressBar.setVisibility(View.GONE);
-            mBinding.swipeChatroomInfoRefresh.setRefreshing(false);
+            mBinding.swipeChatroomRemoveRefresh.setRefreshing(false);
             mBinding.listRoot.setAdapter(
-                    new ChatroomInfoRecyclerViewAdapter(contacts, this)
+                    new ChatroomRemoveRecyclerViewAdapter(contacts, this)
             );
         });
 
-        mBinding.swipeChatroomInfoRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        mBinding.swipeChatroomRemoveRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mAdd.getContactsNot(mUser.getJwt(),chatId);
@@ -104,8 +107,9 @@ public class ChatroomInfoFragment extends Fragment{
         chatId = mView.getmChatId().getValue();
         mAdd.add1(mUser.getJwt(), namesToAdd, chatId);
         mBinding.progressBar.setVisibility(View.GONE);
+        Toast.makeText(getActivity(), "Removed User(s)", Toast.LENGTH_SHORT).show();
         Navigation.findNavController(getView()).navigate(
-                ChatroomInfoFragmentDirections.actionChatroomInfoFragmentToNavChatroomFragment());
+                ChatroomRemoveFragmentDirections.actionChatroomRemoveFragmentToNavChatroomFragment());
     }
 
 }

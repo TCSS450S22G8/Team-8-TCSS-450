@@ -76,6 +76,8 @@
     <string name="text_requests">Requests</string>
     <string name="text_add_contacts">Add Contacts</string>
     <string name="title_users_chat">Users in Chat</string>
+    <string name="title_remove_user">Remove Users</string>
+    <string name="action_remove_user">Remove user</string>
 
 
 </resources>

@@ -133,6 +133,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         private TextView chatId;
         private TextView chatName;
         private UserInfoViewModel mUser;
+        private TextView mOwner;
 
         /**
          * Constructor for View Holder
@@ -147,6 +148,8 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             chatId = mView.findViewById(R.id.text_chatid);
             chatId.setVisibility(View.INVISIBLE);
             chatName = mView.findViewById(R.id.text_title);
+            mOwner = mView.findViewById(R.id.text_owner);
+            mOwner.setVisibility(View.INVISIBLE);
             binding.layoutInner.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -173,6 +176,21 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             });
             binding.buttonChatroomAdd.setOnClickListener(this::attemptAddUser);
             binding.buttonChatroomInfo.setOnClickListener(this::attemptInfo);
+            binding.buttonChatroomRemoveother.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(mUser.getEmail().equals(mOwner.getText().toString())) {
+                        attemptRemove(view);
+                    }
+                    else{
+                        AlertDialog.Builder dialog = AlertBoxMaker.DialogWithStyle(mParent.getContext());
+                        dialog.setTitle("You are not the chat owner and cannot remove others!")
+                                .setNegativeButton("Okay", null)
+                                .show().setCanceledOnTouchOutside(true);
+                    }
+                }
+            });
+
         }
 
         /**
@@ -224,6 +242,20 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         }
 
         /**
+         * Attempts to add a user to the chat
+         *
+         * @param view
+         */
+        private void attemptRemove(View view) {
+            TextView holdOwner;
+            holdOwner = mView.findViewById(R.id.text_owner);
+            String tempOwner = holdOwner.getText().toString();
+            mModel.setmChatId(Integer.parseInt(chatId.getText().toString()));
+            Navigation.findNavController(mParent.requireView()).navigate(
+                    ChatroomListFragmentDirections.actionNavChatroomFragmentToChatroomRemoveFragment());
+        }
+
+        /**
          * Sets the chat room id and name
          *
          * @param chatroom Chatroom
@@ -233,6 +265,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
             binding.textTitle.setText(chatroom.getChatRoomName());
             binding.textTitleSwipe.setText(chatroom.getChatRoomName());
             binding.textChatid.setText(chatroom.getChatRoomId());
+            binding.textOwner.setText(chatroom.getChatOwner());
             int chatId = Integer.parseInt(chatroom.getChatRoomId());
             mMessageModel.addMessageObserver(chatId, mParent.getViewLifecycleOwner(), messages -> {
                 List<Message> messageList = mMessageModel.getMessageListByChatId(chatId);

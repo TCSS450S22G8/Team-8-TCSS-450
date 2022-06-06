@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -104,6 +105,7 @@ public class ChatroomAddUserFragment extends Fragment{
         chatId = mView.getmChatId().getValue();
         mAdd.add1(mUser.getJwt(), namesToAdd, chatId);
         mBinding.progressBar.setVisibility(View.GONE);
+        Toast.makeText(getActivity(), "Added User(s)", Toast.LENGTH_SHORT).show();
         Navigation.findNavController(getView()).navigate(
                 ChatroomAddUserFragmentDirections.actionChatroomAddUserFragmentToNavChatroomFragment());
     }

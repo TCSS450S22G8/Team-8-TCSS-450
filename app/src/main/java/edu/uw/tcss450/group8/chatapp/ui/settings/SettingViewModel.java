@@ -44,6 +44,7 @@ public class SettingViewModel extends AndroidViewModel {
     private MutableLiveData<String> mFirstName;
     private MutableLiveData<String> mLastName;
     private MutableLiveData<String> mUserName;
+    private MutableLiveData<String> mFlag;
 
 
     /**
@@ -58,6 +59,7 @@ public class SettingViewModel extends AndroidViewModel {
         mFirstName = new MutableLiveData<>();
         mLastName = new MutableLiveData<>();
         mUserName = new MutableLiveData<>();
+        mFlag = new MutableLiveData<>();
     }
 
     /**
@@ -91,6 +93,13 @@ public class SettingViewModel extends AndroidViewModel {
     public void addUserLastNameObserver(@NonNull LifecycleOwner owner,
                                          @NonNull Observer<? super String> observer) {
         mLastName.observe(owner, observer);
+    }
+
+    /**
+     * resets flag for deleting account
+     */
+    public void resetFlag() {
+        mFlag = new MutableLiveData<>();
     }
 
     /**
@@ -146,6 +155,18 @@ public class SettingViewModel extends AndroidViewModel {
             Log.e("JSON PARSE ERROR", "Found in handle Success");
             Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
         }
+    }
+
+    public void handleDeleteAccountSuccess(final JSONObject userInfo) {
+        mFlag.setValue("yes");
+    }
+
+    /**
+     *
+     */
+    public void addObserverForFlag(@NonNull LifecycleOwner owner,
+                                   @NonNull Observer<? super String> observer) {
+        mFlag.observe(owner, observer);
     }
 
     /**
@@ -211,7 +232,7 @@ public class SettingViewModel extends AndroidViewModel {
                 Request.Method.DELETE,
                 url,
                 null,
-                this::handleSuccess,
+                this::handleDeleteAccountSuccess,
                 this::handleError) {
             @Override
             public Map<String, String> getHeaders() {

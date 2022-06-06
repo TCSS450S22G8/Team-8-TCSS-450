@@ -77,6 +77,14 @@ public class SettingFragment extends Fragment {
         });
 
 
+        mSetting.addObserverForFlag(getViewLifecycleOwner(), deleted -> {
+            mSetting.resetFlag();
+            final ImageView ToastImageAdd = new ImageView(getActivity());
+            ToastImageAdd.setImageResource(R.drawable.slapchaticon);
+            Toast.makeText(getActivity(), "Your account has been deleted", Toast.LENGTH_LONG).show();
+            Navigation.findNavController(getView()).navigate(SettingFragmentDirections.actionNavSettingFragmentToAuthenticationActivity());
+        });
+
         mBinding.buttonSettingsDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,12 +93,6 @@ public class SettingFragment extends Fragment {
                         .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 mSetting.deleteUserAccount(mUser.getJwt());
-                                Navigation.findNavController(getView()).navigate(
-                                                SettingFragmentDirections
-                                                        .actionSettingFragmentToAuthenticationActivity());
-                                final ImageView ToastImageAdd = new ImageView(getActivity());
-                                ToastImageAdd.setImageResource(R.drawable.slapchaticon);
-                                Toast.makeText(getActivity(), "Your account has been deleted", Toast.LENGTH_LONG).show();
                             }
                         })
                         .setNegativeButton("Cancel", null)

@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.util.ArrayList;
@@ -22,14 +21,14 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.ChatroomViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
 
 /**
- * Create an instance of Chatroom Add List fragment.
+ * Create an instance of Chatroom Info fragment.
  * Adapted from original code by Charles Bryan.
  *
  * @author Charles Bryan
  * @author Rin Pham
  * @author Shilnara Dam
  * @author Levi McCoy
- * @version 6/2/22
+ * @version 6/5/22
  */
 
 public class ChatroomInfoFragment extends Fragment{
@@ -63,17 +62,13 @@ public class ChatroomInfoFragment extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mBinding = FragmentChatroomInfoBinding.bind(getView());
-        //mBinding.swipeChatroomInfoRefresh.setVisibility(View.INVISIBLE);
-
-
-        //mBinding.buttonInfoChat.setOnClickListener(this::attemptAdd);
         mView.addChatIdObserver(getViewLifecycleOwner(), getId -> {
             mBinding.listRoot.setVisibility(View.GONE);
             mBinding.progressBar.setVisibility(View.VISIBLE);
             chatId = getId;
-            mAdd.getContactsNot(mUser.getJwt(),chatId);
+            mAdd.getContacts(mUser.getJwt(),chatId);
         });
-        mAdd.addGetContactsNotObserver(getViewLifecycleOwner(), contacts -> {
+        mAdd.addGetContactsObserver(getViewLifecycleOwner(), contacts -> {
             mBinding.listRoot.setVisibility(View.VISIBLE);
             mBinding.progressBar.setVisibility(View.GONE);
             mBinding.swipeChatroomInfoRefresh.setRefreshing(false);
@@ -85,7 +80,7 @@ public class ChatroomInfoFragment extends Fragment{
         mBinding.swipeChatroomInfoRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                mAdd.getContactsNot(mUser.getJwt(),chatId);
+                mAdd.getContacts(mUser.getJwt(),chatId);
             }
         });
 
@@ -94,19 +89,6 @@ public class ChatroomInfoFragment extends Fragment{
 
 
 
-    /**
-     * attempt to start adding users process
-     *
-     * @param view current view
-     */
-    public void attemptAdd(View view) {
-        mBinding.progressBar.setVisibility(View.VISIBLE);
-        chatId = mView.getmChatId().getValue();
-        mAdd.add1(mUser.getJwt(), namesToAdd, chatId);
-        mBinding.progressBar.setVisibility(View.GONE);
-        Navigation.findNavController(getView()).navigate(
-                ChatroomInfoFragmentDirections.actionChatroomInfoFragmentToNavChatroomFragment());
-    }
 
 }
 

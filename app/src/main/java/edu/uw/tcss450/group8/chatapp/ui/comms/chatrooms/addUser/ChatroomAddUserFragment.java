@@ -31,7 +31,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactListViewModel;
  * @author Rin Pham
  * @author Shilnara Dam
  * @author Levi McCoy
- * @version 6/2/22
+ * @version 6/5/22
  */
 
 public class ChatroomAddUserFragment extends Fragment{

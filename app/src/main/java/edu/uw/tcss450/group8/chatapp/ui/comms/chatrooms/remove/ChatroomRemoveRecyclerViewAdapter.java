@@ -14,11 +14,10 @@ import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomRemoveCardBinding;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.remove.ChatroomRemoveFragment;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
 
 /**
- * Recycler View to show all contacts as a list in chatroom add.
+ * Recycler View to show all contacts as a list in chatroom remove.
  *
  * Adapted from original code by Charles Bryan
  *
@@ -27,7 +26,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
  * @author Shilnara Dam
  * @author Sean Logan
  * @author Levi McCoy
- * @version 6/2/22
+ * @version 6/5/22
  */
 
 public class ChatroomRemoveRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRemoveRecyclerViewAdapter.ChatroomRemoveViewHolder> {
@@ -95,11 +94,11 @@ public class ChatroomRemoveRecyclerViewAdapter extends RecyclerView.Adapter<Chat
             mAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(mParent.namesToAdd.contains(mBinding.textChatroomRemoveEmail.getText().toString())) {
-                        mParent.namesToAdd.remove(mBinding.textChatroomRemoveEmail.getText().toString());
+                    if(mParent.namesToRemove.contains(mBinding.textChatroomRemoveEmail.getText().toString())) {
+                        mParent.namesToRemove.remove(mBinding.textChatroomRemoveEmail.getText().toString());
                     }
                     else{
-                        mParent.namesToAdd.add(mBinding.textChatroomRemoveEmail.getText().toString());
+                        mParent.namesToRemove.add(mBinding.textChatroomRemoveEmail.getText().toString());
                     }
                 }
             });

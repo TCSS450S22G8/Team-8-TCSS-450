@@ -13,13 +13,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import edu.uw.tcss450.group8.chatapp.R;
-import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomAddUserCardBinding;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentChatroomInfoCardBinding;
-import edu.uw.tcss450.group8.chatapp.ui.comms.chatrooms.addUser.ChatroomAddUserFragment;
 import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
 
 /**
- * Recycler View to show all contacts as a list in chatroom add.
+ * Recycler View to show all contacts as a list in chatroom info.
  *
  * Adapted from original code by Charles Bryan
  *
@@ -28,7 +26,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
  * @author Shilnara Dam
  * @author Sean Logan
  * @author Levi McCoy
- * @version 6/2/22
+ * @version 6/5/22
  */
 
 public class ChatroomInfoRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomInfoRecyclerViewAdapter.ChatroomInfoViewHolder> {
@@ -91,19 +89,6 @@ public class ChatroomInfoRecyclerViewAdapter extends RecyclerView.Adapter<Chatro
             super(view);
             mView = view;
             mBinding = FragmentChatroomInfoCardBinding.bind(view);
-            //mAdd = view.findViewById(R.id.checkBox_add_user);
-
-            /*mAdd.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if(mParent.namesToAdd.contains(mBinding.textChatroomInfoEmail.getText().toString())) {
-                        mParent.namesToAdd.remove(mBinding.textChatroomInfoEmail.getText().toString());
-                    }
-                    else{
-                        mParent.namesToAdd.add(mBinding.textChatroomInfoEmail.getText().toString());
-                    }
-                }
-            });*/
         }
 
 

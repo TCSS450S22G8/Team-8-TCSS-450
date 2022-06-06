@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +37,7 @@ import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
  *
  * @author Charles Bryan
  * @author Levi McCoy
- * @version 6/2/22
+ * @version 6/5/22
  */
 public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeChatroomViewRecyclerAdapter.ChatroomViewHolder> {
 
@@ -203,7 +202,7 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
         }
 
         /**
-         * Attempts to get users in the chat
+         * Attempts to get users info in the chat
          *
          * @param view
          */
@@ -214,21 +213,18 @@ public class HomeChatroomViewRecyclerAdapter extends RecyclerView.Adapter<HomeCh
         }
 
         /**
-         * Attempts to add a user to the chat
+         * Attempts to remove other user from the chat
          *
          * @param view
          */
         private void attemptRemove(View view) {
-            TextView holdOwner;
-            holdOwner = mView.findViewById(R.id.text_owner);
-            String tempOwner = holdOwner.getText().toString();
             mModel.setmChatId(Integer.parseInt(chatId.getText().toString()));
             Navigation.findNavController(mParent.requireView()).navigate(
                     HomeFragmentDirections.actionNavHomeFragmentToChatroomRemoveFragment());
         }
 
         /**
-         * Sets the chat room id and name
+         * Sets the chat room id and name and owner
          *
          * @param chatroom Chatroom
          */

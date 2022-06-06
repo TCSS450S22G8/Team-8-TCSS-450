@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +35,7 @@ import edu.uw.tcss450.group8.chatapp.utils.AlertBoxMaker;
  * @author Charles Bryan
  * @author Levi McCoy
  * @author Sean Logan
- * @version 6/2/22
+ * @version 6/5/22
  */
 public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRecyclerViewAdapter.ChatroomViewHolder> {
 
@@ -231,7 +230,7 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         }
 
         /**
-         * Attempts to add a user to the chat
+         * Attempts to get info of users in a chat
          *
          * @param view
          */
@@ -242,21 +241,18 @@ public class ChatroomRecyclerViewAdapter extends RecyclerView.Adapter<ChatroomRe
         }
 
         /**
-         * Attempts to add a user to the chat
+         * Attempts to remove users from the chat
          *
          * @param view
          */
         private void attemptRemove(View view) {
-            TextView holdOwner;
-            holdOwner = mView.findViewById(R.id.text_owner);
-            String tempOwner = holdOwner.getText().toString();
             mModel.setmChatId(Integer.parseInt(chatId.getText().toString()));
             Navigation.findNavController(mParent.requireView()).navigate(
                     ChatroomListFragmentDirections.actionNavChatroomFragmentToChatroomRemoveFragment());
         }
 
         /**
-         * Sets the chat room id and name
+         * Sets the chat room id and name and owner
          *
          * @param chatroom Chatroom
          */

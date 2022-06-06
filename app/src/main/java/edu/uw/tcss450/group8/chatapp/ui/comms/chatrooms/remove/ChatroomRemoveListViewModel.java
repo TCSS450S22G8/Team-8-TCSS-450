@@ -11,7 +11,6 @@ import androidx.lifecycle.Observer;
 
 import com.android.volley.Request;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONArray;
@@ -30,7 +29,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
 
 
 /**
- * View Model for contact list in chatroom add users.
+ * View Model for contact list in chatroom remove users.
  * Adapted from original code by Charles Bryan.
  *
  * @author Charles Bryan
@@ -38,7 +37,7 @@ import edu.uw.tcss450.group8.chatapp.ui.comms.connection.Contact;
  * @author Shilnara Dam
  * @author Sean Logan
  * @author Levi McCoy
- * @version 6/2/22
+ * @version 6/5/22
  */
 public class ChatroomRemoveListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mContact;
@@ -48,7 +47,7 @@ public class ChatroomRemoveListViewModel extends AndroidViewModel {
     private MutableLiveData<List<Contact>> mGetContactsNot;
 
     /**
-     * Constructor for Chatroom add users List ViewModel
+     * Constructor for Chatroom remove users List ViewModel
      *
      * @param application app
      */
@@ -81,47 +80,23 @@ public class ChatroomRemoveListViewModel extends AndroidViewModel {
         mGetContactsNot.observe(owner, observer);
     }
 
-    /**
-     * Endpoint to retrieve contacts of the user
-     *
-     * @param jwt String
-     */
-    public void getContacts(String jwt) {
-        String url = "https://tcss-450-sp22-group-8.herokuapp.com/contacts/retrieve";
-        Request request = new JsonArrayRequest(
-                Request.Method.GET,
-                url,
-                null,
-                this::handleGetContactSuccess,
-                this::handleGetContactError) {
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> headers = new HashMap<>();
-                // add headers <key,value>
-                headers.put("Authorization", jwt);
-                return headers;
-            }
-        };
-        RequestQueueSingleton.getInstance(getApplication().getApplicationContext())
-                .addToRequestQueue(request);
-    }
 
     /**
-     * Endpoint call to do first step of adding users to chat
+     * Endpoint call to do first step of removing users to chat
      *  @param jwt String of jwt
-     * @param namesToAdd list of string with emails of who to add
+     * @param namesToRemove list of string with emails of who to remove
      * @param chatId The id of the chat to add too
      */
-    public void add1(String jwt, List<String> namesToAdd, int chatId) {
-        for(int j = 0; j < namesToAdd.size();j++) {
+    public void remove1(String jwt, List<String> namesToRemove, int chatId) {
+        for(int j = 0; j < namesToRemove.size();j++) {
             mjwt.setValue(jwt);
-            mNames.setValue(namesToAdd);
+            mNames.setValue(namesToRemove);
             mChatid.setValue(chatId);
-            String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/delete/user/"+chatId+"/"+namesToAdd.get(j);
+            String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/delete/user/"+chatId+"/"+namesToRemove.get(j);
             JSONObject body = new JSONObject();
             try {
                 body.put("chatId", chatId);
-                body.put("email", namesToAdd.get(j));
+                body.put("email", namesToRemove.get(j));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -129,8 +104,8 @@ public class ChatroomRemoveListViewModel extends AndroidViewModel {
                     Request.Method.DELETE,
                     url,
                     body,
-                    this::handleAdd1Success,
-                    this::handleAdd1Error) {
+                    this::handleRemove1Success,
+                    this::handleRemove1Error) {
                 @Override
                 public Map<String, String> getHeaders() {
                     Map<String, String> headers = new HashMap<>();
@@ -146,11 +121,11 @@ public class ChatroomRemoveListViewModel extends AndroidViewModel {
 
 
     /**
-     * Handles errors for first add user endpoint calls
+     * Handles errors for first remove user endpoint calls
      *
      * @param volleyError VolleyError
      */
-    private void handleAdd1Error(VolleyError volleyError) {
+    private void handleRemove1Error(VolleyError volleyError) {
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
         }
@@ -165,27 +140,27 @@ public class ChatroomRemoveListViewModel extends AndroidViewModel {
 
 
     /**
-     * Handles the success for first add user endpoint calls
+     * Handles the success for first remove user endpoint calls
      *
      * @param response JSONObject
      */
-    private void handleAdd1Success(final JSONObject response) {
+    private void handleRemove1Success(final JSONObject response) {
     }
 
 
     /**
-     * Endpoint get the users in a chat who are not currently in it
+     * Endpoint get the users in a chat who are currently in it
      *  @param jwt String of jwt
      * @param chatId The id of the chat to add too
      */
-    public void getContactsNot(String jwt, int chatId) {
+    public void getContacts(String jwt, int chatId) {
         String url = "https://tcss-450-sp22-group-8.herokuapp.com/chats/"+chatId;
         Request<JSONObject> request = new JsonObjectRequest(
                 Request.Method.GET,
                 url,
                 null,
-                this::handleGetContactsNotSuccess,
-                this::handleGetContactsNotError) {
+                this::handleGetContactsSuccess,
+                this::handleGetContactsError) {
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> headers = new HashMap<>();
@@ -200,11 +175,11 @@ public class ChatroomRemoveListViewModel extends AndroidViewModel {
 
 
     /**
-     * Handles errors for users not in contacts endpoint calls
+     * Handles errors for users in contacts endpoint calls
      *
      * @param volleyError VolleyError
      */
-    private void handleGetContactsNotError(VolleyError volleyError) {
+    private void handleGetContactsError(VolleyError volleyError) {
         if (Objects.isNull(volleyError.networkResponse)) {
             Log.e("NETWORK ERROR", volleyError.getMessage());
         }
@@ -219,11 +194,11 @@ public class ChatroomRemoveListViewModel extends AndroidViewModel {
 
 
     /**
-     * Handles the success for get users not in contacts endpoint calls
+     * Handles the success for get users in contacts endpoint calls
      *
      * @param response JSONObject
      */
-    private void handleGetContactsNotSuccess(final JSONObject response) {
+    private void handleGetContactsSuccess(final JSONObject response) {
         ArrayList<Contact> list = new ArrayList<>();
         try {
             JSONArray temp = response.getJSONArray("rows");
@@ -241,41 +216,4 @@ public class ChatroomRemoveListViewModel extends AndroidViewModel {
     }
 
 
-    /**
-     * Handles errors for the getContact endpoint calls
-     *
-     * @param volleyError VolleyError
-     */
-    private void handleGetContactError(VolleyError volleyError) {
-        if (Objects.isNull(volleyError.networkResponse)) {
-            Log.e("NETWORK ERROR", volleyError.getMessage());
-        }
-        else {
-            String data = new String(volleyError.networkResponse.data, Charset.defaultCharset());
-            mContact.setValue(new ArrayList<>());
-            Log.e("CLIENT ERROR",
-                    volleyError.networkResponse.statusCode + " " + data);
-        }
-    }
-
-    /**
-     * Handles success for getContact endpoint calls
-     *
-     * @param obj returned json object
-     */
-    private void handleGetContactSuccess(final JSONArray obj) {
-        ArrayList<Contact> list = new ArrayList<>();
-        try {
-            for (int i = 0; i <  obj.length(); i++) {
-                JSONObject contact = obj.getJSONObject(i);
-                list.add(new Contact(
-                        contact.getString("username"),
-                        contact.getString("email")));
-            }
-            mContact.setValue(list);
-        } catch (JSONException e){
-            Log.e("JSON PARSE ERROR", "Found in handle Success");
-            Log.e("JSON PARSE ERROR", "Error: " + e.getMessage());
-        }
-    }
 }

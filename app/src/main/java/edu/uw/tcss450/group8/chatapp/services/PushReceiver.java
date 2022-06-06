@@ -142,6 +142,7 @@ public class PushReceiver extends BroadcastReceiver {
 
 
         String chatId = intent.getStringExtra("chatid");
+        String email = intent.getStringExtra("email");
         Log.d("TAG", "addFriendToChatNotification: " + chatId);
 
         if (appProcessInfo.importance == IMPORTANCE_FOREGROUND || appProcessInfo.importance == IMPORTANCE_VISIBLE) {
@@ -150,6 +151,7 @@ public class PushReceiver extends BroadcastReceiver {
             Intent i = new Intent(RECEIVED_NEW_MESSAGE);
             i.putExtra("addedToChat", message);
             i.putExtra("chatid", chatId);
+            i.putExtra("email", email);
             i.putExtras(intent.getExtras());
 
             context.sendBroadcast(i);
@@ -158,6 +160,7 @@ public class PushReceiver extends BroadcastReceiver {
             Log.d("PUSHY", "Message received in background: " + message);
 
             Intent i = new Intent(context, MainActivity.class);
+            i.putExtra("email", email);
             i.putExtras(intent.getExtras());
 
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
@@ -193,6 +196,7 @@ public class PushReceiver extends BroadcastReceiver {
      */
     private void deleteFriendNotification(Context context, Intent intent) {
         String message = intent.getStringExtra("message");
+        String email = intent.getStringExtra("email");
 
         ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
         ActivityManager.getMyMemoryState(appProcessInfo);
@@ -203,6 +207,7 @@ public class PushReceiver extends BroadcastReceiver {
             Intent i = new Intent(RECEIVED_NEW_MESSAGE);
             i.putExtra("message", message);
             i.putExtra("deleteFriend", "request");
+            i.putExtra("email", email);
             i.putExtras(intent.getExtras());
 
             context.sendBroadcast(i);
@@ -211,8 +216,8 @@ public class PushReceiver extends BroadcastReceiver {
             Log.d("PUSHY", "Message received in background: " + message);
 
             Intent i = new Intent(context, MainActivity.class);
+            i.putExtra("email", email);
             i.putExtras(intent.getExtras());
-
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
                     i, PendingIntent.FLAG_MUTABLE);
 
@@ -246,6 +251,7 @@ public class PushReceiver extends BroadcastReceiver {
      */
     private void friendRequestNotification(Context context, Intent intent) {
         String message = intent.getStringExtra("message");
+        String email = intent.getStringExtra("email");
 
         ActivityManager.RunningAppProcessInfo appProcessInfo = new ActivityManager.RunningAppProcessInfo();
         ActivityManager.getMyMemoryState(appProcessInfo);
@@ -255,6 +261,7 @@ public class PushReceiver extends BroadcastReceiver {
 
             Intent i = new Intent(RECEIVED_NEW_MESSAGE);
             i.putExtra("message", message);
+            i.putExtra("email", email);
             i.putExtra("friendRequest", "request");
             i.putExtras(intent.getExtras());
 
@@ -264,6 +271,7 @@ public class PushReceiver extends BroadcastReceiver {
             Log.d("PUSHY", "Message received in background: " + message);
 
             Intent i = new Intent(context, MainActivity.class);
+            i.putExtra("email", email);
             i.putExtras(intent.getExtras());
 
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,
@@ -320,6 +328,7 @@ public class PushReceiver extends BroadcastReceiver {
             Intent i = new Intent(RECEIVED_NEW_MESSAGE);
             i.putExtra("chatMessage", message);
             i.putExtra("chatid", chatId);
+            i.putExtra("email", message.getSender());
             i.putExtras(intent.getExtras());
 
             context.sendBroadcast(i);
@@ -331,6 +340,8 @@ public class PushReceiver extends BroadcastReceiver {
             Intent i = new Intent(context, MainActivity.class);
             i.putExtras(intent.getExtras());
             i.putExtra("chatid", chatId);
+            i.putExtra("email", message.getSender());
+            i.putExtra("username", message.getUsername());
 
             context.sendBroadcast(i);
 

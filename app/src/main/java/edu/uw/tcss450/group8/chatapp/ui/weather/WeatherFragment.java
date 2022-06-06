@@ -19,12 +19,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearSnapHelper;
+import androidx.recyclerview.widget.SnapHelper;
 
 import com.squareup.picasso.Picasso;
 
 import edu.uw.tcss450.group8.chatapp.R;
 import edu.uw.tcss450.group8.chatapp.databinding.FragmentWeatherBinding;
 import edu.uw.tcss450.group8.chatapp.model.UserInfoViewModel;
+import edu.uw.tcss450.group8.chatapp.ui.comms.connection.ContactFragmentDirections;
 import edu.uw.tcss450.group8.chatapp.ui.location.LocationListViewModel;
 import edu.uw.tcss450.group8.chatapp.ui.location.LocationViewModel;
 
@@ -73,8 +76,6 @@ public class WeatherFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == R.id.open_saved_location) {
-
-
             mLocationListModel.addLocationsObserver(getViewLifecycleOwner(), locations -> {
                 if (mLocationListModel.getLocationCount() == 0) {
                     Navigation.findNavController(getView()).navigate(
@@ -121,10 +122,12 @@ public class WeatherFragment extends Fragment {
             });
         }
 
-
         mBinding = FragmentWeatherBinding.bind(requireView());
         mBinding.progressBar.setVisibility(View.VISIBLE);
 
+        //allows the recycler view to snap into place
+        SnapHelper helper1 = new LinearSnapHelper();
+        SnapHelper helper2 = new LinearSnapHelper();
 
         //adding weather observers
         mWeatherModel.addCurrentWeatherObserver(
@@ -135,10 +138,15 @@ public class WeatherFragment extends Fragment {
         mWeatherModel.addLatLonErrorObserver(getViewLifecycleOwner(),
                 this::observeLatLonErrorResponse);
         mWeatherModel.addHourlyWeatherObserver(getViewLifecycleOwner(),
-                weatherList ->
-                        mBinding.listWeatherHourly.setAdapter(new WeatherHourlyRecyclerViewAdapter(weatherList)));
+                weatherList -> {
+                        mBinding.listWeatherHourly.setOnFlingListener(null);
+                        helper1.attachToRecyclerView(mBinding.listWeatherHourly);
+                        mBinding.listWeatherHourly.setAdapter(new WeatherHourlyRecyclerViewAdapter(weatherList));
+                });
         mWeatherModel.addDailyWeatherObserver(getViewLifecycleOwner(),
                 weatherList -> {
+                    mBinding.listWeatherDaily.setOnFlingListener(null);
+                    helper2.attachToRecyclerView(mBinding.listWeatherDaily);
                     mBinding.listWeatherDaily.setAdapter(new WeatherDailyRecyclerViewAdapter(weatherList));
                 });
 
@@ -173,6 +181,13 @@ public class WeatherFragment extends Fragment {
             }
             mWeatherModel.getWeatherLatLon(mBinding.editWeatherLat.getText().toString(),
                     mBinding.editWeatherLon.getText().toString(), mUserModel.getJwt());
+        });
+
+        //button listener to send user to view additional current weather information
+        mBinding.buttonWeatherAdditionalInfo.setOnClickListener(button -> {
+            Navigation.findNavController(getView()).
+                    navigate(WeatherFragmentDirections
+                            .actionNavWeatherFragmentToWeatherMoreInfoFragment());
         });
     }
 
